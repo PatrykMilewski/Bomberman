@@ -1,9 +1,8 @@
-package com.bomberman.menu;
+package com.bomberman.gui.menu;
 
+import com.bomberman.gui.Buttons;
 import javafx.scene.Parent;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -14,9 +13,9 @@ public class MenuButtons extends Parent {
         menu.setTranslateX(200);
         menu.setTranslateY(280);
 
-        MenuButton buttonNewGame = new MenuButton("Nowa gra");
-        MenuButton buttonHighScores = new MenuButton("Ranking");
-        MenuButton buttonExit = new MenuButton("Wyjście");
+        Buttons buttonNewGame = new Buttons("Nowa gra");
+        Buttons buttonHighScores = new Buttons("Ranking");
+        Buttons buttonExit = new Buttons("Wyjście");
         buttonNewGame.setOnMouseClicked(event -> {
             try {
                 new Map(mainStage);

@@ -1,6 +1,4 @@
-package com.bomberman.menu;
-
-import javafx.scene.layout.Pane;
+package com.bomberman.gui.menu;
 
 import java.io.IOException;
 
