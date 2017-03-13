@@ -11,10 +11,10 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class MainMenu extends MainStage {
+public class MainMenu{
     private MenuButtons gameMenu;
 
-    public MainMenu(Pane rootElem) throws IOException {
+    public MainMenu(MainStage mainStage) throws IOException {
         InputStream background = Files.newInputStream(Paths.get("images/logos.png"));
         Image img = new Image(background);
         background.close();
@@ -22,7 +22,7 @@ public class MainMenu extends MainStage {
         ImageView view = new ImageView(img);
         //dopasowywanie obrazu do ramki funkcja view.setFitWidth/Height
 
-        gameMenu = new MenuButtons(rootElem);
-        rootElem.getChildren().addAll(view, gameMenu);
+        gameMenu = new MenuButtons(mainStage);
+        mainStage.getRootElem().getChildren().addAll(view, gameMenu);
     }
 }

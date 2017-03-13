@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class MenuButtons extends Parent {
 
-    public MenuButtons(Pane rootElem) {
+    public MenuButtons(MainStage mainStage) {
         VBox menu = new VBox(20);
         menu.setTranslateX(200);
         menu.setTranslateY(280);
@@ -19,7 +19,7 @@ public class MenuButtons extends Parent {
         MenuButton buttonExit = new MenuButton("Wyjście");
         buttonNewGame.setOnMouseClicked(event -> {
             try {
-                new Map(rootElem);
+                new Map(mainStage);
             } catch (IOException e) {
                 e.printStackTrace();
             }
