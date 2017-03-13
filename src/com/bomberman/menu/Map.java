@@ -52,8 +52,8 @@ public class Map extends Parent{
         this.spaceForScores.setPrefSize(197, 525);
         this.spaceForScores.setStyle("-fx-background-color: brown;");
 
-        mapGrids.getChildren().addAll(this.spaceForMap, this.spaceForScores);                 //dodaj do grida mapGrids
-        getChildren().addAll(mapGrids);                                             //dodaj groda do klasy Map
+        mapGrids.getChildren().addAll(this.spaceForMap, this.spaceForScores);                           //dodaj do grida mapGrids
+        getChildren().addAll(mapGrids);                                                                 //dodaj groda do klasy Map
         this.mainStage.getRootElem().getChildren().addAll(viewBackground, this);                         //dodaj wszystkie zmiany (Map) do glownego pejna
 
         printMap();
