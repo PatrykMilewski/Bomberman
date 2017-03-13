@@ -1,4 +1,4 @@
-package com.bomberman.menu;
+package com.bomberman.gui.menu;
 
 import com.bomberman.fields.Block;
 import com.bomberman.fields.NormalBlock;

@@ -1,4 +1,4 @@
-package com.bomberman.menu;
+package com.bomberman.gui;
 
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
@@ -7,10 +7,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
-public class MenuButton extends StackPane {
+public class Buttons extends StackPane {
     private Text text;
 
-    public MenuButton(String txt) {
+    public Buttons(String txt) {
         text = new Text(txt);
         text.setFont(text.getFont().font(20));
         text.setFill(Color.WHITE);
