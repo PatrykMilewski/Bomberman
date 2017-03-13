@@ -68,7 +68,6 @@ public class Map extends Parent{
 
     private void printEntireMap(){
         ImageView imgView = new ImageView();
-
         for (int i = 0; i < 21; i++){
             for (int j = 0; j < 21; j++){
                 imgView = this.mapFields[i][j].printFiled(this.mapFields[i][j].getX(), this.mapFields[i][j].getY());
