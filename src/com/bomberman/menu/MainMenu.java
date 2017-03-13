@@ -9,19 +9,15 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class MainMenu extends Application {
-    private Menu gameMenu;
+public class MainMenu extends MainStage {
+    private MenuButtons gameMenu;
 
-    @Override
-    public void start (Stage stage) throws Exception {
-        stage.setTitle("Bomberman");
-        Pane rootElem = new Pane();
-        rootElem.setPrefSize(800, 600);
-
+    public MainMenu(Stage stage, Pane rootElem) throws IOException {
         InputStream background = Files.newInputStream(Paths.get("images/logos.png"));
         Image img = new Image(background);
         background.close();
@@ -29,15 +25,7 @@ public class MainMenu extends Application {
         ImageView view = new ImageView(img);
         //dopasowywanie obrazu do ramki funkcja view.setFitWidth/Height
 
-        gameMenu = new Menu();
+        gameMenu = new MenuButtons();
         rootElem.getChildren().addAll(view, gameMenu);
-
-        Scene scene = new Scene(rootElem);
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    public static void main(String args[]) {
-        launch(args);
     }
 }
