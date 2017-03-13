@@ -26,7 +26,7 @@ public abstract class Field {
 
     public Boolean canBeDestroyed() { return this.destroyable; }
 
-    public Rectangle printFiled(int x, int y){
+    public Rectangle printFiled(int x, int y) {
         return new Rectangle();
     }
 }
