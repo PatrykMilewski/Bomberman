@@ -8,7 +8,7 @@ import java.io.SyncFailedException;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class Client {
+public class Client{
 
     public Client(int port) {
         InputStreamReader in = new InputStreamReader(System.in);
