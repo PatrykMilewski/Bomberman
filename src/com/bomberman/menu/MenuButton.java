@@ -1,5 +1,7 @@
 package com.bomberman.menu;
 
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Glow;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -27,5 +29,11 @@ public class MenuButton extends StackPane {
             textBackground.setFill(Color.BLACK);
             text.setFill(Color.WHITE);
         });
+
+        DropShadow onClickGlow = new DropShadow(50,Color.WHITE);
+        onClickGlow.setInput(new Glow());
+
+        this.setOnMousePressed(event -> setEffect(onClickGlow));
+        this.setOnMouseReleased(event -> setEffect(null));
     }
 }
