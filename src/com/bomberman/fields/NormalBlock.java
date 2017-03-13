@@ -1,7 +1,7 @@
 package com.bomberman.fields;
 
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class NormalBlock extends Block
 {
@@ -10,24 +10,23 @@ public class NormalBlock extends Block
     public NormalBlock(int x, int y, boolean destroyable, boolean empty) {
         super(x, y, destroyable);
         this.empty = empty;
-        if (this.canBeDestroyed()){
-            this.imagePath = "images/destroyableBlock.png";
+        if ((this.canBeDestroyed()) && (!this.isEmpty())){
+            this.imagePath = "images/Blocks/destroyableBlock.png";
+        } else if ((!this.canBeDestroyed()) && (!this.isEmpty())){
+            this.imagePath = "images/Blocks/unDestroyableBlock.png";
         } else {
-            this.imagePath = "images/testBlock.png";
-
+            this.imagePath = "images/Blocks/defaultBlock.png";
         }
     }
 
     public boolean isEmpty() { return empty; }
 
     @Override
-    public Rectangle printFiled(int x, int y) {
-        Rectangle textBackground = new Rectangle();
-        if (!this.isEmpty()){
-            textBackground = new Rectangle(x*25, y*25, 25,25);
-            textBackground.setFill(Color.BLACK);
-        }
-
-        return textBackground;
+    public ImageView printFiled(int x, int y) {
+        Image img = new Image("file:"+getImagePath());
+        ImageView imgView = new ImageView(img);
+        imgView.setX(x*25);
+        imgView.setY(y*25);
+        return imgView;
     }
 }

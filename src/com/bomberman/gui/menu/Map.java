@@ -2,6 +2,7 @@ package com.bomberman.gui.menu;
 
 import com.bomberman.fields.Block;
 import com.bomberman.fields.NormalBlock;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -62,16 +63,16 @@ public class Map extends Parent{
         getChildren().addAll(mapGrids);                                                                 //dodaj groda do klasy Map
         this.mainStage.getRootElem().getChildren().addAll(viewBackground, this);                         //dodaj wszystkie zmiany (Map) do glownego pejna
 
-        printMap();
+        printEntireMap();
     }
 
-    private void printMap(){
-        javafx.scene.shape.Rectangle textBackground = new javafx.scene.shape.Rectangle();
+    private void printEntireMap(){
+        ImageView imgView = new ImageView();
 
         for (int i = 0; i < 21; i++){
             for (int j = 0; j < 21; j++){
-                textBackground = this.mapFields[i][j].printFiled(this.mapFields[i][j].getX(), this.mapFields[i][j].getY());
-                this.spaceForMap.getChildren().addAll(textBackground);
+                imgView = this.mapFields[i][j].printFiled(this.mapFields[i][j].getX(), this.mapFields[i][j].getY());
+                this.spaceForMap.getChildren().addAll(imgView);
             }
         }
     }
@@ -93,13 +94,21 @@ public class Map extends Parent{
         Random generator = new Random();
         for (int i = 0; i < 21; i++){
             for (int j = 0; j < 21; j++){
-                if ((i % 2!=1) && (j % 2!=1) && generator.nextBoolean())
+                if ( !((i % 2==1) && (j % 2==1)) && (generator.nextDouble() > 0.5))
                     this.mapFields[i][j] = new NormalBlock(j, i, true, false);     //Blok do rozbicia
             }
         }
-        mapFields[0][0] = new NormalBlock(0, 0, false, true);                                                        //pola puste dla graczy
+        mapFields[0][0] = new NormalBlock(0, 0, false, true);              //pola puste dla graczy
+        mapFields[0][1] = new NormalBlock(1, 0, false, true);
+        mapFields[1][0] = new NormalBlock(0, 1, false, true);
         mapFields[0][20] = new NormalBlock(20, 0, false, true);
+        mapFields[0][19] = new NormalBlock(19, 0, false, true);
+        mapFields[1][20] = new NormalBlock(20, 1, false, true);
         mapFields[20][0] = new NormalBlock(0, 20, false, true);
+        mapFields[19][0] = new NormalBlock(0, 19, false, true);
+        mapFields[20][1] = new NormalBlock(1, 20, false, true);
         mapFields[20][20] = new NormalBlock(20, 20, false, true);
+        mapFields[19][20] = new NormalBlock(20, 19, false, true);
+        mapFields[20][19] = new NormalBlock(19, 20, false, true);
     }
 }

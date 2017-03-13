@@ -1,10 +1,14 @@
 package com.bomberman.fields;
 
+import javafx.scene.image.ImageView;
+
 import java.util.Map;
 import java.util.HashMap;
 
 public class Player extends Field
 {
+
+
     private String name;
     private int index;
     private float speed;
@@ -45,4 +49,8 @@ public class Player extends Field
         superPowers.put(superPower, trig);
     }
 
+    @Override
+    public ImageView printFiled(int x, int y) {
+        return null;
+    }
 }
