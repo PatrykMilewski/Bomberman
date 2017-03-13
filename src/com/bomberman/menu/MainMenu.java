@@ -24,5 +24,6 @@ public class MainMenu{
 
         gameMenu = new MenuButtons(mainStage);
         mainStage.getRootElem().getChildren().addAll(view, gameMenu);
+
     }
 }
