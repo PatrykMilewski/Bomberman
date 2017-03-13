@@ -16,6 +16,7 @@ import java.nio.file.Paths;
 public class MainStage extends Application {
     private Stage stage;
     private Pane rootElem;
+    private Scene mainScene;
 
     @Override
     public void start (Stage stage) throws Exception {
@@ -23,10 +24,10 @@ public class MainStage extends Application {
         this.stage.setTitle("Bomberman");
         this.rootElem = new Pane();
         rootElem.setPrefSize(800, 600);
-        new MainMenu(this.stage, this.rootElem);
+        new MainMenu(this.rootElem);
 
-        Scene scene = new Scene(rootElem);
-        stage.setScene(scene);
+        this.mainScene = new Scene(rootElem);
+        stage.setScene(mainScene);
         stage.show();
     }
 

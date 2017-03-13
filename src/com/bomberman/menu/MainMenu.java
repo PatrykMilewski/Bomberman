@@ -1,8 +1,5 @@
 package com.bomberman.menu;
 
-import javafx.application.Application;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -17,7 +14,7 @@ import java.nio.file.Paths;
 public class MainMenu extends MainStage {
     private MenuButtons gameMenu;
 
-    public MainMenu(Stage stage, Pane rootElem) throws IOException {
+    public MainMenu(Pane rootElem) throws IOException {
         InputStream background = Files.newInputStream(Paths.get("images/logos.png"));
         Image img = new Image(background);
         background.close();
@@ -25,7 +22,7 @@ public class MainMenu extends MainStage {
         ImageView view = new ImageView(img);
         //dopasowywanie obrazu do ramki funkcja view.setFitWidth/Height
 
-        gameMenu = new MenuButtons();
+        gameMenu = new MenuButtons(rootElem);
         rootElem.getChildren().addAll(view, gameMenu);
     }
 }
