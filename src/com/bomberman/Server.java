@@ -17,7 +17,7 @@ public class Server {
     }
 
     public void listen(int port){
-        System.out.println("Server został uruchomiony");
+        System.out.println("Serwer zostal uruchomiony");
         try (ServerSocket serverSocket = new ServerSocket(port)){
             while(true){
                 Socket client = serverSocket.accept();
@@ -45,6 +45,6 @@ public class Server {
     }
 
     public static void main(String []args){
-        Server server = new Server(5000);
+        Server server = new Server(50000);
     }
 }

@@ -20,7 +20,7 @@ public class Client {
             DataOutputStream out = new DataOutputStream(clientSocket.getOutputStream());
 
             String text = keybord.next();
-            while (!text.equals("q")){
+            while (!text.equals("q")) {
                 out.writeUTF(text);
                 text = keybord.next();
             }
