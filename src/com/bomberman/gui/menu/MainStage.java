@@ -14,7 +14,7 @@ public class MainStage extends Application {
 
     @Override
     public void start (Stage stage) throws Exception {
-        this.player = new Player(0,0, "Mileski");   //TODO dobrze
+        this.player = new Player(0,0, true, "Mileski");   //TODO dobrze
 
         this.stage = stage;
         this.stage.setTitle("Bomberman");
