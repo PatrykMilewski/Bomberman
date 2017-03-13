@@ -1,5 +1,6 @@
 package com.bomberman.gui.menu;
 
+import com.bomberman.fields.Player;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -9,9 +10,12 @@ public class MainStage extends Application {
     private Stage stage;
     private Pane rootElem;
     private Scene mainScene;
+    private Player player;
 
     @Override
     public void start (Stage stage) throws Exception {
+        this.player = new Player(0,0, "Mileski");   //TODO dobrze
+
         this.stage = stage;
         this.stage.setTitle("Bomberman");
         this.rootElem = new Pane();
@@ -35,4 +39,6 @@ public class MainStage extends Application {
     public static void main(String args[]) {
         launch(args);
     }
+
+    public Player getPlayer() {return player;}
 }

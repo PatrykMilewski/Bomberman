@@ -12,6 +12,12 @@ public abstract class Field
         this.y = y;
     }
 
+    public void incCoords(int x, int y)
+    {
+        this.x+=x;
+        this.y+=y;
+    }
+
     public Boolean canBeDestroyed()
     {
         return false;

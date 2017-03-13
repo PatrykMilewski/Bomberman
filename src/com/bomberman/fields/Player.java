@@ -13,8 +13,10 @@ public class Player extends Field
     private float speed;
     private Map<String, Boolean> superPowers = new HashMap<String, Boolean>();
 
-    public Player(int x, int y, String name, int index) {
+    public Player(int x, int y, String name) {
         super(x, y);
+        index = 0;
+        this.name = name;
         superPowers.put("Niewidzialny", false);
         superPowers.put("Przypieszony", false);
         superPowers.put("Terminator", false);
@@ -29,7 +31,8 @@ public class Player extends Field
     {
         return speed;
     }
-    public int index()
+    public void setIndex(int ind) {index = ind;}
+    public int getIndex()
     {
         return index;
     }
