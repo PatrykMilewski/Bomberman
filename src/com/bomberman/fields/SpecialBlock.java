@@ -1,8 +1,5 @@
 package com.bomberman.fields;
 
-/**
- * Created by rados on 13.03.2017.
- */
 public class SpecialBlock extends Block {
     private int type;
 
@@ -11,8 +8,6 @@ public class SpecialBlock extends Block {
         this.type = type;
     }
 
-    public int getType() {
-        return type;
-    }
+    public int getType() { return type; }
 
 }

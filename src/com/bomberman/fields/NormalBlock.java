@@ -3,13 +3,9 @@ package com.bomberman.fields;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-/**
- * Created by rados on 13.03.2017.
- */
 public class NormalBlock extends Block
 {
     private boolean empty;
-
 
     public NormalBlock(int x, int y, boolean destroyable, boolean empty) {
         super(x, y, destroyable);
@@ -22,9 +18,7 @@ public class NormalBlock extends Block
         }
     }
 
-    public boolean isEmpty() {
-        return empty;
-    }
+    public boolean isEmpty() { return empty; }
 
     @Override
     public Rectangle printFiled(int x, int y) {
