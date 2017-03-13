@@ -39,6 +39,7 @@ public class MainStage extends Application {
         return rootElem;
     }
 
+
     public static void main(String args[]) {
         launch(args);
     }
