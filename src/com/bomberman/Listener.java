@@ -7,6 +7,7 @@ import javafx.animation.AnimationTimer;
 
 public class Listener
 {
+    private static final int MOVIN = 20;
     boolean up, down, left, right, bomb;
     private MainStage mainStage;
     private Player player;
@@ -44,13 +45,30 @@ public class Listener
         });
 
         AnimationTimer timer = new AnimationTimer() {
+            int dx=0, dy=0;
             @Override
-            public void handle(long now) {
+            public void handle(long now){
+                if(up)
+                {dy--;
+                    if(dy==-1) player.incCoords(0,-1);
+                    if(dy<-MOVIN) dy = 0;
+                }
 
-                if (up)  player.incCoords(0,-1);
-                if (down) player.incCoords(0,1);
-                if (left)  player.incCoords(-1,0);
-                if (right)  player.incCoords(1,0);
+                if(down)
+                {dy++;
+                    if(dy==1) player.incCoords(0,1);
+                    if(dy>MOVIN) dy = 0; }
+
+                if(left)
+                {dx--;
+                    if(dx==-1) player.incCoords(-1,0);
+                    if(dx<-MOVIN) dx = 0;}
+
+                if(right)
+                {dx++;
+                    if(dx==1) player.incCoords(1,0);
+                    if(dx>MOVIN) dx = 0;}
+
                 // bomb TODO
 
             }
