@@ -1,33 +1,20 @@
 package com.bomberman.gui.menu;
 
-import com.bomberman.fields.Block;
-import com.bomberman.fields.NormalBlock;
-import javafx.geometry.Rectangle2D;
+import com.bomberman.fields.*;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.*;
-import javafx.scene.shape.*;
-import javafx.scene.paint.Color;
-
-import java.awt.*;
-import java.awt.Rectangle;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Random;
 
 public class Map extends Parent{
     private MainStage mainStage;
-    private Block[][] mapFields;
+    private Field[][] mapFields;
     private Pane spaceForMap;
     private Pane spaceForScores;
 
@@ -66,6 +53,10 @@ public class Map extends Parent{
         printEntireMap();
     }
 
+    public void destroyField(int x, int y){
+        this.mapFields[y][x] = new NormalBlock(x, y, false, true);
+    }
+
     private void printEntireMap(){
         ImageView imgView = new ImageView();
         for (int i = 0; i < 21; i++){
@@ -77,7 +68,7 @@ public class Map extends Parent{
     }
 
     private void fillMap(){
-        this.mapFields = new NormalBlock[21][21];
+        this.mapFields = new Field[21][21];
         for (int i=0; i<21; i++){
             for (int j =0; j<21; j++){
                 this.mapFields[i][j] = new NormalBlock(j, i, false, true);          //Bloki puste
@@ -97,7 +88,7 @@ public class Map extends Parent{
                     this.mapFields[i][j] = new NormalBlock(j, i, true, false);     //Blok do rozbicia
             }
         }
-        mapFields[0][0] = new NormalBlock(0, 0, false, true);              //pola puste dla graczy
+        mapFields[0][0] = new Player(0,0,true, "Milewski");              //pola puste dla graczy
         mapFields[0][1] = new NormalBlock(1, 0, false, true);
         mapFields[1][0] = new NormalBlock(0, 1, false, true);
         mapFields[0][20] = new NormalBlock(20, 0, false, true);
