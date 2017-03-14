@@ -11,9 +11,9 @@ public class MenuButtons extends Parent {
 
     Listener list;
     public MenuButtons(MainStage mainStage) {
-        VBox menu = new VBox(20);
-        menu.setTranslateX(200);
-        menu.setTranslateY(280);
+        VBox menu = new VBox(30);
+        menu.setTranslateX(240);
+        menu.setTranslateY(400);
         list = new Listener(mainStage);
 
         Buttons buttonNewGame = new Buttons("Nowa gra");

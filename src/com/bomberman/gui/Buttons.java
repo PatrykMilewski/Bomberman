@@ -15,7 +15,7 @@ public class Buttons extends StackPane {
         text.setFont(text.getFont().font(20));
         text.setFill(Color.WHITE);
 
-        Rectangle textBackground = new Rectangle(400,80);
+        Rectangle textBackground = new Rectangle(800,80);
         textBackground.setFill(Color.BLACK);
         textBackground.setOpacity(0.6);
         getChildren().addAll(textBackground, text);

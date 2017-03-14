@@ -46,7 +46,6 @@ public class Listener
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-
                 if (up)  player.incCoords(0,-1);
                 if (down) player.incCoords(0,1);
                 if (left)  player.incCoords(-1,0);

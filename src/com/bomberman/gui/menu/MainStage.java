@@ -19,7 +19,7 @@ public class MainStage extends Application {
         this.stage = stage;
         this.stage.setTitle("Bomberman");
         this.rootElem = new Pane();
-        rootElem.setPrefSize(800, 600);
+        rootElem.setPrefSize(1280, 768);
         new MainMenu(this);
 
         this.mainScene = new Scene(rootElem);

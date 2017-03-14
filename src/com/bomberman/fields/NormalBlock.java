@@ -21,12 +21,4 @@ public class NormalBlock extends Block
 
     public boolean isEmpty() { return empty; }
 
-    @Override
-    public ImageView printFiled(int x, int y) {
-        Image img = new Image("file:"+getImagePath());
-        ImageView imgView = new ImageView(img);
-        imgView.setX(x*25);
-        imgView.setY(y*25);
-        return imgView;
-    }
 }
