@@ -18,7 +18,6 @@ public class Map extends Parent{
     private Pane spaceForMap;
     private Pane spaceForScores;
 
-
     public Map(MainStage mainStage) throws IOException {
         mainStage.getRootElem().getChildren().clear();              //TODO
         this.mainStage = mainStage;
@@ -34,16 +33,16 @@ public class Map extends Parent{
 
         fillMap();
 
-        HBox mapGrids = new HBox(4);
-        mapGrids.setTranslateX(37);
-        mapGrids.setTranslateY(37);
+        HBox mapGrids = new HBox(10);
+        mapGrids.setTranslateX(27);
+        mapGrids.setTranslateY(27);
 
         this.spaceForMap = new Pane();
-        this.spaceForMap.setPrefSize(525, 525);
+        this.spaceForMap.setPrefSize(Consts.DIMENSION*Consts.PIXEL_SIZE, Consts.DIMENSION*Consts.PIXEL_SIZE);
         this.spaceForMap.setStyle("-fx-background-color: brown;");
 
         this.spaceForScores = new Pane();
-        this.spaceForScores.setPrefSize(197, 525);
+        this.spaceForScores.setPrefSize(502, Consts.DIMENSION*Consts.PIXEL_SIZE);
         this.spaceForScores.setStyle("-fx-background-color: brown;");
 
         mapGrids.getChildren().addAll(this.spaceForMap, this.spaceForScores);                           //dodaj do grida mapGrids
@@ -57,10 +56,10 @@ public class Map extends Parent{
         this.mapFields[y][x] = new NormalBlock(x, y, false, true);
     }
 
-    private void printEntireMap(){
+    public void printEntireMap(){
         ImageView imgView = new ImageView();
-        for (int i = 0; i < 21; i++){
-            for (int j = 0; j < 21; j++){
+        for (int i = 0; i < Consts.DIMENSION; i++){
+            for (int j = 0; j < Consts.DIMENSION; j++){
                 imgView = this.mapFields[i][j].printFiled(this.mapFields[i][j].getX(), this.mapFields[i][j].getY());
                 this.spaceForMap.getChildren().addAll(imgView);
             }
@@ -68,22 +67,22 @@ public class Map extends Parent{
     }
 
     private void fillMap(){
-        this.mapFields = new Field[21][21];
-        for (int i=0; i<21; i++){
-            for (int j =0; j<21; j++){
+        this.mapFields = new Field[Consts.DIMENSION][Consts.DIMENSION];
+        for (int i=0; i<Consts.DIMENSION; i++){
+            for (int j =0; j<Consts.DIMENSION; j++){
                 this.mapFields[i][j] = new NormalBlock(j, i, false, true);          //Bloki puste
             }
         }
 
-        for (int i = 1; i < 21; i+=2){
-            for (int j = 1; j < 21; j+=2){
+        for (int i = 1; i < Consts.DIMENSION; i+=2){
+            for (int j = 1; j < Consts.DIMENSION; j+=2){
                 this.mapFields[i][j] = new NormalBlock(j, i,  false, false);       //Blok nie do rozbicia
             }
         }
 
         Random generator = new Random();
-        for (int i = 0; i < 21; i++){
-            for (int j = 0; j < 21; j++){
+        for (int i = 0; i < Consts.DIMENSION; i++){
+            for (int j = 0; j < Consts.DIMENSION; j++){
                 if ( !((i % 2==1) && (j % 2==1)) && (generator.nextDouble() > 0.5))
                     this.mapFields[i][j] = new NormalBlock(j, i, true, false);     //Blok do rozbicia
             }
@@ -91,14 +90,14 @@ public class Map extends Parent{
         mapFields[0][0] = new Player(0,0,true, "Milewski");              //pola puste dla graczy
         mapFields[0][1] = new NormalBlock(1, 0, false, true);
         mapFields[1][0] = new NormalBlock(0, 1, false, true);
-        mapFields[0][20] = new NormalBlock(20, 0, false, true);
-        mapFields[0][19] = new NormalBlock(19, 0, false, true);
-        mapFields[1][20] = new NormalBlock(20, 1, false, true);
-        mapFields[20][0] = new NormalBlock(0, 20, false, true);
-        mapFields[19][0] = new NormalBlock(0, 19, false, true);
-        mapFields[20][1] = new NormalBlock(1, 20, false, true);
-        mapFields[20][20] = new NormalBlock(20, 20, false, true);
-        mapFields[19][20] = new NormalBlock(20, 19, false, true);
-        mapFields[20][19] = new NormalBlock(19, 20, false, true);
+        mapFields[0][Consts.DIMENSION-1] = new NormalBlock(Consts.DIMENSION-1, 0, false, true);
+        mapFields[0][Consts.DIMENSION-2] = new NormalBlock(Consts.DIMENSION-2, 0, false, true);
+        mapFields[1][Consts.DIMENSION-1] = new NormalBlock(Consts.DIMENSION-1, 1, false, true);
+        mapFields[Consts.DIMENSION-1][0] = new NormalBlock(0, Consts.DIMENSION-1, false, true);
+        mapFields[Consts.DIMENSION-2][0] = new NormalBlock(0, Consts.DIMENSION-2, false, true);
+        mapFields[Consts.DIMENSION-1][1] = new NormalBlock(1, Consts.DIMENSION-1, false, true);
+        mapFields[Consts.DIMENSION-1][Consts.DIMENSION-1] = new NormalBlock(Consts.DIMENSION-1, Consts.DIMENSION-1, false, true);
+        mapFields[Consts.DIMENSION-2][Consts.DIMENSION-1] = new NormalBlock(Consts.DIMENSION-1, Consts.DIMENSION-2, false, true);
+        mapFields[Consts.DIMENSION-1][Consts.DIMENSION-2] = new NormalBlock(Consts.DIMENSION-2, Consts.DIMENSION-1, false, true);
     }
 }
