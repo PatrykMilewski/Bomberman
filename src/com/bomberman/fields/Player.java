@@ -7,10 +7,7 @@ import javafx.scene.image.ImageView;
 import java.util.Map;
 import java.util.HashMap;
 
-public class Player extends Field
-{
-
-
+public class Player extends Field {
     private String name;
     private int index;
     private float speed;
@@ -32,8 +29,7 @@ public class Player extends Field
         return superPowers.get(s);
     }
 
-    public void incCoords (int x, int y)
-    {
+    public void incCoords (int x, int y) {
         this.x += x;
         this.y += y;
     }

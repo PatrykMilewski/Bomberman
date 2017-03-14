@@ -8,10 +8,12 @@ public class LobbyPlayer {
         this.isAdmin = isAdmin;
         actualisePing();
     }
+
     public void actualisePing() {
         //ServerInstance.getPing(this.IPAddress);
         //todo
     }
+
     public String getName() { return name; }
     public int getPing() { return ping; }
     public boolean getIsAdmin() { return isAdmin; }
