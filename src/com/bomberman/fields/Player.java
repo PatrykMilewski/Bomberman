@@ -1,5 +1,6 @@
 package com.bomberman.fields;
 
+import com.bomberman.gui.menu.Consts;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -56,8 +57,8 @@ public class Player extends Field
     public ImageView printFiled(int x, int y) {
         Image img = new Image("file:"+getImagePath());
         ImageView imgView = new ImageView(img);
-        imgView.setX(x*25);                         //TODO zmienic na pixelowe wartosci
-        imgView.setY(y*25);
+        imgView.setX(x* Consts.PIXEL_SIZE);                         //TODO zmienic na pixelowe wartosci
+        imgView.setY(y*Consts.PIXEL_SIZE);
         return imgView;
     }
 }
