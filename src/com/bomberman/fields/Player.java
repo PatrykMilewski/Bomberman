@@ -1,5 +1,6 @@
 package com.bomberman.fields;
 
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.util.Map;
@@ -21,6 +22,8 @@ public class Player extends Field
         superPowers.put(SuperPowers.invisible, false);
         superPowers.put(SuperPowers.faster, false);
         superPowers.put(SuperPowers.terminator, false);
+        this.imagePath = "images/Blocks/playerBlock.png";
+
     }
 
     public boolean getSuperPower(String s)
@@ -51,6 +54,10 @@ public class Player extends Field
 
     @Override
     public ImageView printFiled(int x, int y) {
-        return null;
+        Image img = new Image("file:"+getImagePath());
+        ImageView imgView = new ImageView(img);
+        imgView.setX(x*25);                         //TODO zmienic na pixelowe wartosci
+        imgView.setY(y*25);
+        return imgView;
     }
 }

@@ -1,4 +1,5 @@
 package com.bomberman.fields;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -28,6 +29,10 @@ public abstract class Field {
     public Boolean canBeDestroyed() { return this.destroyable; }
 
     public ImageView printFiled(int x, int y) {
-        return new ImageView();
+        Image img = new Image("file:"+getImagePath());
+        ImageView imgView = new ImageView(img);
+        imgView.setX(x*25);
+        imgView.setY(y*25);
+        return imgView;
     }
 }
