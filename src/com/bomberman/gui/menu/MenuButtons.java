@@ -22,7 +22,7 @@ public class MenuButtons extends Parent {
         Buttons buttonHighScores = new Buttons("Ranking");
         Buttons buttonExit = new Buttons("Wyjście");
         buttonNewGame.setOnMouseClicked(event -> {
-            try {
+            try{
                Map map = new Map(mainStage);
                 game = new Game(mainStage, map);
                 game.GameLoop();
