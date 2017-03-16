@@ -24,7 +24,7 @@ public class Player extends Field {
         superPowers.put(SuperPowers.invisible, false);
         superPowers.put(SuperPowers.faster, false);
         superPowers.put(SuperPowers.terminator, false);
-        this.imagePath = "images/Blocks/playerBlock.png";
+        this.imagePath = "images/Blocks/bomb/bomb.gif";
         this.map = map;
 //        this.pixX = Consts.PIXEL_SIZE/2;
 //        this.pixY = Consts.PIXEL_SIZE/2;
