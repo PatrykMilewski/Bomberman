@@ -23,7 +23,7 @@ public class MenuButtons extends Parent {
         Buttons buttonExit = new Buttons("Wyjście");
         buttonNewGame.setOnMouseClicked(event -> {
             try{
-               Map map = new Map(mainStage);
+                GameMap map = new GameMap(mainStage);
                 game = new Game(mainStage, map);
                 game.GameLoop();
             } catch (IOException e) {

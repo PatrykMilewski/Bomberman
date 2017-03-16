@@ -12,13 +12,14 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Random;
 
-public class Map extends Parent{
+public class GameMap extends Parent{
     private MainStage mainStage;
     private Field[][] mapFields;
     private Pane spaceForMap;
     private Pane spaceForScores;
+    private Player player;
 
-    public Map(MainStage mainStage) throws IOException {
+    public GameMap(MainStage mainStage) throws IOException {
         mainStage.getRootElem().getChildren().clear();              //TODO
         this.mainStage = mainStage;
 
@@ -49,7 +50,7 @@ public class Map extends Parent{
         getChildren().addAll(mapGrids);                                                                 //dodaj groda do klasy Map
         this.mainStage.getRootElem().getChildren().addAll(viewBackground, this);                         //dodaj wszystkie zmiany (Map) do glownego pejna
 
-        printEntireMap();
+//        printEntireMap();
     }
 
     public void destroyField(int x, int y){
@@ -64,6 +65,11 @@ public class Map extends Parent{
                 this.spaceForMap.getChildren().addAll(imgView);
             }
         }
+        imgView = NormalBlock.printNormalBlock(this.player.getX(), this.player.getY());
+        this.spaceForMap.getChildren().addAll(imgView);
+
+        imgView = this.mapFields[player.getY()][player.getX()].printFiled(this.player.getX(), this.player.getY());
+        this.spaceForMap.getChildren().addAll(imgView);
     }
 
     private void fillMap(){
@@ -87,7 +93,7 @@ public class Map extends Parent{
                     this.mapFields[i][j] = new NormalBlock(j, i, true, false);     //Blok do rozbicia
             }
         }
-        mapFields[0][0] = mainStage.getPlayer();             //pola puste dla graczy
+        mapFields[0][0] = new NormalBlock(0, 0, false, true);             //pola puste dla graczy
         mapFields[0][1] = new NormalBlock(1, 0, false, true);
         mapFields[1][0] = new NormalBlock(0, 1, false, true);
         mapFields[0][Consts.DIMENSION-1] = new NormalBlock(Consts.DIMENSION-1, 0, false, true);
@@ -99,5 +105,28 @@ public class Map extends Parent{
         mapFields[Consts.DIMENSION-1][Consts.DIMENSION-1] = new NormalBlock(Consts.DIMENSION-1, Consts.DIMENSION-1, false, true);
         mapFields[Consts.DIMENSION-2][Consts.DIMENSION-1] = new NormalBlock(Consts.DIMENSION-1, Consts.DIMENSION-2, false, true);
         mapFields[Consts.DIMENSION-1][Consts.DIMENSION-2] = new NormalBlock(Consts.DIMENSION-2, Consts.DIMENSION-1, false, true);
+    }
+
+    public Player getPlayer() {return player;}
+
+    public void setMapField(int x, int y, Field field){
+        this.mapFields[y][x] = field;
+    }
+
+    public boolean canMove(int x, int y){
+        if (x < 0 || y < 0 || x > Consts.DIMENSION-1 || y > Consts.DIMENSION-1){
+            return false;
+        }
+        if (this.mapFields[y][x].isEmpty()){
+            return true;
+        }
+        return false;
+    }
+
+    public void createPlayer(int x, int y, String name){
+        this.mapFields[y][x] = new Player(x, y, true, name, this);
+        player = (Player)this.mapFields[y][x];
+
+        printEntireMap();           //TODO ????
     }
 }

@@ -9,6 +9,7 @@ public abstract class Field {
     protected int x;
     protected int y;
     protected boolean destroyable;
+    protected boolean empty;
     protected String imagePath;
 
     public String getImagePath() {
@@ -28,6 +29,9 @@ public abstract class Field {
     public void setY(int y) { this.y = y; }
 
     public Boolean canBeDestroyed() { return this.destroyable; }
+
+    public boolean isEmpty() { return empty; }
+
 
     public ImageView printFiled(int x, int y) {
         Image img = new Image("file:"+getImagePath());

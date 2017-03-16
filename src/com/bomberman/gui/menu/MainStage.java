@@ -10,11 +10,9 @@ public class MainStage extends Application {
     private Stage stage;
     private Pane rootElem;
     private Scene mainScene;
-    private Player player;
 
     @Override
     public void start (Stage stage) throws Exception {
-        this.player = new Player(0,0, true, "Mileski");   //TODO dobrze
 
         this.stage = stage;
         this.stage.setTitle("Bomberman");
@@ -40,5 +38,4 @@ public class MainStage extends Application {
         launch(args);
     }
 
-    public Player getPlayer() {return player;}
 }
