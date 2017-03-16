@@ -2,9 +2,6 @@ package com.bomberman.fields;
 
 import javafx.scene.image.ImageView;
 
-/**
- * Created by rados on 13.03.2017.
- */
 public class SpecialBlock extends Block {
     private int type;
 
