@@ -87,7 +87,7 @@ public class Map extends Parent{
                     this.mapFields[i][j] = new NormalBlock(j, i, true, false);     //Blok do rozbicia
             }
         }
-        mapFields[0][0] = new Player(0,0,true, "Milewski");              //pola puste dla graczy
+        mapFields[0][0] = mainStage.getPlayer();             //pola puste dla graczy
         mapFields[0][1] = new NormalBlock(1, 0, false, true);
         mapFields[1][0] = new NormalBlock(0, 1, false, true);
         mapFields[0][Consts.DIMENSION-1] = new NormalBlock(Consts.DIMENSION-1, 0, false, true);

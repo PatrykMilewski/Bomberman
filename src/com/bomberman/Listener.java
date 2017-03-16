@@ -2,6 +2,7 @@ package com.bomberman;
 
 import com.bomberman.fields.Player;
 import com.bomberman.gui.menu.MainStage;
+import com.bomberman.gui.menu.Map;
 import javafx.animation.AnimationTimer;
 
 
@@ -11,11 +12,13 @@ public class Listener
     boolean up, down, left, right, bomb;
     private MainStage mainStage;
     private Player player;
+    private Map map;
 
-    public Listener(MainStage mainSt)
+    public Listener(MainStage mainSt, Map map)
     {
         this.mainStage = mainSt;
         this.player = mainStage.getPlayer();
+        this.map = map;
         up = down = left = right = bomb = false;
     }
 
@@ -51,23 +54,23 @@ public class Listener
                 if(up)
                 {dy--;
                     if(dy==-1) player.incCoords(0,-1);
-                    if(dy<-MOVIN) dy = 0;
+                    if(dy<-MOVIN) {dy = 0; map.printEntireMap(); System.out.println(player.getX() + " " +player.getY() );}
                 }
 
                 if(down)
                 {dy++;
                     if(dy==1) player.incCoords(0,1);
-                    if(dy>MOVIN) dy = 0; }
+                    if(dy>MOVIN) {dy = 0; map.printEntireMap();System.out.println(player.getX() + " " +player.getY() );}}
 
                 if(left)
                 {dx--;
                     if(dx==-1) player.incCoords(-1,0);
-                    if(dx<-MOVIN) dx = 0;}
+                    if(dx<-MOVIN) {dx = 0; map.printEntireMap();System.out.println(player.getX() + " " +player.getY() );}}
 
                 if(right)
                 {dx++;
                     if(dx==1) player.incCoords(1,0);
-                    if(dx>MOVIN) dx = 0;}
+                    if(dx>MOVIN) {dx = 0; map.printEntireMap();System.out.println(player.getX() + " " +player.getY() );}}
 
                 // bomb TODO
 

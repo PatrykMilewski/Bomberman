@@ -7,20 +7,16 @@ public class Game
 {
     private boolean isRunning;
     Listener gameListener;
-    Map map;
 
     public Game(MainStage mainStage, Map map)
     {
         isRunning = true;
-        gameListener = new Listener(mainStage);
-        this.map = map;
+        gameListener = new Listener(mainStage, map);
+
     }
 
-    public void GameLoop()
-    {
+    public void GameLoop() {
         gameListener.listen();
-
     }
-
 
 }
