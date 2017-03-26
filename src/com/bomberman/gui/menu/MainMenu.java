@@ -8,7 +8,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class MainMenu{
+public class MainMenu {
     private MenuButtons gameMenu;
 
     public MainMenu(MainStage mainStage) throws IOException {

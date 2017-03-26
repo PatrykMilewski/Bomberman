@@ -15,6 +15,7 @@ public class Bomb extends Field
 
     public boolean decraseTimer() {
         timer--;
+
         if (timer != 0)
             return false;
         else
