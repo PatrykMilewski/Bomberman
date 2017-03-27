@@ -13,9 +13,6 @@ public class Game
         map.createPlayer(0 , 0, "Milewski");
         isRunning = true;
         gameListener = new Listener(mainStage, map);
-    }
-
-    public void GameLoop() {
         gameListener.listen();
     }
 
