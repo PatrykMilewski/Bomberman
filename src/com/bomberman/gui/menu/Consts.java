@@ -6,5 +6,5 @@ package com.bomberman.gui.menu;
 public class Consts {
     public static final int PIXEL_SIZE = 42;
     public static final int DIMENSION = 17;
-    public static final double NORMAL_BLOCK_PROB = 0.8;
+    public static final double NORMAL_BLOCK_PROB = 1.0; // 1 - zeroblokow 0 - milion blokow
 }
