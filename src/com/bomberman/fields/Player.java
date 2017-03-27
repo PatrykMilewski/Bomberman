@@ -1,7 +1,7 @@
 package com.bomberman.fields;
 
-import com.bomberman.gui.menu.Consts;
-import com.bomberman.gui.menu.GameMap;
+import com.bomberman.gui.Consts;
+import com.bomberman.gui.GameMap;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -74,13 +74,15 @@ public class Player extends Field {
 
     public int getindex() { return index; }
     public float getSpeed() { return speed; }
-    public int getIndex() {return index; }
-    public String getName() { return name; }
 
     public void setSpeed(float speed)
     {
         this.speed = speed;
     }
+
+    public int getIndex() {return index; }
+
+    public String getName() { return name; }
 
     public void setSuperPowers(SuperPowers superPower, Boolean trig)
     {

@@ -1,6 +1,8 @@
-package com.bomberman.gui.menu;
+package com.bomberman.gui;
 
 import com.bomberman.fields.*;
+import com.bomberman.gui.Consts;
+import com.bomberman.gui.MainStage;
 import javafx.scene.Parent;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -20,7 +22,7 @@ public class GameMap extends Parent{
     private Player player;
 
     public GameMap(MainStage mainStage) throws IOException {
-        mainStage.getRootElem().getChildren().clear();              //TODO
+        //mainStage.getRootElem().getChildren().clear();              //TODO
         this.mainStage = mainStage;
 
         makeMap();
@@ -48,7 +50,7 @@ public class GameMap extends Parent{
 
         mapGrids.getChildren().addAll(this.spaceForMap, this.spaceForScores);                           //dodaj do grida mapGrids
         getChildren().addAll(mapGrids);                                                                 //dodaj groda do klasy Map
-        this.mainStage.getRootElem().getChildren().addAll(viewBackground, this);                         //dodaj wszystkie zmiany (Map) do glownego pejna
+        //this.mainStage.getRootElem().getChildren().addAll(viewBackground, this);                         //dodaj wszystkie zmiany (Map) do glownego pejna
 
 //        printEntireMap();
     }

@@ -1,12 +1,12 @@
 package com.bomberman;
 
-import com.bomberman.gui.menu.MainStage;
-import com.bomberman.gui.menu.GameMap;
+import com.bomberman.gui.MainStage;
+import com.bomberman.gui.GameMap;
 
 public class Game
 {
-    private boolean isRunning;
     Listener gameListener;
+    private boolean isRunning;
 
     public Game(MainStage mainStage, GameMap map)
     {

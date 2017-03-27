@@ -1,8 +1,8 @@
 package com.bomberman;
 
 import com.bomberman.fields.Player;
-import com.bomberman.gui.menu.MainStage;
-import com.bomberman.gui.menu.GameMap;
+import com.bomberman.gui.MainStage;
+import com.bomberman.gui.GameMap;
 import javafx.animation.AnimationTimer;
 
 
