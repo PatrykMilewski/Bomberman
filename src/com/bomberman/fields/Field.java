@@ -33,7 +33,6 @@ public abstract class Field {
 
     public boolean isEmpty() { return empty; }
 
-
     public ImageView printFiled() {
         Image img = new Image("file:"+getImagePath());
         ImageView imgView = new ImageView(img);
@@ -41,4 +40,5 @@ public abstract class Field {
         imgView.setY(this.y * Consts.PIXEL_SIZE);
         return imgView;
     }
+
 }

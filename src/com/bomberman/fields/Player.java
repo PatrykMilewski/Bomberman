@@ -41,6 +41,8 @@ public class Player extends Field {
         if(this.map.canMove(this.x + x, this.y + y)){
             if (map.getMapField(this.x, this.y) instanceof Bomb == false){      //jak postawi gracz bombę i jest pod nim, to nie usuwaj
                 this.map.setMapField(this.x, this.y, new NormalBlock(this.x, this.y, false, true));
+            } else {
+                map.printNormalBlockOnMap(this.x, this.y);                      //wykonaj, gdy gracz schodzi z bomby
             }
             map.printFieldOfMap(this.x, this.y);
             this.x += x;
@@ -89,11 +91,20 @@ public class Player extends Field {
     }
 
     public void dropBomb(){
-        if (nBombs > 0){
+        if (nBombs > 0 && map.getMapField(this.x, this.y) instanceof Bomb == false){
             map.setMapField(this.x, this.y, new Bomb(this.x, this.y, true));
             nBombs--;
         }
         map.printFieldOfMap(this.x, this.y);
+        this.map.printPlayerOnMap();
+    }
+
+    public ImageView printPlayer(){
+        Image img = new Image("file:"+getImagePath());
+        ImageView imgView = new ImageView(img);
+        imgView.setX(x* Consts.PIXEL_SIZE);
+        imgView.setY(y*Consts.PIXEL_SIZE);
+        return imgView;
     }
 
 /*    @Override

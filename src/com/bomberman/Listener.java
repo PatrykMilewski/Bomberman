@@ -44,7 +44,7 @@ public class Listener
                 if(up)
                 {dy--;
                     if(dy==-1) player.incCoords(0,-1);
-                    if(dy<-MOVIN) {dy = 0; map.printEntireMap(); System.out.println(player.getX() + " " +player.getY() );}
+                    if(dy<-MOVIN) {dy = 0; }
                 }
 
                 if(down)
