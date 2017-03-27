@@ -1,6 +1,6 @@
 package com.bomberman.fields;
 
-import com.bomberman.gui.menu.Consts;
+import com.bomberman.gui.Consts;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
