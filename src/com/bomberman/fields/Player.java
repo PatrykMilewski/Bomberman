@@ -3,12 +3,9 @@ package com.bomberman.fields;
 import com.bomberman.BombTimer;
 import com.bomberman.gui.Consts;
 import com.bomberman.gui.GameMap;
-import com.bomberman.gui.MainStage;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
 
-import java.awt.event.KeyListener;
 import java.util.Map;
 import java.util.HashMap;
 
