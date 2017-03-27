@@ -2,13 +2,17 @@ package com.bomberman.fields;
 
 import com.bomberman.gui.menu.Consts;
 import com.bomberman.gui.menu.GameMap;
+import com.bomberman.gui.menu.MainStage;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 
+import java.awt.event.KeyListener;
 import java.util.Map;
 import java.util.HashMap;
 
-public class Player extends Field {
+public class Player extends Field{
+
     private String name;
     private int index;
     private float speed;
@@ -18,7 +22,8 @@ public class Player extends Field {
     private int nBombs;
     private Map<SuperPowers, Boolean> superPowers = new HashMap<SuperPowers, Boolean>();
 
-    public Player(int x, int y, boolean destroyable, String name, GameMap map) {
+    public Player(int x, int y, boolean destroyable, String name, GameMap map)
+    {
         super(x, y, destroyable);
         this.name = name;
         index = 0;
