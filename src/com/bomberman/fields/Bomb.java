@@ -1,7 +1,7 @@
 package com.bomberman.fields;
 
-import com.bomberman.gui.menu.Consts;
-import com.bomberman.gui.menu.GameMap;
+import com.bomberman.gui.Consts;
+import com.bomberman.gui.GameMap;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -12,10 +12,6 @@ public class Bomb extends Field
     private Player ownerOfBomb;
     private GameMap map;
 
-    public long getStartTime() {
-        return startTime;
-    }
-
     public Bomb(int x, int y, boolean destroyable, Player player, GameMap map) {
         super(x, y, destroyable);
         this.range = 1;
@@ -24,6 +20,10 @@ public class Bomb extends Field
         this.ownerOfBomb = player;
         this.range = player.getRangeOfBomb();
         this.map = map;
+    }
+
+    public long getStartTime() {
+        return startTime;
     }
 
     public void explode() {

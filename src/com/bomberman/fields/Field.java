@@ -1,9 +1,7 @@
 package com.bomberman.fields;
-import com.bomberman.gui.menu.Consts;
+import com.bomberman.gui.Consts;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
 public abstract class Field {
     protected int x;
@@ -12,15 +10,19 @@ public abstract class Field {
     protected boolean empty;
     protected String imagePath;
 
-    public String getImagePath() {
-        return imagePath;
-    }
-
     public Field(int x, int y, boolean destroyable) {
         this.x = x;
         this.y = y;
         this.destroyable = destroyable;
         this.empty = false;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public String getImagePath() {
+        return imagePath;
     }
 
     public int getX() { return x; }

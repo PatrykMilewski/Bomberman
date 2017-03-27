@@ -1,21 +1,18 @@
 package com.bomberman;
 
 import com.bomberman.fields.Bomb;
-import com.bomberman.gui.menu.Consts;
-import com.bomberman.gui.menu.GameMap;
+import com.bomberman.gui.Consts;
+import com.bomberman.gui.GameMap;
 import javafx.animation.AnimationTimer;
 import javafx.concurrent.Task;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
-/**
- * Created by Szczepan on 27.03.2017.
- */
 public class BombTimer extends Task {
+    public static boolean breakLoop = false;
     private ArrayList<Bomb> bombs;
     private GameMap map;
-    public static boolean breakLoop = false;
 
     public BombTimer(GameMap map){
         this.map = map;

@@ -2,8 +2,8 @@ package com.bomberman;
 
 import com.bomberman.fields.Bomb;
 import com.bomberman.fields.Fire;
-import com.bomberman.gui.menu.Consts;
-import com.bomberman.gui.menu.GameMap;
+import com.bomberman.gui.Consts;
+import com.bomberman.gui.GameMap;
 import com.sun.javafx.tk.Toolkit;
 import javafx.animation.AnimationTimer;
 import javafx.concurrent.Task;
@@ -15,9 +15,9 @@ import java.util.Iterator;
  * Created by Szczepan on 27.03.2017.
  */
 public class FireTimer extends Task {
+    public static boolean breakLoop = false;
     private ArrayList<Fire> fires;
     private GameMap map;
-    public static boolean breakLoop = false;
 
     public FireTimer(GameMap map){
         this.map = map;
