@@ -20,6 +20,7 @@ public abstract class Field {
         this.x = x;
         this.y = y;
         this.destroyable = destroyable;
+        this.empty = false;
     }
 
     public int getX() { return x; }
@@ -33,11 +34,11 @@ public abstract class Field {
     public boolean isEmpty() { return empty; }
 
 
-    public ImageView printFiled(int x, int y) {
+    public ImageView printFiled() {
         Image img = new Image("file:"+getImagePath());
         ImageView imgView = new ImageView(img);
-        imgView.setX(x* Consts.PIXEL_SIZE);
-        imgView.setY(y*Consts.PIXEL_SIZE);
+        imgView.setX(this.x * Consts.PIXEL_SIZE);
+        imgView.setY(this.y * Consts.PIXEL_SIZE);
         return imgView;
     }
 }

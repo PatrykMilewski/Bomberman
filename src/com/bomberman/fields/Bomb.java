@@ -9,8 +9,9 @@ public class Bomb extends Field
 
     public Bomb(int x, int y, boolean destroyable) {
         super(x, y, destroyable);
-        this.range = 2;
+        this.range = 1;
         this.timer = 3;
+        this.imagePath = "images/Blocks/bomb/bomb.gif";
     }
 
     public boolean decraseTimer() {
@@ -21,8 +22,4 @@ public class Bomb extends Field
             return true;
     }
 
-    @Override
-    public ImageView printFiled(int x, int y) {
-        return null;
-    }
 }

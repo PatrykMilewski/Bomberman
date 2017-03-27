@@ -12,7 +12,7 @@ public class Bonus extends Field
     }
 
     @Override
-    public ImageView printFiled(int x, int y) {
+    public ImageView printFiled() {
         return null;
     }
 }

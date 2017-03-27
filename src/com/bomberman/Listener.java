@@ -8,11 +8,13 @@ import javafx.animation.AnimationTimer;
 
 public class Listener
 {
-    private static final int MOVIN = 20;
+    private static final int MOVIN = 10;
     boolean up, down, left, right, bomb;
     private MainStage mainStage;
     private Player player;
     private GameMap map;
+    private int dy = 0;
+    private int dx = 0;
 
     public Listener(MainStage mainSt, GameMap map)
     {
@@ -39,55 +41,39 @@ public class Listener
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now){
-                if(up){
-                    player.incCoords(0,-1);
-                }
-                else if(down){
-                    player.incCoords(0,1);
-                }
-                else if(left){
-                    player.incCoords(-1,0);
-                } else if(right){
-                    player.incCoords(1,0);
+                if(up)
+                {dy--;
+                    if(dy==-1) player.incCoords(0,-1);
+                    if(dy<-MOVIN) {dy = 0; map.printEntireMap(); System.out.println(player.getX() + " " +player.getY() );}
                 }
 
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                if(down)
+                {dy++;
+                    if(dy==1) player.incCoords(0,1);
+                    if(dy>MOVIN) {dy = 0; map.printEntireMap();System.out.println(player.getX() + " " +player.getY() );}}
+
+                if(left)
+                {dx--;
+                    if(dx==-1) player.incCoords(-1,0);
+                    if(dx<-MOVIN) {dx = 0; map.printEntireMap();System.out.println(player.getX() + " " +player.getY() );}}
+
+                if(right)
+                {dx++;
+                    System.out.println(dx);
+                    if(dx==1) player.incCoords(1,0);
+                    if(dx>MOVIN) {dx = 0; map.printEntireMap();System.out.println(player.getX() + " " +player.getY() );}}
+
+                if(bomb){
+                    player.dropBomb();
                 }
-                // bomb TODO
-
-//                if(up)
-//                {dy--;
-//                    if(dy==-1) player.incCoords(0,-1);
-//                    if(dy<-MOVIN) {dy = 0; map.printEntireMap(); System.out.println(player.getX() + " " +player.getY() );}
-//                }
-//
-//                if(down)
-//                {dy++;
-//                    if(dy==1) player.incCoords(0,1);
-//                    if(dy>MOVIN) {dy = 0; map.printEntireMap();System.out.println(player.getX() + " " +player.getY() );}}
-//
-//                if(left)
-//                {dx--;
-//                    if(dx==-1) player.incCoords(-1,0);
-//                    if(dx<-MOVIN) {dx = 0; map.printEntireMap();System.out.println(player.getX() + " " +player.getY() );}}
-//
-//                if(right)
-//                {dx++;
-//                    System.out.println(dx);
-//                    if(dx==1) player.incCoords(1,0);
-//                    if(dx>MOVIN) {dx = 0; map.printEntireMap();System.out.println(player.getX() + " " +player.getY() );}}
-//
-//                // bomb TODO
-
             }
         };
         timer.start();
 
         mainStage.getStage().getScene().setOnKeyReleased(event ->
         {
+            dy = 0;
+            dx = 0;
             switch (event.getCode()) {
                 case UP:    up = false; System.out.println("up rel"); break;
                 case DOWN:  down = false; System.out.println("down rel"); break;

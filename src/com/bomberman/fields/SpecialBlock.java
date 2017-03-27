@@ -15,7 +15,7 @@ public class SpecialBlock extends Block {
     }
 
     @Override
-    public ImageView printFiled(int x, int y) {
+    public ImageView printFiled() {
         return null;
     }
 }

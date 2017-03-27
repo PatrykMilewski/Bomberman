@@ -3,6 +3,8 @@ package com.bomberman.gui.menu;
 import com.bomberman.fields.Player;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -10,10 +12,11 @@ public class MainStage extends Application {
     private Stage stage;
     private Pane rootElem;
     private Scene mainScene;
+    private ProgressBar progressBar;
+    private Label label;
 
     @Override
     public void start (Stage stage) throws Exception {
-
         this.stage = stage;
         this.stage.setTitle("Bomberman");
         this.rootElem = new Pane();

@@ -61,14 +61,19 @@ public class GameMap extends Parent{
         ImageView imgView = new ImageView();
         for (int i = 0; i < Consts.DIMENSION; i++){
             for (int j = 0; j < Consts.DIMENSION; j++){
-                imgView = this.mapFields[i][j].printFiled(this.mapFields[i][j].getX(), this.mapFields[i][j].getY());
+                imgView = this.mapFields[i][j].printFiled();
                 this.spaceForMap.getChildren().addAll(imgView);
             }
         }
         imgView = NormalBlock.printNormalBlock(this.player.getX(), this.player.getY());
         this.spaceForMap.getChildren().addAll(imgView);
 
-        imgView = this.mapFields[player.getY()][player.getX()].printFiled(this.player.getX(), this.player.getY());
+        imgView = this.mapFields[player.getY()][player.getX()].printFiled();
+        this.spaceForMap.getChildren().addAll(imgView);
+    }
+
+    public void printFieldOfMap(int x, int y){
+        ImageView imgView = this.mapFields[y][x].printFiled();
         this.spaceForMap.getChildren().addAll(imgView);
     }
 
@@ -89,10 +94,11 @@ public class GameMap extends Parent{
         Random generator = new Random();
         for (int i = 0; i < Consts.DIMENSION; i++){
             for (int j = 0; j < Consts.DIMENSION; j++){
-                if ( !((i % 2==1) && (j % 2==1)) && (generator.nextDouble() > 0.5))
+                if ( !((i % 2==1) && (j % 2==1)) && (generator.nextDouble() > Consts.NORMAL_BLOCK_PROB))
                     this.mapFields[i][j] = new NormalBlock(j, i, true, false);     //Blok do rozbicia
             }
         }
+
         mapFields[0][0] = new NormalBlock(0, 0, false, true);             //pola puste dla graczy
         mapFields[0][1] = new NormalBlock(1, 0, false, true);
         mapFields[1][0] = new NormalBlock(0, 1, false, true);
@@ -109,6 +115,9 @@ public class GameMap extends Parent{
 
     public Player getPlayer() {return player;}
 
+    public Field getMapField(int x, int y){
+        return this.mapFields[y][x];
+    }
     public void setMapField(int x, int y, Field field){
         this.mapFields[y][x] = field;
     }

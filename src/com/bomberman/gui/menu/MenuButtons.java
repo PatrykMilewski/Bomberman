@@ -15,8 +15,8 @@ public class MenuButtons extends Parent {
 
     public MenuButtons(MainStage mainStage) {
         VBox menu = new VBox(40);
-        menu.setTranslateX(200);
-        menu.setTranslateY(280);
+        menu.setTranslateX(240);
+        menu.setTranslateY(360);
 
         Buttons buttonNewGame = new Buttons("Nowa gra");
         Buttons buttonHighScores = new Buttons("Ranking");
