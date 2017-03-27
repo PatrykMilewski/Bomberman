@@ -1,38 +1,46 @@
 package com.bomberman;
 
 import com.bomberman.fields.Player;
+import com.bomberman.gui.menu.Consts;
 import com.bomberman.gui.menu.MainStage;
 import com.bomberman.gui.menu.GameMap;
 import javafx.animation.AnimationTimer;
 
 
-public class Listener
-{
-    private static final long TIME_CUTTER = 10000000;
-    private static final int TIME_BETWEEN_MOVES= 20;
+public class Listener {
+    private long lastDropedBomb;
     boolean up, down, left, right, bomb;
     private MainStage mainStage;
     private Player player;
     private long lastMove;
 
-    public Listener(MainStage mainSt, GameMap map)
-    {
+    public Listener(MainStage mainSt, GameMap map) {
         this.mainStage = mainSt;
         this.player = map.getPlayer();
-        lastMove=0;
+        lastMove = 0;
+        lastDropedBomb = 0;
         up = down = left = right = bomb = false;
     }
 
-    public void listen()
-    {
+    public void listen() {
         mainStage.getStage().getScene().setOnKeyPressed(event ->
                 {
                     switch (event.getCode()) {
-                        case UP: up = true; break;
-                        case DOWN:  down = true; break;
-                        case LEFT:  left  = true; break;
-                        case RIGHT: right  = true; break;
-                        case SPACE: bomb = true; break;
+                        case UP:
+                            up = true;
+                            break;
+                        case DOWN:
+                            down = true;
+                            break;
+                        case LEFT:
+                            left = true;
+                            break;
+                        case RIGHT:
+                            right = true;
+                            break;
+                        case SPACE:
+                            bomb = true;
+                            break;
                     }
                 }
         );
@@ -40,55 +48,63 @@ public class Listener
         mainStage.getStage().getScene().setOnKeyReleased(event ->
         {
             switch (event.getCode()) {
-                case UP:    up = false; break;
-                case DOWN:  down = false; break;
-                case LEFT:  left  = false; break;
-                case RIGHT: right  = false; break;
-                case SPACE: bomb = false; break;
+                case UP:
+                    up = false;
+                    break;
+                case DOWN:
+                    down = false;
+                    break;
+                case LEFT:
+                    left = false;
+                    break;
+                case RIGHT:
+                    right = false;
+                    break;
+                case SPACE:
+                    bomb = false;
+                    break;
             }
         });
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
-            public void handle(long now){
-                if(up)
-                {
-                    if(now/TIME_CUTTER - lastMove> TIME_BETWEEN_MOVES) {
-                        lastMove = now / TIME_CUTTER;
+            public void handle(long now) {
+                if (up) {
+                    if (now / Consts.TIME_CUTTER - lastMove > Consts.TIME_BETWEEN_MOVES) {
+                        lastMove = now / Consts.TIME_CUTTER;
                         player.incCoords(0, -1);
                     }
                 }
 
-                if(down)
-                {
-                    if(now/TIME_CUTTER - lastMove> TIME_BETWEEN_MOVES) {
-                        lastMove=now/TIME_CUTTER;
-                        player.incCoords(0,1);
+                if (down) {
+                    if (now / Consts.TIME_CUTTER - lastMove > Consts.TIME_BETWEEN_MOVES) {
+                        lastMove = now / Consts.TIME_CUTTER;
+                        player.incCoords(0, 1);
                     }
                 }
 
-                if(left)
-                {
-                    if(now/TIME_CUTTER - lastMove> TIME_BETWEEN_MOVES) {
-                        lastMove = now / TIME_CUTTER;
+                if (left) {
+                    if (now / Consts.TIME_CUTTER - lastMove > Consts.TIME_BETWEEN_MOVES) {
+                        lastMove = now / Consts.TIME_CUTTER;
                         player.incCoords(-1, 0);
                     }
                 }
 
-                if(right)
-                {
-                    if(now/TIME_CUTTER -lastMove> TIME_BETWEEN_MOVES) {
-                        lastMove = now / TIME_CUTTER;
+                if (right) {
+                    if (now / Consts.TIME_CUTTER - lastMove > Consts.TIME_BETWEEN_MOVES) {
+                        lastMove = now / Consts.TIME_CUTTER;
                         player.incCoords(1, 0);
                     }
                 }
 
-                if(bomb){
-                    player.dropBomb();
+                if (bomb) {
+                    if (now / Consts.TIME_CUTTER - lastDropedBomb > Consts.TIME_BETWEEN_BOMBS) {
+                        lastDropedBomb = now / Consts.TIME_CUTTER;
+                        player.dropBomb();
+                    }
                 }
             }
         };
         timer.start();
-
     }
 }

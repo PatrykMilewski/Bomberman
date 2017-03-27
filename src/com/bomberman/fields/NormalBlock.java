@@ -10,9 +10,9 @@ public class NormalBlock extends Block
     public NormalBlock(int x, int y, boolean destroyable, boolean empty) {
         super(x, y, destroyable);
         this.empty = empty;
-        if ((this.canBeDestroyed()) && (!this.isEmpty())){
+        if ((this.isDestroyable()) && (!this.isEmpty())){
             this.imagePath = "images/Blocks/destroyableBlock.png";
-        } else if ((!this.canBeDestroyed()) && (!this.isEmpty())){
+        } else if ((!this.isDestroyable()) && (!this.isEmpty())){
             this.imagePath = "images/Blocks/unDestroyableBlock.png";
         } else {
             this.imagePath = "images/Blocks/defaultBlock.png";

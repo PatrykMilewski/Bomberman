@@ -1,5 +1,6 @@
 package com.bomberman.fields;
 
+import com.bomberman.BombTimer;
 import com.bomberman.gui.menu.Consts;
 import com.bomberman.gui.menu.GameMap;
 import com.bomberman.gui.menu.MainStage;
@@ -21,11 +22,13 @@ public class Player extends Field{
     private int pixY;
     private int nBombs;
     private Map<SuperPowers, Boolean> superPowers = new HashMap<SuperPowers, Boolean>();
+    private int rangeOfBomb;
+    private boolean isAlive;
 
-    public Player(int x, int y, boolean destroyable, String name, GameMap map)
-    {
+    public Player(int x, int y, boolean destroyable, String name, GameMap map) {
         super(x, y, destroyable);
         this.name = name;
+        this.isAlive = true;
         index = 0;
         superPowers.put(SuperPowers.invisible, false);
         superPowers.put(SuperPowers.faster, false);
@@ -36,6 +39,7 @@ public class Player extends Field{
 //        this.pixY = Consts.PIXEL_SIZE/2;
         this.speed = 2;
         this.nBombs = 2;
+        this.rangeOfBomb = 2;
     }
 
     public boolean getSuperPower(String s){
@@ -43,11 +47,16 @@ public class Player extends Field{
     }
 
     public void incCoords (int x, int y){
-        if(this.map.canMove(this.x + x, this.y + y)){
+        if(this.map.canMove(this.x + x, this.y + y) && this.isAlive()){
             if (map.getMapField(this.x, this.y) instanceof Bomb == false){      //jak postawi gracz bombę i jest pod nim, to nie usuwaj
                 this.map.setMapField(this.x, this.y, new NormalBlock(this.x, this.y, false, true));
             } else {
                 map.printNormalBlockOnMap(this.x, this.y);                      //wykonaj, gdy gracz schodzi z bomby
+            }
+            if (map.getMapField(this.x + x, this.y + y) instanceof Fire == true){
+                this.map.deletePlayerFromMap(this);
+                this.map.printNormalBlockOnMap(this.x, this.y);
+                return;
             }
             map.printFieldOfMap(this.x, this.y);
             this.x += x;
@@ -96,14 +105,13 @@ public class Player extends Field{
     }
 
     public void dropBomb(){
-        if (nBombs > 0 && map.getMapField(this.x, this.y) instanceof Bomb == false){
-            map.setMapField(this.x, this.y, new Bomb(this.x, this.y, true, this));
+        if (nBombs > 0 && (map.getMapField(this.x, this.y) instanceof Bomb == false) && this.isAlive()){
+            map.setMapField(this.x, this.y, new Bomb(this.x, this.y, true, this, this.map));
+            BombTimer.breakLoop = true;
             map.addBomb((Bomb)map.getMapField(this.x, this.y));
-            System.out.print("Bombeczki:\n");
             nBombs--;
+            this.map.printPlayerOnMap();
         }
-        map.printFieldOfMap(this.x, this.y);
-        this.map.printPlayerOnMap();
     }
 
     public ImageView printPlayer(){
@@ -116,6 +124,18 @@ public class Player extends Field{
 
     public void incNBombs(){
         this.nBombs++;
+    }
+
+    public int getRangeOfBomb() {
+        return rangeOfBomb;
+    }
+
+    public boolean isAlive(){
+        return isAlive;
+    }
+    public void kill() {
+        System.out.print("ZGON!");
+        isAlive = false;
     }
 /*    @Override
     public ImageView printFiled(() {

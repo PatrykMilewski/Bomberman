@@ -1,8 +1,10 @@
 package com.bomberman;
 
 import com.bomberman.fields.Bomb;
+import com.bomberman.fields.Fire;
 import com.bomberman.gui.menu.Consts;
 import com.bomberman.gui.menu.GameMap;
+import com.sun.javafx.tk.Toolkit;
 import javafx.animation.AnimationTimer;
 import javafx.concurrent.Task;
 
@@ -12,32 +14,30 @@ import java.util.Iterator;
 /**
  * Created by Szczepan on 27.03.2017.
  */
-public class BombTimer extends Task {
-    private ArrayList<Bomb> bombs;
+public class FireTimer extends Task {
+    private ArrayList<Fire> fires;
     private GameMap map;
     public static boolean breakLoop = false;
 
-    public BombTimer(GameMap map){
+    public FireTimer(GameMap map){
         this.map = map;
     }
 
     @Override
     protected Object call() throws Exception {
-
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now){
-                Iterator it = map.getBombs().iterator();
+                Iterator it = map.getFires().iterator();
                 while (it.hasNext()){
-                    Bomb tempBomb = (Bomb) it.next();
+                    Fire tempFire = (Fire) it.next();
                     if (breakLoop){
                         breakLoop = false;
                         break;
                     }
-                    if (System.currentTimeMillis() - tempBomb.getStartTime() > Consts.MILIS_TO_EXPLODE){
-                        tempBomb.explode();
+                    if (System.currentTimeMillis() - tempFire.getStartTime() > Consts.FIRE_MILIS){
+                        tempFire.removeFire();
                         it.remove();
-
                     }
                 }
             }
@@ -46,3 +46,4 @@ public class BombTimer extends Task {
         return null;
     }
 }
+

@@ -29,9 +29,11 @@ public abstract class Field {
     public int getY() { return y; }
     public void setY(int y) { this.y = y; }
 
-    public Boolean canBeDestroyed() { return this.destroyable; }
 
     public boolean isEmpty() { return empty; }
+    public boolean isDestroyable(){
+        return destroyable;
+    }
 
     public ImageView printFiled() {
         Image img = new Image("file:"+getImagePath());
@@ -40,5 +42,6 @@ public abstract class Field {
         imgView.setY(this.y * Consts.PIXEL_SIZE);
         return imgView;
     }
+
 
 }

@@ -11,15 +11,16 @@ public class Game
 {
     private boolean isRunning;
     Listener gameListener;
-    private ExecutorService executor = Executors.newSingleThreadExecutor();
+    private ExecutorService executor = Executors.newFixedThreadPool(2);
 
-    public Game(MainStage mainStage, GameMap map)
-    {
+    public Game(MainStage mainStage, GameMap map) {
         map.createPlayer(0 , 0, "Milewski");
         isRunning = true;
         gameListener = new Listener(mainStage, map);
-        Task bomberTimerTask = new BombTimer(map);
-        executor.submit(bomberTimerTask);
+        Task bombTimerTask = new BombTimer(map);
+        executor.submit(bombTimerTask);
+        Task fireTimerTask = new FireTimer(map);
+        executor.submit(fireTimerTask);
     }
 
     public void GameLoop() {

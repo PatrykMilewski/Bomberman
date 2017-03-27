@@ -20,12 +20,13 @@ public class GameMap extends Parent{
     private Pane spaceForScores;
     private Player player;
     private ArrayList<Bomb> bombs;
+    private ArrayList<Fire> fires;
 
     public GameMap(MainStage mainStage) throws IOException {
         mainStage.getRootElem().getChildren().clear();              //TODO
         this.mainStage = mainStage;
         this.bombs = new ArrayList<>();
-
+        this.fires = new ArrayList<>();
         makeMap();
     }
 
@@ -52,14 +53,21 @@ public class GameMap extends Parent{
         mapGrids.getChildren().addAll(this.spaceForMap, this.spaceForScores);                           //dodaj do grida mapGrids
         getChildren().addAll(mapGrids);                                                                 //dodaj groda do klasy Map
         this.mainStage.getRootElem().getChildren().addAll(viewBackground, this);                         //dodaj wszystkie zmiany (Map) do glownego pejna
-
-//        printEntireMap();
     }
 
     public void destroyField(int x, int y){
+        if (this.mapFields[y][x] instanceof Player){
+            player.kill();
+            player = null;
+        }
         this.mapFields[y][x] = new NormalBlock(x, y, false, true);
+        printNormalBlockOnMap(x, y);
     }
 
+    public void deletePlayerFromMap(Player player){
+        player.kill();
+        player = null;
+    }
     public void printEntireMap(){
         ImageView imgView = new ImageView();
         for (int i = 0; i < Consts.DIMENSION; i++){
@@ -151,11 +159,25 @@ public class GameMap extends Parent{
         this.spaceForMap.getChildren().addAll(imgView);
     }
 
+    public void printFireBlockOnMap(int x, int y){
+        ImageView imgView = Fire.printFireBlock(x, y);
+        this.spaceForMap.getChildren().addAll(imgView);
+    }
+
     public void addBomb(Bomb bomb){
         this.bombs.add(bomb);
     }
 
     public ArrayList<Bomb> getBombs() {
         return this.bombs;
+    }
+
+    public ArrayList<Fire> getFires(){
+        return this.fires;
+    }
+
+    public void addFire(Fire fire) {
+        this.fires.add(fire);
+        printFireBlockOnMap(fire.getX(), fire.getY());
     }
 }
