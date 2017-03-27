@@ -7,4 +7,5 @@ public class Consts {
     public static final int PIXEL_SIZE = 42;
     public static final int DIMENSION = 17;
     public static final double NORMAL_BLOCK_PROB = 1;
+    public static final long MILIS_TO_EXPLODE = 2400;
 }

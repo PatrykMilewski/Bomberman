@@ -5,21 +5,23 @@ import javafx.scene.image.ImageView;
 public class Bomb extends Field
 {
     private int range;
-    private int timer;
+    private long startTime;
+    private Player ownerOfBomb;
 
-    public Bomb(int x, int y, boolean destroyable) {
+    public long getStartTime() {
+        return startTime;
+    }
+
+    public Bomb(int x, int y, boolean destroyable, Player player) {
         super(x, y, destroyable);
         this.range = 1;
-        this.timer = 3;
+        this.startTime = System.currentTimeMillis();
         this.imagePath = "images/Blocks/bomb/bomb.gif";
+        this.ownerOfBomb = player;
     }
 
-    public boolean decraseTimer() {
-        timer--;
-        if (timer != 0)
-            return false;
-        else
-            return true;
+    public void explode() {
+        System.out.print("Rozpeirdol bomby " + this.getX() + "  " + this.getY() +"\n");
+        this.ownerOfBomb.incNBombs();
     }
-
 }

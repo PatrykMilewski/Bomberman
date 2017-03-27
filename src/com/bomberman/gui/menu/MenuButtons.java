@@ -25,6 +25,7 @@ public class MenuButtons extends Parent {
             try{
                 GameMap map = new GameMap(mainStage);
                 game = new Game(mainStage, map);
+
                 game.GameLoop();
             } catch (IOException e) {
                 e.printStackTrace();

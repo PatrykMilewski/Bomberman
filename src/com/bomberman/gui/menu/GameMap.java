@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class GameMap extends Parent{
@@ -18,10 +19,12 @@ public class GameMap extends Parent{
     private Pane spaceForMap;
     private Pane spaceForScores;
     private Player player;
+    private ArrayList<Bomb> bombs;
 
     public GameMap(MainStage mainStage) throws IOException {
         mainStage.getRootElem().getChildren().clear();              //TODO
         this.mainStage = mainStage;
+        this.bombs = new ArrayList<>();
 
         makeMap();
     }
@@ -146,5 +149,13 @@ public class GameMap extends Parent{
     public void printNormalBlockOnMap(int x, int y) {
         ImageView imgView = NormalBlock.printNormalBlock(x, y);
         this.spaceForMap.getChildren().addAll(imgView);
+    }
+
+    public void addBomb(Bomb bomb){
+        this.bombs.add(bomb);
+    }
+
+    public ArrayList<Bomb> getBombs() {
+        return this.bombs;
     }
 }

@@ -92,7 +92,9 @@ public class Player extends Field {
 
     public void dropBomb(){
         if (nBombs > 0 && map.getMapField(this.x, this.y) instanceof Bomb == false){
-            map.setMapField(this.x, this.y, new Bomb(this.x, this.y, true));
+            map.setMapField(this.x, this.y, new Bomb(this.x, this.y, true, this));
+            map.addBomb((Bomb)map.getMapField(this.x, this.y));
+            System.out.print("Bombeczki:\n");
             nBombs--;
         }
         map.printFieldOfMap(this.x, this.y);
@@ -107,6 +109,9 @@ public class Player extends Field {
         return imgView;
     }
 
+    public void incNBombs(){
+        this.nBombs++;
+    }
 /*    @Override
     public ImageView printFiled(() {
         Image img = new Image("file:"+getImagePath());
