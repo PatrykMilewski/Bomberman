@@ -21,6 +21,10 @@ public abstract class Field {
         return imagePath;
     }
 
+    public String getImagePath() {
+        return imagePath;
+    }
+
     public int getX() { return x; }
     public void setX(int x) { this.x = x; }
 
