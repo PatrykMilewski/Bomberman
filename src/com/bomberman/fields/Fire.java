@@ -1,7 +1,7 @@
 package com.bomberman.fields;
 
-import com.bomberman.gui.menu.Consts;
-import com.bomberman.gui.menu.GameMap;
+import com.bomberman.gui.Consts;
+import com.bomberman.gui.GameMap;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -12,10 +12,6 @@ public class Fire extends Field {
     private long startTime;
 //    private Player ownerOfBomb;                   //TODO jesli bedziemy robic punktacje
     private GameMap map;
-
-    public long getStartTime() {
-        return startTime;
-    }
 
     public Fire(int x, int y, boolean destroyable, GameMap map) {
         super(x, y, destroyable);
@@ -31,6 +27,10 @@ public class Fire extends Field {
         imgView.setX(x* Consts.PIXEL_SIZE);
         imgView.setY(y* Consts.PIXEL_SIZE);
         return imgView;
+    }
+
+    public long getStartTime() {
+        return startTime;
     }
 
     public void removeFire() {

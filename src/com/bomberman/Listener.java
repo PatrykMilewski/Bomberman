@@ -1,15 +1,15 @@
 package com.bomberman;
 
 import com.bomberman.fields.Player;
-import com.bomberman.gui.menu.Consts;
-import com.bomberman.gui.menu.MainStage;
-import com.bomberman.gui.menu.GameMap;
+import com.bomberman.gui.Consts;
+import com.bomberman.gui.GameMap;
+import com.bomberman.gui.MainStage;
 import javafx.animation.AnimationTimer;
 
 
 public class Listener {
-    private long lastDropedBomb;
     boolean up, down, left, right, bomb;
+    private long lastDropedBomb;
     private MainStage mainStage;
     private Player player;
     private long lastMove;

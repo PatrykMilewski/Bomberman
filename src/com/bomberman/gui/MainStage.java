@@ -1,5 +1,6 @@
 package com.bomberman.gui;
 
+import com.bomberman.Game;
 import javafx.application.Application;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -86,15 +87,24 @@ public class MainStage extends Application {
     @FXML
     void startNewGame() {
         log.info(format("Starting a new game."));
-        try {
-            root = FXMLLoader.load(getClass().getResource("Game.fxml"));
-            scene = new Scene(root);
-            primaryStage.setScene(scene);
-            primaryStage.show();
-        } catch (Exception e) {
-            log.log(Level.SEVERE, e.getMessage(), e);
+            try{
+                GameMap map = new GameMap(this);
+                Game game = new Game(this, map);
+
+                game.GameLoop();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-    }
+
+//        try {
+//            root = FXMLLoader.load(getClass().getResource("Game.fxml"));
+//            scene = new Scene(root);
+//            primaryStage.setScene(scene);
+//            primaryStage.show();
+//        } catch (Exception e) {
+//            log.log(Level.SEVERE, e.getMessage(), e);
+//        }
 
     @FXML
     void openLobby() {

@@ -1,4 +1,4 @@
-package com.bomberman.gui.menu;
+package com.bomberman.gui;
 
 import com.bomberman.fields.*;
 import javafx.scene.Parent;
