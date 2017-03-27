@@ -132,10 +132,19 @@ public class GameMap extends Parent{
         return false;
     }
 
+    public void printPlayerOnMap(){
+        ImageView imgView = this.player.printPlayer();
+        this.spaceForMap.getChildren().addAll(imgView);
+    }
+
     public void createPlayer(int x, int y, String name){
         this.mapFields[y][x] = new Player(x, y, true, name, this);
         player = (Player)this.mapFields[y][x];
-
         printEntireMap();           //TODO ????
+    }
+
+    public void printNormalBlockOnMap(int x, int y) {
+        ImageView imgView = NormalBlock.printNormalBlock(x, y);
+        this.spaceForMap.getChildren().addAll(imgView);
     }
 }
