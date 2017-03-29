@@ -70,28 +70,28 @@ public class Listener {
             @Override
             public void handle(long now) {
                 if (up) {
-                    if (now / Consts.TIME_CUTTER - lastMove > Consts.TIME_BETWEEN_MOVES) {
+                    if (now / Consts.TIME_CUTTER - lastMove > (Consts.TIME_BETWEEN_MOVES - player.getSpeed())) {
                         lastMove = now / Consts.TIME_CUTTER;
                         player.incCoords(0, -1);
                     }
                 }
 
                 if (down) {
-                    if (now / Consts.TIME_CUTTER - lastMove > Consts.TIME_BETWEEN_MOVES) {
+                    if (now / Consts.TIME_CUTTER - lastMove > (Consts.TIME_BETWEEN_MOVES - player.getSpeed())) {
                         lastMove = now / Consts.TIME_CUTTER;
                         player.incCoords(0, 1);
                     }
                 }
 
                 if (left) {
-                    if (now / Consts.TIME_CUTTER - lastMove > Consts.TIME_BETWEEN_MOVES) {
+                    if (now / Consts.TIME_CUTTER - lastMove >(Consts.TIME_BETWEEN_MOVES - player.getSpeed())) {
                         lastMove = now / Consts.TIME_CUTTER;
                         player.incCoords(-1, 0);
                     }
                 }
 
                 if (right) {
-                    if (now / Consts.TIME_CUTTER - lastMove > Consts.TIME_BETWEEN_MOVES) {
+                    if (now / Consts.TIME_CUTTER - lastMove > (Consts.TIME_BETWEEN_MOVES - player.getSpeed())) {
                         lastMove = now / Consts.TIME_CUTTER;
                         player.incCoords(1, 0);
                     }

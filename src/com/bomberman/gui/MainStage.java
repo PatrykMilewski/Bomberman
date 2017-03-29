@@ -120,10 +120,10 @@ public class MainStage extends Application {
     }
 
     @FXML
-    void openHiscores() {
-        log.info(format("Opening hiscores scene."));
+    void openHighscores() {
+        log.info(format("Opening highscores scene."));
         try {
-            root = FXMLLoader.load(getClass().getResource("Hiscores.fxml"));
+            root = FXMLLoader.load(getClass().getResource("Highscores.fxml"));
             scene = new Scene(root);
             primaryStage.setScene(scene);
             primaryStage.show();

@@ -2,11 +2,8 @@ package com.bomberman.fields;
 
 import com.bomberman.gui.Consts;
 import com.bomberman.gui.GameMap;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
-public class Bomb extends Field
-{
+public class Bomb extends Field {
     private int range;
     private long startTime;
     private Player ownerOfBomb;
@@ -29,21 +26,21 @@ public class Bomb extends Field
     public void explode() {
         this.map.setMapField(this.x, this.y, new NormalBlock(this.x, this.y, false, true));
 
-        Fire newFire = new Fire(this.x , this.y , true, this.map);
+        Fire newFire = new Fire(this.x, this.y, true, this.map);
         this.map.addFire(newFire);
 
         boolean firstUp = false;
         boolean firstRight = false;
         boolean firstDown = false;
         boolean firstLeft = false;
-        for (int i = 1; i < range + 1; i++){
-            if (this.y - i >= 0 && !firstUp){                               //up
+        for (int i = 1; i < range + 1; i++) {
+            if (this.y - i >= 0 && !firstUp) {                               //up
                 firstUp = checkField(0, -i);
             }
-            if (this.x + i < Consts.DIMENSION && !firstRight){                 //right
+            if (this.x + i < Consts.DIMENSION && !firstRight) {                 //right
                 firstRight = checkField(i, 0);
             }
-            if (this.y + i < Consts.DIMENSION && !firstDown){                 //down
+            if (this.y + i < Consts.DIMENSION && !firstDown) {                 //down
                 firstDown = checkField(0, i);
             }
             if (this.x - i >= 0 && !firstLeft) {                              //left
@@ -53,16 +50,17 @@ public class Bomb extends Field
         this.ownerOfBomb.incNBombs();
     }
 
-    private boolean checkField(int diffX, int diffY){
-        if (map.getMapField(this.x + diffX, this.y + diffY).isDestroyable() == false        //niezniszczalny kloc
-                && map.getMapField(this.x + diffX, this.y + diffY).isEmpty() == false ){
-            return true;
+    private boolean checkField(int diffX, int diffY) {
+        if (map.getMapField(this.x + diffX, this.y + diffY) instanceof Bomb) {
+            //((Bomb) map.getMapField(this.x + diffX, this.y + diffY)).explode();           //TODO problem z usuwaniem z listy w BombTimer
         }
-        else {
+        if (map.getMapField(this.x + diffX, this.y + diffY).isDestroyable() == false        //niezniszczalny kloc
+                && map.getMapField(this.x + diffX, this.y + diffY).isEmpty() == false) {
+            return true;
+        } else {
             Fire newFire = new Fire(this.x + diffX, this.y + diffY, false, this.map);
-            if (map.getMapField(this.x + diffX, this.y + diffY).isDestroyable()){
-                map.destroyField(this.x + diffX, this.y + diffY);
-                this.map.setMapField(this.x + diffX, this.y + diffY, newFire);
+            if (map.getMapField(this.x + diffX, this.y + diffY).isDestroyable()) {               //do zniszczenia
+                map.destroyField(this.x + diffX, this.y + diffY, newFire);
                 this.map.addFire(newFire);
                 return true;
             } else {

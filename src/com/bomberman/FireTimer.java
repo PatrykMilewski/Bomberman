@@ -16,7 +16,6 @@ import java.util.Iterator;
  */
 public class FireTimer extends Task {
     public static boolean breakLoop = false;
-    private ArrayList<Fire> fires;
     private GameMap map;
 
     public FireTimer(GameMap map){

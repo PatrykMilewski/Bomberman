@@ -8,7 +8,7 @@
    <children>
       <Button id="singleplayer-button" fx:id="singlePlayerButton" layoutX="384.0" layoutY="361.0" mnemonicParsing="false" onMouseClicked="#startNewGame" onMouseEntered="#mouseEnteredButton" onMouseExited="#mouseExitedButton" prefHeight="46.0" prefWidth="513.0" styleClass="button, menu-button" stylesheets="@../styles/guiStyles.css" text="Single player" />
       <Button id="multiplayer-button" fx:id="multiPlayerButton" layoutX="384.0" layoutY="423.0" mnemonicParsing="false" onMouseClicked="#openLobby" onMouseEntered="#mouseEnteredButton" onMouseExited="#mouseExitedButton" prefHeight="46.0" prefWidth="513.0" styleClass="button, menu-button" stylesheets="@../styles/guiStyles.css" text="Multi player" />
-      <Button id="hiscores-button" fx:id="hiscoresButton" layoutX="384.0" layoutY="488.0" mnemonicParsing="false" onMouseClicked="#openHiscores" onMouseEntered="#mouseEnteredButton" onMouseExited="#mouseExitedButton" prefHeight="46.0" prefWidth="513.0" styleClass="button, menu-button" stylesheets="@../styles/guiStyles.css" text="Hiscores" />
+      <Button id="highscores-button" fx:id="highscoresButton" layoutX="384.0" layoutY="488.0" mnemonicParsing="false" onMouseClicked="#openHighscores" onMouseEntered="#mouseEnteredButton" onMouseExited="#mouseExitedButton" prefHeight="46.0" prefWidth="513.0" styleClass="button, menu-button" stylesheets="@../styles/guiStyles.css" text="Highscores" />
       <Button id="exit-button" fx:id="exitButton" layoutX="384.0" layoutY="554.0" mnemonicParsing="false" onMouseClicked="#exitGame" onMouseEntered="#mouseEnteredButton" onMouseExited="#mouseExitedButton" prefHeight="46.0" prefWidth="513.0" styleClass="button, menu-button" stylesheets="@../styles/guiStyles.css" text="Exit" />
    </children>
 

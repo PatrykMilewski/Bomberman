@@ -55,13 +55,15 @@ public class GameMap extends Parent{
         this.mainStage.getRootElem().getChildren().addAll(viewBackground, this);                         //dodaj wszystkie zmiany (Map) do glownego pejna
     }
 
-    public void destroyField(int x, int y){
+    public void destroyField(int x, int y, Field newField){
         if (this.mapFields[y][x] instanceof Player){
             player.kill();
             player = null;
+        } else if (this.mapFields[y][x].getFieldUnderDestryableField() != null && newField instanceof Fire){
+            ((Fire) newField).setUnderField(this.mapFields[y][x].getFieldUnderDestryableField());
         }
-        this.mapFields[y][x] = new NormalBlock(x, y, false, true);
-        printNormalBlockOnMap(x, y);
+        this.mapFields[y][x] = newField;
+        this.printFieldOfMap(x, y);
     }
 
     public void deletePlayerFromMap(Player player){
@@ -151,7 +153,7 @@ public class GameMap extends Parent{
     public void createPlayer(int x, int y, String name){
         this.mapFields[y][x] = new Player(x, y, true, name, this);
         player = (Player)this.mapFields[y][x];
-        printEntireMap();           //TODO ????
+        printEntireMap();
     }
 
     public void printNormalBlockOnMap(int x, int y) {

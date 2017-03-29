@@ -9,6 +9,7 @@ public abstract class Field {
     protected boolean destroyable;
     protected boolean empty;
     protected String imagePath;
+    protected Bonus fieldUnderDestryableField;
 
     public Field(int x, int y, boolean destroyable) {
         this.x = x;
@@ -27,6 +28,9 @@ public abstract class Field {
     public int getY() { return y; }
     public void setY(int y) { this.y = y; }
 
+    public Bonus getFieldUnderDestryableField() {
+        return fieldUnderDestryableField;
+    }
 
     public boolean isEmpty() { return empty; }
     public boolean isDestroyable(){
@@ -40,6 +44,5 @@ public abstract class Field {
         imgView.setY(this.y * Consts.PIXEL_SIZE);
         return imgView;
     }
-
 
 }
