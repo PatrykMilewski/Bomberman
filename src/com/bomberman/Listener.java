@@ -23,46 +23,24 @@ public class Listener {
     }
 
     public void listen() {
-        mainStage.getStage().getScene().setOnKeyPressed(event ->
-                {
+        mainStage.getStage().getScene().setOnKeyPressed(event -> {
                     switch (event.getCode()) {
-                        case UP:
-                            up = true;
-                            break;
-                        case DOWN:
-                            down = true;
-                            break;
-                        case LEFT:
-                            left = true;
-                            break;
-                        case RIGHT:
-                            right = true;
-                            break;
-                        case SPACE:
-                            bomb = true;
-                            break;
+                        case UP:    up =    true;   break;
+                        case DOWN:  down =  true;   break;
+                        case LEFT:  left =  true;   break;
+                        case RIGHT: right = true;   break;
+                        case SPACE: bomb =  true;   break;
                     }
                 }
         );
 
-        mainStage.getStage().getScene().setOnKeyReleased(event ->
-        {
+        mainStage.getStage().getScene().setOnKeyReleased(event -> {
             switch (event.getCode()) {
-                case UP:
-                    up = false;
-                    break;
-                case DOWN:
-                    down = false;
-                    break;
-                case LEFT:
-                    left = false;
-                    break;
-                case RIGHT:
-                    right = false;
-                    break;
-                case SPACE:
-                    bomb = false;
-                    break;
+                case UP:    up =    false;      break;
+                case DOWN:  down =  false;      break;
+                case LEFT:  left =  false;      break;
+                case RIGHT: right = false;      break;
+                case SPACE: bomb =  false;      break;
             }
         });
 

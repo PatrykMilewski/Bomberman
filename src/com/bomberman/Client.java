@@ -1,15 +1,11 @@
 package com.bomberman;
 
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.SyncFailedException;
 import java.net.Socket;
 import java.util.Scanner;
 
 public class Client{
-
     public Client(int port) {
         InputStreamReader in = new InputStreamReader(System.in);
         Scanner keybord = new Scanner(System.in);

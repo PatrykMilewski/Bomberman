@@ -2,6 +2,18 @@
     -fx-background-image: url("@/../../../../../../../images/logos.png");
 }
 
+#game-primary-pane {
+    -fx-background-image: url("@/../../../../../../../images/backgroundmap.jpg");
+}
+
+.game-map-pane {
+    -fx-background-color: brown;
+}
+
+.scores-pane {
+    -fx-background-color: brown;
+}
+
 .button {
     -fx-font-family: "Times New Roman";
     -fx-font-wegiht: bold;

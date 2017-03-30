@@ -1,18 +1,21 @@
 package com.bomberman.fields;
 
-import com.bomberman.gui.Consts;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
 public class Bonus extends Field
 {
-    private String type;
     private static final Map<Integer, String> superPowers = createMapOfSuperPowers();
     private static final int nSuperPowers = superPowers.size();
+    private String type;
+
+    public Bonus(int x, int y) {
+        super(x, y, true);
+        this.empty = true;
+
+        generateBonus();
+    }
 
     private static Map<Integer,String> createMapOfSuperPowers() {
         Map<Integer, String> tempMap = new HashMap<Integer, String>();
@@ -20,13 +23,6 @@ public class Bonus extends Field
         tempMap.put(1, "incrange");
         tempMap.put(2, "incbombs");
         return tempMap;
-    }
-
-    public Bonus(int x, int y) {
-        super(x, y, true);
-        this.empty = true;
-
-        generateBonus();
     }
 
     private void generateBonus() {

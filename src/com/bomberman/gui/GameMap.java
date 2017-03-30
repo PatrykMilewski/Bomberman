@@ -31,28 +31,19 @@ public class GameMap extends Parent{
     }
 
     private void makeMap() throws IOException {
-        InputStream backgroundMap = Files.newInputStream(Paths.get("images/backgroundmap.jpg"));
-        Image img = new Image(backgroundMap);
-        backgroundMap.close();
-        ImageView viewBackground = new ImageView(img);
-
         fillMap();
 
         HBox mapGrids = new HBox(10);
         mapGrids.setTranslateX(27);
         mapGrids.setTranslateY(27);
 
-        this.spaceForMap = new Pane();
-        this.spaceForMap.setPrefSize(Consts.DIMENSION*Consts.PIXEL_SIZE, Consts.DIMENSION*Consts.PIXEL_SIZE);
-        this.spaceForMap.setStyle("-fx-background-color: brown;");
+        this.spaceForMap = mainStage.gameController.getGameMapPane();
 
-        this.spaceForScores = new Pane();
-        this.spaceForScores.setPrefSize(502, Consts.DIMENSION*Consts.PIXEL_SIZE);
-        this.spaceForScores.setStyle("-fx-background-color: brown;");
+        this.spaceForScores = mainStage.gameController.getGameScoresPane();
 
         mapGrids.getChildren().addAll(this.spaceForMap, this.spaceForScores);                           //dodaj do grida mapGrids
         getChildren().addAll(mapGrids);                                                                 //dodaj groda do klasy Map
-        this.mainStage.getRootElem().getChildren().addAll(viewBackground, this);                         //dodaj wszystkie zmiany (Map) do glownego pejna
+        this.mainStage.getRootElem().getChildren().addAll(this);                         //dodaj wszystkie zmiany (Map) do glownego pejna
     }
 
     public void destroyField(int x, int y, Field newField){

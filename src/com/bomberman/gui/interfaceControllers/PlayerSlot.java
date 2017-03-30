@@ -1,10 +1,10 @@
-package com.bomberman.gui;
+package com.bomberman.gui.interfaceControllers;
 
 
 import javafx.scene.control.Label;
 import javafx.scene.shape.Rectangle;
 
-class PlayerSlot {
+public class PlayerSlot {
     private Label playerNameLabel;
     private Rectangle playerColourRectangle;
     private String playersName;
