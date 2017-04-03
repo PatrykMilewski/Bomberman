@@ -33,11 +33,8 @@ public class NormalBlock extends Block {
         Random generator = new Random();
         if (generator.nextDouble() <= Consts.SPECIAL_BLOCK_PROB) {       //utworz bonus pod spodem
             this.fieldUnderDestryableField = new Bonus(this.x, this.y);
-//            System.out.println(this.fieldUnderDestryableField.getType());
         } else {
             this.fieldUnderDestryableField = null;
         }
     }
-
-
 }

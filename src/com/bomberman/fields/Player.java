@@ -1,6 +1,5 @@
 package com.bomberman.fields;
 
-import com.bomberman.BombTimer;
 import com.bomberman.gui.Consts;
 import com.bomberman.gui.GameMap;
 import javafx.scene.image.Image;
@@ -9,7 +8,6 @@ import java.util.Map;
 import java.util.HashMap;
 
 public class Player extends Field {
-
     private String name;
     private int index;
     private float speed;
@@ -33,23 +31,48 @@ public class Player extends Field {
         this.map = map;
 //        this.pixX = Consts.PIXEL_SIZE/2;
 //        this.pixY = Consts.PIXEL_SIZE/2;
-        this.speed = 0;
-        this.nBombs = 2;
-        this.rangeOfBomb = 1;
+        this.speed = 10;
+        this.nBombs = 4;
+        this.rangeOfBomb = 2;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getindex() {
+        return index;
+    }
+
+    public float getSpeed() {
+        return speed;
     }
 
     public boolean getSuperPower(String s) {
         return superPowers.get(s);
     }
 
+    public int getRangeOfBomb() {
+        return rangeOfBomb;
+    }
+
+    public boolean isAlive() {
+        return isAlive;
+    }
+
     public void incCoords(int diffX, int diffY) {
-        if (this.map.canMove(this.x + diffX, this.y + diffY) && this.isAlive()) {
-            if (map.getMapField(this.x, this.y) instanceof Bomb == false) {      //jak postawi gracz bombę i jest pod nim, to nie usuwaj
+        if (!isAlive){
+            return;
+        }
+        else if (this.map.canMove(this.x + diffX, this.y + diffY)) {
+            //Stare pole
+            if (map.getMapField(this.x, this.y) instanceof Bomb == false) {         //gracz schodzi ze zwyklego pola
                 this.map.setMapField(this.x, this.y, new NormalBlock(this.x, this.y, false, true));
             } else {
-                map.printNormalBlockOnMap(this.x, this.y);                      //wykonaj, gdy gracz schodzi z bomby
+                map.printNormalBlockOnMap(this.x, this.y);                          //gracz schodzi z bomby
             }
-            if (map.getMapField(this.x + diffX, this.y + diffY) instanceof Fire == true) {
+            //Nowe pole
+            if (map.getMapField(this.x + diffX, this.y + diffY) instanceof Fire == true) {      //wszedl w ogien
                 this.map.deletePlayerFromMap(this);
                 this.map.printNormalBlockOnMap(this.x, this.y);
                 return;
@@ -57,6 +80,7 @@ public class Player extends Field {
                 ((Bonus) map.getMapField(this.x + diffX, this.y + diffY)).takeBonus(this);
                 map.printNormalBlockOnMap(this.x + diffX, this.y + diffY);
             }
+
             map.printFieldOfMap(this.x, this.y);
             this.x += diffX;
             this.y += diffY;
@@ -89,35 +113,9 @@ public class Player extends Field {
         }
     }*/
 
-
-    public int getindex() {
-        return index;
-    }
-
-    public float getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(float speed) {
-        this.speed = speed;
-    }
-
-    public int getIndex() {
-        return index;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setSuperPowers(SuperPowers superPower, Boolean trig) {
-        superPowers.put(superPower, trig);
-    }
-
     public void dropBomb() {
         if (nBombs > 0 && (map.getMapField(this.x, this.y) instanceof Bomb == false) && this.isAlive()) {
             map.setMapField(this.x, this.y, new Bomb(this.x, this.y, true, this, this.map));
-            BombTimer.breakLoop = true;
             map.addBomb((Bomb) map.getMapField(this.x, this.y));
             nBombs--;
             this.map.printPlayerOnMap();
@@ -132,23 +130,14 @@ public class Player extends Field {
         return imgView;
     }
 
-
-    public int getRangeOfBomb() {
-        return rangeOfBomb;
-    }
-
-    public boolean isAlive() {
-        return isAlive;
-    }
-
     public void kill() {
         System.out.print("ZGON!");
         isAlive = false;
     }
 
-    public void incRange() {
-        if (this.rangeOfBomb < Consts.MAX_RANGE_OF_BOMB) {
-            this.rangeOfBomb++;
+    public void incSpeed() {
+        if (this.speed < Consts.MAX_SPEED) {
+            this.speed++;
         }
     }
 
@@ -158,12 +147,11 @@ public class Player extends Field {
         }
     }
 
-    public void incSpeed() {
-        if (this.speed < Consts.MAX_SPEED) {
-            this.speed++;
+    public void incRange() {
+        if (this.rangeOfBomb < Consts.MAX_RANGE_OF_BOMB) {
+            this.rangeOfBomb++;
         }
     }
-
 
 /*    @Override
     public ImageView printFiled(() {
@@ -171,7 +159,7 @@ public class Player extends Field {
         ImageView imgView = new ImageView(img);
         imgView.setX(x* Consts.PIXEL_SIZE);
         imgView.setY(y*Consts.PIXEL_SIZE);
-//        imgView.setX(x* Consts.PIXEL_SIZE + pixX - Consts.PIXEL_SIZE/2);                         //TODO zmienic na pixelowe wartosci
+//        imgView.setX(x* Consts.PIXEL_SIZE + pixX - Consts.PIXEL_SIZE/2);
 //        imgView.setY(y*Consts.PIXEL_SIZE + pixY - Consts.PIXEL_SIZE/2);
         return imgView;
     }*/

@@ -31,20 +31,22 @@
 }
 
 .playersname-label {
-    -fx-text-color: rgba(0,0,100,0.6);
-
+    -fx-text-fill: rgb(129, 149, 246);
+    -fx-background-color: rgba(50,50,50,0.8);
     -fx-font-size: 28px;
     -fx-text-aligment: center;
+    -fx-border-style: solid;
+    -fx-border-color: rgba(255, 255, 255, 0.72);
 }
 
 .playersname-label:hover {
-    -fx-background-color: rgba(50,50,50,0.8);
-    -fx-text-color: rgba(0,240,0,0.9);
+    -fx-background-color: rgba(152, 152, 152, 0.8);
+    -fx-text-fill: rgba(0, 51, 0, 0.9);
 }
 
 .playersnumber-label {
     -fx-background-color: rgba(50,50,50,0.8);
-    -fx-text-fill: rgba(240,0,0,0.9);
+    -fx-text-fill: rgb(129, 149, 246);
     -fx-font-size: 30px;
     -fx-text-aligment: right;
 }

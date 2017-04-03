@@ -8,12 +8,12 @@ public class Bonus extends Field
 {
     private static final Map<Integer, String> superPowers = createMapOfSuperPowers();
     private static final int nSuperPowers = superPowers.size();
+
     private String type;
 
     public Bonus(int x, int y) {
         super(x, y, true);
         this.empty = true;
-
         generateBonus();
     }
 

@@ -17,8 +17,7 @@ public class Game
         map.createPlayer(0 , 0, "Milewski");
         isRunning = true;
         gameListener = new Listener(mainStage, map);
-        Task bombTimerTask = new BombTimer(map);
-        executor.submit(bombTimerTask);
+
         Task fireTimerTask = new FireTimer(map);
         executor.submit(fireTimerTask);
     }

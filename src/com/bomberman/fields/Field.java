@@ -3,6 +3,8 @@ import com.bomberman.gui.Consts;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.awt.*;
+
 public abstract class Field {
     protected int x;
     protected int y;
@@ -44,5 +46,4 @@ public abstract class Field {
         imgView.setY(this.y * Consts.PIXEL_SIZE);
         return imgView;
     }
-
 }

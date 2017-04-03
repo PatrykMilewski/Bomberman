@@ -5,15 +5,11 @@ import com.bomberman.gui.GameMap;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-/**
- * Created by Szczepan on 27.03.2017.
- */
 public class Fire extends Field {
     private long startTime;
-    //    private Player ownerOfBomb;                   //TODO jesli bedziemy robic punktacje
     private GameMap map;
     private Bonus fieldUnderFireField;
-
+    //    private Player ownerOfBomb;                   //TODO jesli bedziemy robic punktacje
 
     public Fire(int x, int y, boolean destroyable, GameMap map) {
         super(x, y, destroyable);
@@ -24,20 +20,20 @@ public class Fire extends Field {
         this.fieldUnderFireField = null;
     }
 
-    public static ImageView printFireBlock(int x, int y) {
-        Image img = new Image("file:" + "images/Blocks/fireblock1.png");
-        ImageView imgView = new ImageView(img);
-        imgView.setX(x * Consts.PIXEL_SIZE);
-        imgView.setY(y * Consts.PIXEL_SIZE);
-        return imgView;
-    }
-
     public long getStartTime() {
         return startTime;
     }
 
     public void setUnderField(Bonus field) {
         this.fieldUnderFireField = field;
+    }
+
+    public static ImageView printFireBlock(int x, int y) {
+        Image img = new Image("file:" + "images/Blocks/fireblock1.png");
+        ImageView imgView = new ImageView(img);
+        imgView.setX(x * Consts.PIXEL_SIZE);
+        imgView.setY(y * Consts.PIXEL_SIZE);
+        return imgView;
     }
 
     public void removeFire() {

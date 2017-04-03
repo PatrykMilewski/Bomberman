@@ -1,17 +1,17 @@
 package com.bomberman.gui;
 
+import com.bomberman.BombTimerTask;
 import com.bomberman.fields.*;
+import javafx.concurrent.Task;
 import javafx.scene.Parent;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class GameMap extends Parent{
     private MainStage mainStage;
@@ -19,15 +19,27 @@ public class GameMap extends Parent{
     private Pane spaceForMap;
     private Pane spaceForScores;
     private Player player;
-    private ArrayList<Bomb> bombs;
     private ArrayList<Fire> fires;
+    private ExecutorService bombExecutors = Executors.newFixedThreadPool(Consts.MAX_N_BOMBS * 3);   //max liczba bomb na mapie * liczba graczy
 
     public GameMap(MainStage mainStage) throws IOException {
-        mainStage.getRootElem().getChildren().clear();              //TODO
+        mainStage.getRootElem().getChildren().clear();
         this.mainStage = mainStage;
-        this.bombs = new ArrayList<>();
         this.fires = new ArrayList<>();
         makeMap();
+    }
+    public Field getMapField(int x, int y){
+        return this.mapFields[y][x];
+    }
+
+    public Player getPlayer() {return player;}
+
+    public ArrayList<Fire> getFires(){
+        return this.fires;
+    }
+
+    public void setMapField(int x, int y, Field field){
+        this.mapFields[y][x] = field;
     }
 
     private void makeMap() throws IOException {
@@ -44,41 +56,6 @@ public class GameMap extends Parent{
         mapGrids.getChildren().addAll(this.spaceForMap, this.spaceForScores);                           //dodaj do grida mapGrids
         getChildren().addAll(mapGrids);                                                                 //dodaj groda do klasy Map
         this.mainStage.getRootElem().getChildren().addAll(this);                         //dodaj wszystkie zmiany (Map) do glownego pejna
-    }
-
-    public void destroyField(int x, int y, Field newField){
-        if (this.mapFields[y][x] instanceof Player){
-            player.kill();
-            player = null;
-        } else if (this.mapFields[y][x].getFieldUnderDestryableField() != null && newField instanceof Fire){
-            ((Fire) newField).setUnderField(this.mapFields[y][x].getFieldUnderDestryableField());
-        }
-        this.mapFields[y][x] = newField;
-        this.printFieldOfMap(x, y);
-    }
-
-    public void deletePlayerFromMap(Player player){
-        player.kill();
-        player = null;
-    }
-    public void printEntireMap(){
-        ImageView imgView = new ImageView();
-        for (int i = 0; i < Consts.DIMENSION; i++){
-            for (int j = 0; j < Consts.DIMENSION; j++){
-                imgView = this.mapFields[i][j].printFiled();
-                this.spaceForMap.getChildren().addAll(imgView);
-            }
-        }
-        imgView = NormalBlock.printNormalBlock(this.player.getX(), this.player.getY());
-        this.spaceForMap.getChildren().addAll(imgView);
-
-        imgView = this.mapFields[player.getY()][player.getX()].printFiled();
-        this.spaceForMap.getChildren().addAll(imgView);
-    }
-
-    public void printFieldOfMap(int x, int y){
-        ImageView imgView = this.mapFields[y][x].printFiled();
-        this.spaceForMap.getChildren().addAll(imgView);
     }
 
     private void fillMap(){
@@ -117,13 +94,26 @@ public class GameMap extends Parent{
         mapFields[Consts.DIMENSION-1][Consts.DIMENSION-2] = new NormalBlock(Consts.DIMENSION-2, Consts.DIMENSION-1, false, true);
     }
 
-    public Player getPlayer() {return player;}
-
-    public Field getMapField(int x, int y){
-        return this.mapFields[y][x];
+    public void createPlayer(int x, int y, String name){
+        this.mapFields[y][x] = new Player(x, y, true, name, this);
+        player = (Player)this.mapFields[y][x];
+        printEntireMap();
     }
-    public void setMapField(int x, int y, Field field){
-        this.mapFields[y][x] = field;
+
+    public void destroyField(int x, int y, Field newField){
+        if (this.mapFields[y][x] instanceof Player){
+            player.kill();
+            player = null;
+        } else if (this.mapFields[y][x].getFieldUnderDestryableField() != null && newField instanceof Fire){    //bonus pod spodem
+            ((Fire) newField).setUnderField(this.mapFields[y][x].getFieldUnderDestryableField());
+        }
+        this.mapFields[y][x] = newField;
+        this.printFieldOfMap(x, y);
+    }
+
+    public void deletePlayerFromMap(Player player){
+        player.kill();
+        player = null;
     }
 
     public boolean canMove(int x, int y){
@@ -136,15 +126,39 @@ public class GameMap extends Parent{
         return false;
     }
 
-    public void printPlayerOnMap(){
-        ImageView imgView = this.player.printPlayer();
+    public void addBomb(Bomb bomb){
+        Task bombTimerTask = new BombTimerTask(bomb);
+        bombExecutors.execute(bombTimerTask);
+    }
+
+    public void addFire(Fire fire) {
+        this.fires.add(fire);
+        printFireBlockOnMap(fire.getX(), fire.getY());
+    }
+
+    public void printEntireMap(){
+        ImageView imgView = new ImageView();
+        for (int i = 0; i < Consts.DIMENSION; i++){
+            for (int j = 0; j < Consts.DIMENSION; j++){
+                imgView = this.mapFields[i][j].printFiled();
+                this.spaceForMap.getChildren().addAll(imgView);
+            }
+        }
+        imgView = NormalBlock.printNormalBlock(this.player.getX(), this.player.getY());
+        this.spaceForMap.getChildren().addAll(imgView);
+
+        imgView = this.mapFields[player.getY()][player.getX()].printFiled();
         this.spaceForMap.getChildren().addAll(imgView);
     }
 
-    public void createPlayer(int x, int y, String name){
-        this.mapFields[y][x] = new Player(x, y, true, name, this);
-        player = (Player)this.mapFields[y][x];
-        printEntireMap();
+    public void printFieldOfMap(int x, int y){
+        ImageView imgView = this.mapFields[y][x].printFiled();
+        this.spaceForMap.getChildren().addAll(imgView);
+    }
+
+    public void printPlayerOnMap(){
+        ImageView imgView = this.player.printPlayer();
+        this.spaceForMap.getChildren().addAll(imgView);
     }
 
     public void printNormalBlockOnMap(int x, int y) {
@@ -155,22 +169,5 @@ public class GameMap extends Parent{
     public void printFireBlockOnMap(int x, int y){
         ImageView imgView = Fire.printFireBlock(x, y);
         this.spaceForMap.getChildren().addAll(imgView);
-    }
-
-    public void addBomb(Bomb bomb){
-        this.bombs.add(bomb);
-    }
-
-    public ArrayList<Bomb> getBombs() {
-        return this.bombs;
-    }
-
-    public ArrayList<Fire> getFires(){
-        return this.fires;
-    }
-
-    public void addFire(Fire fire) {
-        this.fires.add(fire);
-        printFireBlockOnMap(fire.getX(), fire.getY());
     }
 }
