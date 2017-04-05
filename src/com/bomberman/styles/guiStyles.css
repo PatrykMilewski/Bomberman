@@ -1,17 +1,7 @@
+/* Main classes */
+
 .root {
     -fx-background-image: url("@/../../../../../../../images/logos.png");
-}
-
-#game-primary-pane {
-    -fx-background-image: url("@/../../../../../../../images/backgroundmap.jpg");
-}
-
-.game-map-pane {
-    -fx-background-color: brown;
-}
-
-.scores-pane {
-    -fx-background-color: brown;
 }
 
 .button {
@@ -29,6 +19,22 @@
     -fx-background-color: rgba(50,50,50,0.8);
     -fx-text-fill: rgba(240,240,240,0.95);
 }
+
+/* Game classes */
+
+#game-primary-pane {
+    -fx-background-image: url("@/../../../../../../../images/backgroundmap.jpg");
+}
+
+.game-map-pane {
+    -fx-background-color: brown;
+}
+
+.scores-pane {
+    -fx-background-color: brown;
+}
+
+/* Lobby classes */
 
 .playersname-label {
     -fx-text-fill: rgb(129, 149, 246);
@@ -60,4 +66,34 @@
 .ping-label {
     -fx-text-fill: rgba(0,0,100,0.7);
     -fx-font-size: 14px;
+}
+
+/* Highscores classes */
+
+.highscores-scores-rectangle {
+
+}
+
+.highscores-label {
+
+}
+
+#highscores-primary-pane {
+    -fx-background-color: deepskyblue;
+}
+
+#highscores-top-label {
+
+}
+
+#highscores-bestscore-label {
+
+}
+
+#highscores-right-rectangle {
+    /* -fx-background-image: //todo */
+}
+
+#highscores-left-rectangle {
+    /* -fx-background-image: //todo */
 }
