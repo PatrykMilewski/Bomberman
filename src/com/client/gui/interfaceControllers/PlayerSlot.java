@@ -2,17 +2,18 @@ package com.client.gui.interfaceControllers;
 
 
 import javafx.scene.control.Label;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class PlayerSlot {
     private Label playerNameLabel;
-    private Rectangle playerColourRectangle;
+    private Color playersColor;
     private String playersName;
     private int playersID;
 
-    PlayerSlot(Label playerNameLabel, Rectangle playerColourRectangle) {
+    PlayerSlot(Label playerNameLabel, Color playersColor) {
         this.playerNameLabel = playerNameLabel;
-        this.playerColourRectangle = playerColourRectangle;
+        this.playersColor = playersColor;
     }
 
     public int getPlayersID() {
@@ -30,4 +31,8 @@ public class PlayerSlot {
     public void setPlayersName(String playersName) {
         this.playersName = playersName;
     }
+    
+    public Color getColor() { return this.playersColor; }
+    
+    public void setColor(Color input) { this.playersColor = input; }
 }

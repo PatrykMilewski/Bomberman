@@ -1,11 +1,11 @@
 package com.client.gui.interfaceControllers;
 
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.control.*;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 
 import java.util.regex.Pattern;
 
@@ -18,22 +18,27 @@ public class LobbyController extends MainStageController {
     private static boolean isIPAddressValid = false;
     private static String serverAddress;
     private static PlayerSlot playersSlots[] = new PlayerSlot[playersAmount];
+    
+    private Color playersColors[] = new Color[playersAmount];
+    
     @FXML
     private TextField IPAddressField;
     @FXML
     private Label pingLabel;
     @FXML
-    private Rectangle player1Colour;
+    private Pane player1Color;
     @FXML
-    private Rectangle player2Colour;
+    private Pane player2Color;
     @FXML
-    private Rectangle player3Colour;
+    private Pane player3Color;
     @FXML
     private Label player1NameLabel;
     @FXML
     private Label player2NameLabel;
     @FXML
     private Label player3NameLabel;
+    @FXML
+    private ColorPicker colorPicker;
 
     private static boolean validateIPv4(final String ip) {
         return PATTERN.matcher(ip).matches();
@@ -41,9 +46,9 @@ public class LobbyController extends MainStageController {
 
     @FXML
     public void initialize() {
-        playersSlots[0] = new PlayerSlot(player1NameLabel, player1Colour);
-        playersSlots[1] = new PlayerSlot(player2NameLabel, player2Colour);
-        playersSlots[2] = new PlayerSlot(player3NameLabel, player3Colour);
+        playersSlots[0] = new PlayerSlot(player1NameLabel, playersColors[0]);
+        playersSlots[1] = new PlayerSlot(player2NameLabel, playersColors[1]);
+        playersSlots[2] = new PlayerSlot(player3NameLabel, playersColors[2]);
     }
 
     @FXML
@@ -89,12 +94,30 @@ public class LobbyController extends MainStageController {
     }
 
     @FXML
-    void changeColour(Event event) {
+    void changeColor(Event event)  {
+        Pane eventPane = (Pane) event.getTarget();
 
+        colorPicker = new ColorPicker();
+        colorPicker.relocate(eventPane.getLayoutX(), eventPane.getLayoutY());
+
+        colorPicker.setOnAction(new EventHandler() {
+            public void handle(Event t) {
+                eventPane.setStyle("-fx-background-color:" + "#" + colorPicker.getValue().toString().substring(2,10));
+                eventPane.getChildren().removeAll(colorPicker);
+            }
+        });
+
+        Pane rootPane = (Pane) eventPane.getParent();
+        rootPane.getChildren().add(colorPicker);
     }
+    
+    private void colorPickHandle() {
+    
+    }
+    
 
     @FXML
     void selectGameSlot(Event event) {
-
+    
     }
 }

@@ -38,7 +38,7 @@ public class ClientMainStage extends Application {
     @FXML
     public static HighscoresController highscoresController;
     @FXML
-    protected static Pane primaryPane;
+    public static Pane primaryPane;
 
     public static void main(String args[]) {
         launch(args);

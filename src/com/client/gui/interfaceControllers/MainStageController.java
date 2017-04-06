@@ -1,8 +1,5 @@
 package com.client.gui.interfaceControllers;
 
-//import com.bomberman.Game;
-//import com.bomberman.gui.GameMap;
-import com.client.ClientMap;
 import com.client.gui.ClientMainStage;
 import javafx.event.Event;
 import javafx.fxml.FXML;
