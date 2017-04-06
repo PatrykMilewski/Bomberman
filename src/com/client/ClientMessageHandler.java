@@ -1,15 +1,18 @@
 package com.client;
 
+import com.bomberman.gui.GameMap;
 import javafx.concurrent.Task;
 import org.json.JSONObject;
 public class ClientMessageHandler extends Task {
 
     private ClientMessageQueue messageQueue;
     private Client client;
+    private ClientMap map;
 
-    public ClientMessageHandler(ClientMessageQueue messageQueue, Client client) {
+    public ClientMessageHandler(ClientMessageQueue messageQueue, Client client, ClientMap map) {
         this.messageQueue = messageQueue;
         this.client = client;
+        this.map = map;
     }
 
     @Override

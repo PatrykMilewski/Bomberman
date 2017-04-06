@@ -1,5 +1,7 @@
 package com.client;
 
+import com.client.gui.ClientConsts;
+import com.client.gui.ClientMainStage;
 import javafx.animation.AnimationTimer;
 
 

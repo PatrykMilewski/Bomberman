@@ -1,8 +1,9 @@
-package com.bomberman.gui.interfaceControllers;
+package com.client.gui.interfaceControllers;
 
-import com.bomberman.Game;
-import com.bomberman.gui.GameMap;
-import com.bomberman.gui.MainStage;
+//import com.bomberman.Game;
+//import com.bomberman.gui.GameMap;
+import com.client.ClientMap;
+import com.client.gui.ClientMainStage;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,7 +14,7 @@ import javafx.scene.effect.Glow;
 import java.io.IOException;
 import java.util.logging.Level;
 
-public class MainStageController extends MainStage {
+public class MainStageController extends ClientMainStage {
     @FXML
     void startNewGame() {
         log.info("Starting a new game.");
@@ -26,15 +27,12 @@ public class MainStageController extends MainStage {
             primaryStage.setScene(scene);
             primaryStage.show();
 
-            GameMap map = new GameMap(this);
-            Game game = new Game(this, map);
-
-            game.GameLoop();
         } catch (IOException e) {
             log.log(Level.SEVERE, e.getMessage(), e);
         }
 
         root.getChildren();
+
     }
 
     @FXML

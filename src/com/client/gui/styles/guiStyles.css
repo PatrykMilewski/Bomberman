@@ -1,0 +1,99 @@
+/* Main classes */
+
+.root {
+    -fx-background-image: url("@/../../images/logos.png");
+}
+
+.button {
+    -fx-font-family: "Times New Roman";
+    -fx-font-wegiht: bold;
+}
+
+.menu-button {
+    -fx-background-color: rgba(50,50,50,0.6);
+    -fx-text-fill: rgba(200,200,200,0.9);
+    -fx-font-size: 24px;
+}
+
+.menu-button:hover {
+    -fx-background-color: rgba(50,50,50,0.8);
+    -fx-text-fill: rgba(240,240,240,0.95);
+}
+
+/*..\images\Nowy dokument tekstowy.css Game classes */
+
+#game-primary-pane {
+    -fx-background-image: url("@/../../images/backgroundmap.jpg");
+}
+
+.game-map-pane {
+    -fx-background-color: brown;
+}
+
+.scores-pane {
+    -fx-background-color: brown;
+}
+
+/* Lobby classes */
+
+.playersname-label {
+    -fx-text-fill: rgb(129, 149, 246);
+    -fx-background-color: rgba(50,50,50,0.8);
+    -fx-font-size: 28px;
+    -fx-text-aligment: center;
+    -fx-border-style: solid;
+    -fx-border-color: rgba(255, 255, 255, 0.72);
+}
+
+.playersname-label:hover {
+    -fx-background-color: rgba(152, 152, 152, 0.8);
+    -fx-text-fill: rgba(0, 51, 0, 0.9);
+}
+
+.playersnumber-label {
+    -fx-background-color: rgba(50,50,50,0.8);
+    -fx-text-fill: rgb(129, 149, 246);
+    -fx-font-size: 30px;
+    -fx-text-aligment: right;
+}
+
+.IPAddress-field {
+    -fx-text-fill: rgba(20,20,20,0.9);
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+
+.ping-label {
+    -fx-text-fill: rgba(0,0,100,0.7);
+    -fx-font-size: 14px;
+}
+
+/* Highscores classes */
+
+.highscores-scores-rectangle {
+
+}
+
+.highscores-label {
+
+}
+
+#highscores-primary-pane {
+    -fx-background-color: deepskyblue;
+}
+
+#highscores-top-label {
+
+}
+
+#highscores-bestscore-label {
+
+}
+
+#highscores-right-rectangle {
+    /* -fx-background-image: //todo */
+}
+
+#highscores-left-rectangle {
+    /* -fx-background-image: //todo */
+}

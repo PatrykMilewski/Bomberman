@@ -1,14 +1,14 @@
-package com.bomberman.gui.interfaceControllers;
+package com.client.gui.interfaceControllers;
 
-import com.bomberman.gui.Consts;
+import com.client.gui.ClientConsts;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
 
 import java.awt.*;
 
 public class GameController extends MainStageController {
-    private final static Dimension mapSize = new Dimension(Consts.DIMENSION*Consts.PIXEL_SIZE, Consts.DIMENSION*Consts.PIXEL_SIZE);
-    private final static Dimension scoresSize = new Dimension(502, Consts.DIMENSION*Consts.PIXEL_SIZE);
+    private final static Dimension mapSize = new Dimension(ClientConsts.DIMENSION*ClientConsts.PIXEL_SIZE, ClientConsts.DIMENSION*ClientConsts.PIXEL_SIZE);
+    private final static Dimension scoresSize = new Dimension(502, ClientConsts.DIMENSION*ClientConsts.PIXEL_SIZE);
 
     @FXML
     private Pane gameMapPane;

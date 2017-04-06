@@ -1,4 +1,4 @@
-package com.bomberman.gui.interfaceControllers;
+package com.client.gui.interfaceControllers;
 
 
 import javafx.scene.control.Label;

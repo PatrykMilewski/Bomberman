@@ -2,6 +2,7 @@ package com.bomberman.gui;
 
 import com.bomberman.BombTimerTask;
 import com.bomberman.fields.*;
+import com.client.gui.ClientMainStage;
 import javafx.concurrent.Task;
 import javafx.scene.Parent;
 import javafx.scene.image.ImageView;
@@ -14,7 +15,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class GameMap extends Parent{
-    private MainStage mainStage;
+    private ClientMainStage mainStage;
     private Field[][] mapFields;
     private Pane spaceForMap;
     private Pane spaceForScores;
@@ -22,7 +23,7 @@ public class GameMap extends Parent{
     private ArrayList<Fire> fires;
     private ExecutorService bombExecutors = Executors.newFixedThreadPool(Consts.MAX_N_BOMBS * 3);   //max liczba bomb na mapie * liczba graczy
 
-    public GameMap(MainStage mainStage) throws IOException {
+    public GameMap(ClientMainStage mainStage) throws IOException {
         mainStage.getRootElem().getChildren().clear();
         this.mainStage = mainStage;
         this.fires = new ArrayList<>();

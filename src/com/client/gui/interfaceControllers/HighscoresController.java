@@ -1,7 +1,6 @@
-package com.bomberman.gui.interfaceControllers;
+package com.client.gui.interfaceControllers;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 

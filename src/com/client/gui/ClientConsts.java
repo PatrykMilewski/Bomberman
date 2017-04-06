@@ -1,4 +1,4 @@
-package com.client;
+package com.client.gui;
 
 public class ClientConsts {
     public static final int PIXEL_SIZE = 42;

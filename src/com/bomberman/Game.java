@@ -1,6 +1,6 @@
 package com.bomberman;
 
-import com.bomberman.gui.MainStage;
+import com.client.gui.ClientMainStage;
 import com.bomberman.gui.GameMap;
 import javafx.concurrent.Task;
 
@@ -9,21 +9,15 @@ import java.util.concurrent.Executors;
 
 public class Game
 {
-    Listener gameListener;
     private boolean isRunning;
     private ExecutorService executor = Executors.newFixedThreadPool(2);
 
-    public Game(MainStage mainStage, GameMap map) {
+    public Game(ClientMainStage mainStage, GameMap map) {
         map.createPlayer(0 , 0, "Milewski");
         isRunning = true;
-        gameListener = new Listener(mainStage, map);
 
         Task fireTimerTask = new FireTimer(map);
         executor.submit(fireTimerTask);
-    }
-
-    public void GameLoop() {
-        gameListener.listen();
     }
 
 }

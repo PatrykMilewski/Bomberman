@@ -19,15 +19,15 @@ public class Client
     private int server_port;
     private int myId;
 
-    Client(InetAddress servIP, int server_port) throws SocketException {
+    public Client(InetAddress servIP, int server_port, ClientMap map) throws SocketException {
         this.socket = new DatagramSocket();
         this.messages = new ClientMessageQueue();
         this.server_port = server_port;
         this.servIP = servIP;
         executor.submit(new Client_receiver(messages,socket));
-        executor.submit(new ClientMessageHandler(messages, this));
+        executor.submit(new ClientMessageHandler(messages, this, map));
         myId = 0;
-        wannaJoin();
+        wannaJoin();    //TODO onmenu
     }
 
     private void send(String message) {
