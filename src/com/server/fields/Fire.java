@@ -1,6 +1,5 @@
 package com.server.fields;
 
-import com.server.Controllers.LogicController;
 
 public class Fire extends Field {
     private long startTime;
@@ -26,6 +25,4 @@ public class Fire extends Field {
     public void setUnderField(Bonus field) {
         this.fieldUnderFireField = field;
     }
-
-
 }

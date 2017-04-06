@@ -20,18 +20,7 @@ public class FireTimer extends Task {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now){
-                Iterator it = map.getFires().iterator();
-                while (it.hasNext()){
-                    Fire tempFire = (Fire) it.next();
-                    if (breakLoop){
-                        breakLoop = false;
-                        break;
-                    }
-                    if (System.currentTimeMillis() - tempFire.getStartTime() > Consts.FIRE_MILIS){
-//                        tempFire.removeFire();
-                        it.remove();
-                    }
-                }
+
             }
         };
         timer.start();

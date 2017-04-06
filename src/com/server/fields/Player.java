@@ -65,8 +65,10 @@ public class Player extends Field {
     }
 
     public void kill() {
-        System.out.print("ZGON!");
-        isAlive = false;
+        if (isAlive()){
+            System.out.print("ZGON!");
+            isAlive = false;
+        }
     }
 
     public void incSpeed() {

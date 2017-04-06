@@ -9,6 +9,7 @@ import com.server.Controllers.ServerConsts;
 import com.server.Controllers.GUIController;
 
 import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.util.ArrayList;
 
 public class MessageHandler extends Task {
@@ -18,13 +19,14 @@ public class MessageHandler extends Task {
     private GUIController serverMessageController;
     private Broadcaster msgSender;
     private LogicController logicController;
+    private DatagramSocket socket;
 
-    public MessageHandler(MessageQueue messageQueue, GUIController msgController, Broadcaster broadcaster) {
+    public MessageHandler(MessageQueue messageQueue, GUIController msgController, DatagramSocket socket) {
         clients = new ArrayList<ClientData>();
         this.messageQueue = messageQueue;
         this.serverMessageController = msgController;
-        this.msgSender = broadcaster;
-        this.logicController = new LogicController();
+        this.socket = socket;
+        this.logicController = new LogicController(socket, clients);
         logicController.fillMap();
     }
 
@@ -80,13 +82,15 @@ public class MessageHandler extends Task {
                     JSONObject answerToStart = new JSONObject();
                     answerToStart.put("status", "start");
                     answerToStart.put("cmd", "join");
-                    msgSender.broadcastMessage(clients, answerToStart.toString());
+                    msgSender.broadcastMessage(clients, answerToStart.toString(), socket);
+                    logicController.printEntireMap(answer);
+                    msgSender.broadcastMessage(clients, answer.toString(), socket);
                 }
             } else {
                 subAnswer.put("status", "FUCK_OFF");
             }
             answer.put(subAnswer);
-            msgSender.msgToOne(newClient, subAnswer.toString());
+            msgSender.msgToOne(newClient, subAnswer.toString(), socket);
         } else if (cmd.equals("key")) {         //TODO "Jesli gra sie rozpoczela"
             ID = msg.getInt("id");
             String key = msg.getString("but");
@@ -98,7 +102,8 @@ public class MessageHandler extends Task {
                 } else if(logicController.incCoords(finalID, key, answer)){
                     answer.put(subAnswer.put("cmd", "move"));
                     Platform.runLater(() -> serverMessageController.sendMessage(answer.toString()));
-                    msgSender.broadcastMessage(clients, answer.toString());
+                    msgSender.broadcastMessage(clients, answer.toString(), socket);
+
                 } else {
                     Platform.runLater(() -> serverMessageController.sendMessage("Brak możliwości ruchu"));
                 }
@@ -107,5 +112,4 @@ public class MessageHandler extends Task {
             }
         }
     }
-
 }

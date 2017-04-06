@@ -24,9 +24,9 @@ public class PacketsListener extends Task{
         this.controller=controller;
         this.socket = new DatagramSocket(PORT);
         this.messages= new MessageQueue();
-        this.broadcaster = new Broadcaster(socket);
+//        this.broadcaster = new Broadcaster(socket);
         buf = new byte[BUFFER];
-        executor.submit(new MessageHandler(messages, controller, broadcaster));
+        executor.submit(new MessageHandler(messages, controller, socket));
     }
 
     @Override
