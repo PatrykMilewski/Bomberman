@@ -1,8 +1,7 @@
-package com.bomberman;
+package com.server;
 
-import com.bomberman.fields.Fire;
-import com.bomberman.gui.Consts;
-import com.bomberman.gui.GameMap;
+import com.server.Controllers.LogicController;
+import com.server.fields.Fire;
 import javafx.animation.AnimationTimer;
 import javafx.concurrent.Task;
 
@@ -10,9 +9,9 @@ import java.util.Iterator;
 
 public class FireTimer extends Task {
     public static boolean breakLoop = false;
-    private GameMap map;
+    private LogicController map;
 
-    public FireTimer(GameMap map){
+    public FireTimer(LogicController map){
         this.map = map;
     }
 
@@ -29,7 +28,7 @@ public class FireTimer extends Task {
                         break;
                     }
                     if (System.currentTimeMillis() - tempFire.getStartTime() > Consts.FIRE_MILIS){
-                        tempFire.removeFire();
+//                        tempFire.removeFire();
                         it.remove();
                     }
                 }

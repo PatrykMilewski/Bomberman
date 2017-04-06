@@ -1,16 +1,14 @@
-package com.bomberman.fields;
-import com.bomberman.gui.Consts;
+package com.server.fields;
+import com.server.Consts;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
-import java.awt.*;
 
 public abstract class Field {
     protected int x;
     protected int y;
     protected boolean destroyable;
     protected boolean empty;
-    protected String imagePath;
+    protected String name;
     protected Bonus fieldUnderDestryableField;
 
     public Field(int x, int y, boolean destroyable) {
@@ -20,8 +18,8 @@ public abstract class Field {
         this.empty = false;
     }
 
-    public String getImagePath() {
-        return imagePath;
+    public String getName() {
+        return name;
     }
 
     public int getX() { return x; }
@@ -39,11 +37,4 @@ public abstract class Field {
         return destroyable;
     }
 
-    public ImageView printFiled() {
-        Image img = new Image("file:"+getImagePath());
-        ImageView imgView = new ImageView(img);
-        imgView.setX(this.x * Consts.PIXEL_SIZE);
-        imgView.setY(this.y * Consts.PIXEL_SIZE);
-        return imgView;
-    }
 }

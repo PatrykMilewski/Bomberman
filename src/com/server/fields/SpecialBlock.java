@@ -1,4 +1,4 @@
-package com.bomberman.fields;
+package com.server.fields;
 
 import javafx.scene.image.ImageView;
 
@@ -14,8 +14,4 @@ public class SpecialBlock extends Block {
         return type;
     }
 
-    @Override
-    public ImageView printFiled() {
-        return null;
-    }
 }

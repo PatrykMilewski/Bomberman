@@ -43,7 +43,7 @@ public class GUIController implements Initializable
     }
 
     public void go() throws IOException {
-        Task startServer = new GameController(this);
+        Task startServer = new PacketsListener(this);
         executor.submit(startServer);
     }
 }

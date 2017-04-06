@@ -1,4 +1,4 @@
-package com.bomberman.fields;
+package com.server.fields;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +28,7 @@ public class Bonus extends Field
     private void generateBonus() {
         Random generator = new Random();
         this.type = superPowers.get(generator.nextInt(nSuperPowers));
-        this.imagePath = "images/Bonuses/" + this.type + ".png";
+        this.name = "Bonus" + this.type;
     }
 
     public void takeBonus(Player player) {

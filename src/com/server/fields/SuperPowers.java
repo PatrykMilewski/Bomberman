@@ -1,4 +1,4 @@
-package com.bomberman.fields;
+package com.server.fields;
 
 public enum SuperPowers {
     invisible,

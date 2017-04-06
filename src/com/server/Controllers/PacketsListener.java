@@ -10,7 +10,7 @@ import java.net.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class GameController extends Task{
+public class PacketsListener extends Task{
     public final static int PORT = 7115;
     private final static int BUFFER = 2048;
     private ExecutorService executor = Executors.newFixedThreadPool(4);
@@ -20,7 +20,7 @@ public class GameController extends Task{
     private Broadcaster broadcaster;
     private byte[] buf;
 
-    public GameController(GUIController controller) throws IOException {
+    public PacketsListener(GUIController controller) throws IOException {
         this.controller=controller;
         this.socket = new DatagramSocket(PORT);
         this.messages= new MessageQueue();
@@ -36,7 +36,7 @@ public class GameController extends Task{
         while (true) {
             try {
                 DatagramPacket packet = new DatagramPacket(buf, buf.length);
-                System.out.println("Czekam na pakiecik");
+//                System.out.println("Czekam na pakiecik");
                 socket.receive(packet);
                 buf = new byte[BUFFER];
                 messages.add(packet);

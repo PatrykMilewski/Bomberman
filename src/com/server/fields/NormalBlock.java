@@ -1,6 +1,6 @@
-package com.bomberman.fields;
+package com.server.fields;
 
-import com.bomberman.gui.Consts;
+import com.server.Consts;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -14,22 +14,14 @@ public class NormalBlock extends Block {
         if ((this.isDestroyable()) && (!this.isEmpty())) {
             initDestroyableBLock();
         } else if ((!this.isDestroyable()) && (!this.isEmpty())) {
-            this.imagePath = "images/Blocks/unDestroyableBlock.png";
+            this.name = "UnDestroyableBlock";
         } else {
-            this.imagePath = "images/Blocks/defaultBlock.png";
+            this.name = "DefaultBlock";
         }
     }
 
-    public static ImageView printNormalBlock(int x, int y) {
-        Image img = new Image("file:" + "images/Blocks/defaultBlock.png");
-        ImageView imgView = new ImageView(img);
-        imgView.setX(x * Consts.PIXEL_SIZE);
-        imgView.setY(y * Consts.PIXEL_SIZE);
-        return imgView;
-    }
-
     private void initDestroyableBLock() {
-        this.imagePath = "images/Blocks/destroyableBlock.png";
+        this.name = "DestroyableBlock";
         Random generator = new Random();
         if (generator.nextDouble() <= Consts.SPECIAL_BLOCK_PROB) {       //utworz bonus pod spodem
             this.fieldUnderDestryableField = new Bonus(this.x, this.y);

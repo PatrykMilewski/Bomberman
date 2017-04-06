@@ -1,4 +1,4 @@
-package com.bomberman.gui;
+package com.server;
 
 public class Consts {
     public static final int PIXEL_SIZE = 42;
