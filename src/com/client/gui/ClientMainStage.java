@@ -25,17 +25,20 @@ public class ClientMainStage extends Application {
     protected static Pane root;
     protected static Scene scene;
     private static ClientListener playerListener;
+    
+    private ClientMainStage clientMainStage;
+
     // Child controllers
     @FXML
-    public MainStageController mainStageController;
+    public static MainStageController mainStageController;
     @FXML
-    public GameController gameController;
+    public static GameController gameController;
     @FXML
-    public LobbyController lobbyController;
+    public static LobbyController lobbyController;
     @FXML
-    public HighscoresController highscoresController;
+    public static HighscoresController highscoresController;
     @FXML
-    protected Pane primaryPane;
+    protected static Pane primaryPane;
 
     public static void main(String args[]) {
         launch(args);
@@ -43,7 +46,7 @@ public class ClientMainStage extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        ClientMainStage.primaryStage = primaryStage;
+        this.primaryStage = primaryStage;
         loader = new FXMLLoader(getClass().getResource("interfaceControllers/fxmlFiles/MainStage.fxml"));
         root = loader.load();
         mainStageController = loader.getController();
@@ -51,10 +54,8 @@ public class ClientMainStage extends Application {
         scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.show();
-        ClientMap map = new ClientMap();
-        Client client = new Client(InetAddress.getLocalHost(), ClientConsts.PORT, map);
-        playerListener = new ClientListener(this, client);
-        playerListener.listen();    //TODO Listen w nowym watku?
+
+        Client client = new Client(InetAddress.getLocalHost(), ClientConsts.PORT, this);
 
     }
 

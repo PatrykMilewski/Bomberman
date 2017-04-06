@@ -14,23 +14,27 @@ import javafx.scene.effect.Glow;
 import java.io.IOException;
 import java.util.logging.Level;
 
-public class MainStageController extends ClientMainStage {
+public  class MainStageController extends ClientMainStage {
     @FXML
-    void startNewGame() {
+    public void startNewGame() {
         log.info("Starting a new game.");
         try {
             loader = new FXMLLoader(getClass().getResource("fxmlFiles/Game.fxml"));
             root = loader.load();
             gameController = loader.getController();
             scene = new Scene(root);
-
+            System.out.println("26");
             primaryStage.setScene(scene);
-            primaryStage.show();
+            System.out.println("28");
 
+            primaryStage.show();
+    
+            System.out.println("31");
+    
         } catch (IOException e) {
             log.log(Level.SEVERE, e.getMessage(), e);
         }
-
+        System.out.println("33");
         root.getChildren();
 
     }

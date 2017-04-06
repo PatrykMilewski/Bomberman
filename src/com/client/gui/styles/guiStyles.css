@@ -71,47 +71,29 @@
 /* Highscores classes */
 
 .highscores-scores-rectangle {
-    -fx-fill: rgba(170,170,170,0.2);
-    -fx-stroke: rgba(200,200,200,0.5);
+
 }
 
 .highscores-label {
-    -fx-font-size: 44px Tahoma;
-    -fx-font-weight: bold;
-    -fx-text-fill: black;
-    -fx-font-smoothing-type: lcd;
-}
 
-.highscores-pane-images {
-    -fx-background-size: cover;
-}
-
-.highscores-pane-images-right {
-    -fx-background-image: url("@/../../images/dragon-right.png");
-}
-
-.highscores-pane-images-left {
-    -fx-background-image: url("@/../../images/dragon-left.png");
 }
 
 #highscores-primary-pane {
-    -fx-background-image: url("@/../../images/treasures-cave.jpg");
+    -fx-background-color: deepskyblue;
 }
 
 #highscores-top-label {
-    -fx-font-size: 48px Tahoma;
-    -fx-text-fill: red;
-    -fx-stroke: black;
-    -fx-stroke-width: 1;
-    -fx-font-weight: bolder;
-    -fx-font-smoothing-type: lcd;
+
 }
 
 #highscores-bestscore-label {
 
 }
 
-#highscores-top-rectangle {
-    -fx-fill: transparent;
-    -fx-stroke: transparent;
+#highscores-right-rectangle {
+    /* -fx-background-image: //todo */
+}
+
+#highscores-left-rectangle {
+    /* -fx-background-image: //todo */
 }

@@ -1,5 +1,6 @@
 package com.client;
 
+import com.client.gui.ClientMainStage;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -12,24 +13,36 @@ import java.util.concurrent.Executors;
 
 public class Client
 {
-    ExecutorService executor = Executors.newFixedThreadPool(2);
+    ExecutorService executor = Executors.newFixedThreadPool(3);
     private DatagramSocket socket;
     private InetAddress servIP;
     private ClientMessageQueue messages;
     private int server_port;
     private int myId;
+    private ClientMainStage mainStage;
 
-    public Client(InetAddress servIP, int server_port, ClientMap map) throws SocketException {
+    public Client(InetAddress servIP, int server_port, ClientMainStage mainStage) throws IOException, InterruptedException {
         this.socket = new DatagramSocket();
         this.messages = new ClientMessageQueue();
         this.server_port = server_port;
         this.servIP = servIP;
+        this.mainStage = mainStage;
         executor.submit(new Client_receiver(messages,socket));
-        executor.submit(new ClientMessageHandler(messages, this, map));
+        executor.submit(new ClientMessageHandler(messages, this));
         myId = 0;
-        wannaJoin();    //TODO onmenu
+        wannaJoin();
     }
-
+    
+    public void startGame() throws IOException {
+        mainStage.mainStageController.startNewGame();
+        System.out.println("Siema1");
+        ClientMap map = new ClientMap(mainStage);
+        System.out.println("Siema2");
+        executor.submit(new GameMessageHandler(messages, map));
+        System.out.println("Siema3");
+        ClientListener playerListener = new ClientListener(mainStage, this);
+        playerListener.listen();    //TODO Listen w nowym watku?
+    }
     private void send(String message) {
         System.out.println(message);
         DatagramPacket data = new DatagramPacket(message.getBytes(), message.length(), servIP, server_port);
@@ -47,6 +60,7 @@ public class Client
         msg.put("cmd", "key");
         msg.put("but", which);
         msg.put("id", myId);
+        System.out.println(msg.toString());
         send(msg.toString());
     }
 
@@ -59,4 +73,10 @@ public class Client
 
     public void setMyId(int id){this.myId = id;}
     public int getID(){return myId;}
+    public ClientMainStage getMainStage() {
+        return mainStage;
+    }
+    public ClientMessageQueue getMessages() {
+        return messages;}
 }
+

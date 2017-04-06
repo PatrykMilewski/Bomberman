@@ -1,55 +1,61 @@
 package com.client;
 
-import com.bomberman.gui.GameMap;
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import org.json.JSONObject;
-public class ClientMessageHandler extends Task {
 
+import java.io.IOException;
+
+public class ClientMessageHandler extends Task {
+    
     private ClientMessageQueue messageQueue;
     private Client client;
-    private ClientMap map;
-
-    public ClientMessageHandler(ClientMessageQueue messageQueue, Client client, ClientMap map) {
+    boolean stay;
+    public ClientMessageHandler(ClientMessageQueue messageQueue, Client client) {
         this.messageQueue = messageQueue;
         this.client = client;
-        this.map = map;
+        stay = true;
     }
-
+    
     @Override
     protected Object call() throws Exception {
-        while(true)
-        {
+        
+        while (stay) {
             String message = null;
             while (message == null) {
-                if(!messageQueue.isEmpty())
+                if (!messageQueue.isEmpty())
                     message = messageQueue.pop(); //TODO "jezeli gra nadal trwa", pobierane z Game.
             }
-            System.out.println("Z messageq: "+ message);
-
+            System.out.println("Z messageq: " + message);
+            System.out.println("Wszedlem do game message handlera");
             JSONObject msg = new JSONObject(message);
-            String cmd = msg.getString("cmd");;
-            if(cmd !=null)
-            {
-                if(cmd.equals("join"))
-                {
-                    if(msg.getString("status").equals("OK"))
-                    {
+            String cmd = msg.getString("cmd");
+    
+            if (cmd != null) {
+        
+                if (cmd.equals("join")) {
+                    if (msg.getString("status").equals("OK")) {
                         client.setMyId(msg.getInt("id"));
-                        System.out.println("Gramy, ID: " + client.getID() ); //TODO logika dodania tego ziomala do gry
-                    }
-                    else
-                    {
+                        System.out.println("Gramy, ID: " + client.getID()); //TODO Ready
+    
+                        Platform.runLater(() -> {
+                            try {
+                                client.startGame();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }); //TODO tylko do testow
+                        System.out.println("DUPA44");
+                        stay = false;
+                    } else if (msg.getString("status").equals("start")) {
+    
+                    } else {
                         System.out.println("Nie udalo sie polaczyc z serverem");
                     }
                 }
-
-                else if(cmd.equals("key")) //TODO "Jesli gra sie rozpoczela"
-                {
-
-                }
+        
             }
-
         }
+        return null;
     }
-
 }
