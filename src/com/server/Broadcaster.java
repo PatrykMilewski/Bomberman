@@ -9,14 +9,14 @@ import java.util.ArrayList;
  * Created by rados on 02.04.2017.
  */
 public class Broadcaster {
-    private DatagramSocket serverSocket;  // Socket to send/receive messages on
+//    private DatagramSocket serverSocket;  // Socket to send/receive messages on
+//
+//
+//    public Broadcaster(DatagramSocket serverSocket) {
+//        this.serverSocket = serverSocket;
+//    }
 
-
-    public Broadcaster(DatagramSocket serverSocket) {
-        this.serverSocket = serverSocket;
-    }
-
-    public void broadcastMessage(ArrayList<ClientData> clients, String message) {
+    public static void broadcastMessage(ArrayList<ClientData> clients, String message, DatagramSocket serverSocket) {
 
         for (ClientData client : clients) {
             byte[] msg = message.getBytes();
@@ -31,7 +31,7 @@ public class Broadcaster {
         }
     }
 
-    public void msgToOne(ClientData client, String message) {
+    public static void msgToOne(ClientData client, String message, DatagramSocket serverSocket) {
 
             byte[] msg = message.getBytes();
             DatagramPacket packet = new DatagramPacket(msg, msg.length, client.getIPaddr(), client.getPort());

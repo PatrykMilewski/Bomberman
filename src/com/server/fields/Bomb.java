@@ -2,7 +2,6 @@ package com.server.fields;
 
 import com.server.Consts;
 import com.server.Controllers.LogicController;
-import org.json.JSONArray;
 
 public class Bomb extends Field {
     private int range;
@@ -16,7 +15,6 @@ public class Bomb extends Field {
         this.name = "Bomb";
         this.ownerOfBomb = player;
         this.range = player.getRangeOfBomb();
-        this.map = map;
     }
 
     public synchronized long getStartTime() {
