@@ -1,16 +1,16 @@
-package sample;
+package com.client;
 
 import javafx.animation.AnimationTimer;
 
 
-public class Listener {
+public class ClientListener {
     boolean up, down, left, right, bomb;
     private long lastDropedBomb;
     private long lastMove;
-    private MainStage mainStage;
+    private ClientMainStage mainStage;
     private Client client;
 
-    public Listener(MainStage mainSt, Client client) {
+    public ClientListener(ClientMainStage mainSt, Client client) {
         this.mainStage = mainSt;
         this.client = client;
         lastMove = 0;
@@ -44,8 +44,8 @@ public class Listener {
             @Override
             public void handle(long now) {
                 if (up) {
-                    if (now / Consts.TIME_CUTTER - lastMove > (Consts.TIME_BETWEEN_MOVES )) { //TODO playergetspid tu jakis byl
-                        lastMove = now / Consts.TIME_CUTTER;
+                    if (now / ClientConsts.TIME_CUTTER - lastMove > (ClientConsts.TIME_BETWEEN_MOVES )) { //TODO playergetspid tu jakis byl
+                        lastMove = now / ClientConsts.TIME_CUTTER;
                         System.out.print("Gora");
                         client.sendKey("UP");
                         //player.incCoords(0, -1);
@@ -53,32 +53,32 @@ public class Listener {
                 }
 
                 if (down) {
-                    if (now / Consts.TIME_CUTTER - lastMove > Consts.TIME_BETWEEN_MOVES ) {
-                        lastMove = now / Consts.TIME_CUTTER;
+                    if (now / ClientConsts.TIME_CUTTER - lastMove > ClientConsts.TIME_BETWEEN_MOVES ) {
+                        lastMove = now / ClientConsts.TIME_CUTTER;
                         client.sendKey("DOWN");
                         //player.incCoords(0, 1);
                     }
                 }
 
                 if (left) {
-                    if (now / Consts.TIME_CUTTER - lastMove >(Consts.TIME_BETWEEN_MOVES)) {
-                        lastMove = now / Consts.TIME_CUTTER;
+                    if (now / ClientConsts.TIME_CUTTER - lastMove >(ClientConsts.TIME_BETWEEN_MOVES)) {
+                        lastMove = now / ClientConsts.TIME_CUTTER;
                         client.sendKey("LEFT");
                         //player.incCoords(-1, 0);
                     }
                 }
 
                 if (right) {
-                    if (now / Consts.TIME_CUTTER - lastMove > (Consts.TIME_BETWEEN_MOVES)) {
-                        lastMove = now / Consts.TIME_CUTTER;
+                    if (now / ClientConsts.TIME_CUTTER - lastMove > (ClientConsts.TIME_BETWEEN_MOVES)) {
+                        lastMove = now / ClientConsts.TIME_CUTTER;
                         client.sendKey("RIGHT");
                         //player.incCoords(1, 0);
                     }
                 }
 
                 if (bomb) {
-                    if (now / Consts.TIME_CUTTER - lastDropedBomb > Consts.TIME_BETWEEN_BOMBS) {
-                        lastDropedBomb = now / Consts.TIME_CUTTER;
+                    if (now / ClientConsts.TIME_CUTTER - lastDropedBomb > ClientConsts.TIME_BETWEEN_BOMBS) {
+                        lastDropedBomb = now / ClientConsts.TIME_CUTTER;
                         //player.dropBomb();
                     }
                 }

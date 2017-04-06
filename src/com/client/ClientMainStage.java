@@ -1,4 +1,4 @@
-package sample;
+package com.client;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -8,21 +8,21 @@ import javafx.stage.Stage;
 
 import java.net.InetAddress;
 
-public class MainStage extends Application {
+public class ClientMainStage extends Application {
 
     private static Stage primaryStage;
-    private static Listener playerListener;
+    private static ClientListener playerListener;
     public Stage getPrimaryStage() {return primaryStage;}
 
     @Override
     public void start(Stage primaryStage) throws Exception{
         this.primaryStage = primaryStage;
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("sieman.fxml"));
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root, 300, 275));
         primaryStage.show();
-        Client client = new Client(InetAddress.getLocalHost(), Consts.PORT);
-        playerListener = new Listener(this, client);
+        Client client = new Client(InetAddress.getLocalHost(), ClientConsts.PORT);
+        playerListener = new ClientListener(this, client);
         playerListener.listen();    //TODO Listen w nowym watku?
 
     }

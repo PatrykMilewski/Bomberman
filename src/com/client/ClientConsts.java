@@ -1,6 +1,6 @@
-package sample;
+package com.client;
 
-public class Consts {
+public class ClientConsts {
     public static final int PIXEL_SIZE = 42;
     public static final int DIMENSION = 17;
     public static final double NORMAL_BLOCK_PROB = 0.6;

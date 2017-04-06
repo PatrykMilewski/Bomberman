@@ -1,4 +1,4 @@
-package sample;
+package com.client;
 
 import org.json.JSONObject;
 
@@ -15,17 +15,17 @@ public class Client
     ExecutorService executor = Executors.newFixedThreadPool(2);
     private DatagramSocket socket;
     private InetAddress servIP;
-    private MessageQueue messages;
+    private ClientMessageQueue messages;
     private int server_port;
     private int myId;
 
     Client(InetAddress servIP, int server_port) throws SocketException {
         this.socket = new DatagramSocket();
-        this.messages = new MessageQueue();
+        this.messages = new ClientMessageQueue();
         this.server_port = server_port;
         this.servIP = servIP;
         executor.submit(new Client_receiver(messages,socket));
-        executor.submit(new MessageHandler(messages, this));
+        executor.submit(new ClientMessageHandler(messages, this));
         myId = 0;
         wannaJoin();
     }

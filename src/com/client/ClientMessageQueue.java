@@ -1,13 +1,13 @@
-package sample;
+package com.client;
 
 import java.util.LinkedList;
 
 
-public class MessageQueue {
+public class ClientMessageQueue {
 
     private LinkedList<String> messageQueue;
 
-    public MessageQueue() {
+    public ClientMessageQueue() {
         messageQueue = new LinkedList<String>();
     }
 

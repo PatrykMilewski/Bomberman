@@ -1,4 +1,4 @@
-package sample;
+package com.client;
 
 import javafx.concurrent.Task;
 
@@ -8,12 +8,12 @@ import java.net.DatagramSocket;
 
 public class Client_receiver extends Task
 {
-    private MessageQueue messages;
+    private ClientMessageQueue messages;
     private DatagramSocket serverSocket;
     private DatagramPacket data;
     byte[] receivedData;
 
-    Client_receiver(MessageQueue messages, DatagramSocket socket)
+    Client_receiver(ClientMessageQueue messages, DatagramSocket socket)
     {
         this.messages = messages;
         this.serverSocket = socket;

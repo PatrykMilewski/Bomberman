@@ -1,13 +1,13 @@
-package sample;
+package com.client;
 
 import javafx.concurrent.Task;
 import org.json.JSONObject;
-public class MessageHandler extends Task {
+public class ClientMessageHandler extends Task {
 
-    private MessageQueue messageQueue;
+    private ClientMessageQueue messageQueue;
     private Client client;
 
-    public MessageHandler(MessageQueue messageQueue, Client client) {
+    public ClientMessageHandler(ClientMessageQueue messageQueue, Client client) {
         this.messageQueue = messageQueue;
         this.client = client;
     }
