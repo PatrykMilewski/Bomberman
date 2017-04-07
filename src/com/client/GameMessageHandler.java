@@ -1,6 +1,7 @@
 package com.client;
 
 import com.sun.org.apache.xpath.internal.SourceTree;
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -34,15 +35,13 @@ public class GameMessageHandler extends Task
                 System.out.println("Z messageq KLIENTA: " + message);
             
                 JSONArray msg = new JSONArray(message);
-                System.out.println("1");
                 //String cmd = msg.getString("cmd");
-                System.out.println("2");
                // if (cmd != null) {
-                    System.out.println("3");
+               
                 
              //   }
-                System.out.println("ELo");
-                map.printEntireMap();
+          
+               // Platform.runLater(() -> map.printEntireMap());
             }
     }
 }

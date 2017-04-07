@@ -39,8 +39,6 @@ public class ClientMap extends Parent {
             for (int j = 1; j < ClientConsts.DIMENSION; j += 2)
                 this.map[i][j] = 4;       //Blok nie do rozbicia
         System.out.println("DUPA7");
-        this.spaceForMap = new Pane();
-        this.spaceForScores = new Pane();
             this.spaceForMap = mainStage.gameController.getGameMapPane();
             this.spaceForScores = mainStage.gameController.getGameScoresPane();
         System.out.println("DUPA8");
@@ -59,13 +57,11 @@ public class ClientMap extends Parent {
             {
                 System.out.print(map[i][j]);
                 String temp = fieldImages.get(map[i][j]);
-                //Image img = new Image("file:" + "gui/images/Blocks/" + temp);
-                Image img = new Image("file:" + "defaultBlock.png");
-                img.getException().getMessage();
+                Image img = new Image("file:" + "images/Blocks/" + temp);
                 ImageView imgView = new ImageView(img);
                 imgView.setX(i * ClientConsts.PIXEL_SIZE);
                 imgView.setY(j * ClientConsts.PIXEL_SIZE);
-                this.spaceForMap.getChildren().add(imgView);
+                this.spaceForMap.getChildren().addAll(imgView);
             }
     }
 

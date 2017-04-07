@@ -62,7 +62,7 @@ public class MessageHandler extends Task {
         }
     }
 
-    private void decodeCmd(String cmd, DatagramPacket codedMessage, JSONObject msg){
+    private void decodeCmd(String cmd, DatagramPacket codedMessage, JSONObject msg) throws InterruptedException {
         int ID = 0;
         JSONArray answer = new JSONArray();
         JSONObject subAnswer = new JSONObject();
@@ -79,6 +79,7 @@ public class MessageHandler extends Task {
                 subAnswer.put("id", ID);
                 Platform.runLater(() -> serverMessageController.sendMessage("Dolacza: " + newClient.getIPaddr()));
                 if (clients.size() == ServerConsts.MAX_NUMBER_OF_PLAYERS){
+                    Thread.sleep(1000);
                     JSONObject answerToStart = new JSONObject();
                     answerToStart.put("status", "start");
                     answerToStart.put("cmd", "join");

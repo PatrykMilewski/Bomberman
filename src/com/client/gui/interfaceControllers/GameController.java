@@ -22,8 +22,7 @@ public class GameController extends MainStageController {
         gameScoresPane.setStyle("-fx-pref-width: " + scoresSize.width + "px;");
         gameScoresPane.setStyle("-fx-pref-height: " + scoresSize.height + "px;");
     }
-
-
+    
     public Pane getGameMapPane() {
         return gameMapPane;
     }

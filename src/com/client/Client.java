@@ -33,11 +33,11 @@ public class Client
         wannaJoin();
     }
     
-    public void startGame() throws IOException {
+    public void startGame() throws IOException, InterruptedException {
         mainStage.mainStageController.startNewGame();
         System.out.println("Siema1");
         ClientMap map = new ClientMap(mainStage);
-        System.out.println("Siema2");
+        map.printEntireMap();
         executor.submit(new GameMessageHandler(messages, map));
         System.out.println("Siema3");
         ClientListener playerListener = new ClientListener(mainStage, this);

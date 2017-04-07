@@ -43,9 +43,10 @@ public class ClientMessageHandler extends Task {
                                 client.startGame();
                             } catch (IOException e) {
                                 e.printStackTrace();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
                             }
                         }); //TODO tylko do testow
-                        System.out.println("DUPA44");
                         stay = false;
                     } else if (msg.getString("status").equals("start")) {
     

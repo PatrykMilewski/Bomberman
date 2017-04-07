@@ -1,5 +1,6 @@
 package com.client.gui.interfaceControllers;
 
+import com.client.ClientMap;
 import com.client.gui.ClientMainStage;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -25,7 +26,6 @@ public  class MainStageController extends ClientMainStage {
             System.out.println("28");
 
             primaryStage.show();
-    
             System.out.println("31");
     
         } catch (IOException e) {

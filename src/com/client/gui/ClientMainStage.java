@@ -56,7 +56,6 @@ public class ClientMainStage extends Application {
         primaryStage.show();
 
         Client client = new Client(InetAddress.getLocalHost(), ClientConsts.PORT, this);
-
     }
 
     public Stage getPrimaryStage() {
