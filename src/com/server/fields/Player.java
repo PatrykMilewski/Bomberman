@@ -29,7 +29,7 @@ public class Player extends Field {
         superPowers.put(SuperPowers.invisible, false);
         superPowers.put(SuperPowers.faster, false);
         superPowers.put(SuperPowers.terminator, false);
-        this.name = "Name";
+        this.name = "Player";
         this.speed = 10;
         this.nBombs = 4;
         this.rangeOfBomb = 2;

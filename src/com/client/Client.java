@@ -35,11 +35,8 @@ public class Client
     
     public void startGame() throws IOException, InterruptedException {
         mainStage.mainStageController.startNewGame();
-        System.out.println("Siema1");
         ClientMap map = new ClientMap(mainStage);
-        map.printEntireMap();
         executor.submit(new GameMessageHandler(messages, map));
-        System.out.println("Siema3");
         ClientListener playerListener = new ClientListener(mainStage, this);
         playerListener.listen();    //TODO Listen w nowym watku?
     }

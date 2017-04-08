@@ -38,7 +38,7 @@ public class LogicController {
 
     private static final Map<String, Integer> fillHashMap() {
         Map<String, Integer> tempMap = new HashMap<>();
-        tempMap.put("NormalBlock", 0);
+        tempMap.put("DefaultBlock", 0);
         tempMap.put("DestroyableBlock", 1);
         tempMap.put("Fire", 2);
         tempMap.put("Player", 3);
@@ -158,16 +158,24 @@ public class LogicController {
         this.fires.add(fire);
     }
 
-    public void printEntireMap(JSONArray answer) {
-        for (int i = 0; i < Consts.DIMENSION; i++) {
+    public String printEntireMap() {
+        String mapp="";
+        for (int i = 0; i < Consts.DIMENSION; i++) {       //
             for (int j = 0; j < Consts.DIMENSION; j++) {
-                JSONObject temp = new JSONObject();
-                temp.put("field", Integer.toString(fieldImages.get(mapFields[i][j].getName())));
-                temp.put("y", Integer.toString(j));
-                temp.put("x", Integer.toString(i));
-                answer.put(temp);
+                Integer blockNumber = fieldImages.get(mapFields[i][j].getName());
+                mapp += Integer.toString(blockNumber);
+                
+//                if(blockNumber != 4) {
+//                    JSONObject temp = new JSONObject();
+//                    temp.put("f", Integer.toString(blockNumber));
+//                    temp.put("y", Integer.toString(j));
+//                    temp.put("x", Integer.toString(i));
+//                    answer.put(temp);
+//                }
+            
             }
         }
+        return mapp;
     }
 
     public void printFieldOfMap(int x, int y, String field, JSONArray answer) {
@@ -246,7 +254,7 @@ public class LogicController {
             printFieldOfMap(playerX,playerY, "NormalBlock", answer);
             players.get(finalID).move(diffX, diffY);
             setMapField(playerX, playerY, players.get(finalID));
-            printFieldOfMap(playerX, playerY, "Player", answer);
+            printFieldOfMap(players.get(finalID).getX(), players.get(finalID).getY(), "Player", answer);
             System.out.println(answer.toString());
 
 //            this.map.setMapField(this.x, this.y, this);     //TODO

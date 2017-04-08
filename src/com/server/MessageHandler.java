@@ -66,6 +66,7 @@ public class MessageHandler extends Task {
         int ID = 0;
         JSONArray answer = new JSONArray();
         JSONObject subAnswer = new JSONObject();
+        
         if (cmd.equals("join")) {
             subAnswer.put("cmd", "join");
             ClientData newClient = new ClientData(codedMessage.getAddress(), codedMessage.getPort(), ID);
@@ -77,6 +78,7 @@ public class MessageHandler extends Task {
                 logicController.createPlayer(ID, "Test");
                 subAnswer.put("status", "OK");
                 subAnswer.put("id", ID);
+                msgSender.msgToOne(newClient, subAnswer.toString(), socket);
                 Platform.runLater(() -> serverMessageController.sendMessage("Dolacza: " + newClient.getIPaddr()));
                 if (clients.size() == ServerConsts.MAX_NUMBER_OF_PLAYERS){
                     Thread.sleep(1000);
@@ -84,24 +86,25 @@ public class MessageHandler extends Task {
                     answerToStart.put("status", "start");
                     answerToStart.put("cmd", "join");
                     msgSender.broadcastMessage(clients, answerToStart.toString(), socket);
-                    logicController.printEntireMap(answer);
-                    msgSender.broadcastMessage(clients, answer.toString(), socket);
+                    JSONObject answerToPrint = new JSONObject();
+                    answerToPrint.put("cmd", "eMap");
+                    answerToPrint.put("fields", logicController.printEntireMap());
+                    msgSender.broadcastMessage(clients, answerToPrint.toString(), socket);
                 }
             } else {
                 subAnswer.put("status", "FUCK_OFF");
+                msgSender.msgToOne(newClient, subAnswer.toString(), socket);
             }
-            answer.put(subAnswer);
-            msgSender.msgToOne(newClient, subAnswer.toString(), socket);
         } else if (cmd.equals("key")) {         //TODO "Jesli gra sie rozpoczela"
             ID = msg.getInt("id");
             String key = msg.getString("but");
             int finalID = ID;
 
             if (logicController.getPlayer(ID).isAlive()){
+                answer.put(subAnswer.put("cmd", "move"));
                 if (key.equals("BOMB")){
                     logicController.dropBomb(ID, answer);
                 } else if(logicController.incCoords(finalID, key, answer)){
-                    answer.put(subAnswer.put("cmd", "move"));
                     Platform.runLater(() -> serverMessageController.sendMessage(answer.toString()));
                     msgSender.broadcastMessage(clients, answer.toString(), socket);
 

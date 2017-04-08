@@ -21,7 +21,6 @@ public class Broadcaster {
         for (ClientData client : clients) {
             byte[] msg = message.getBytes();
             DatagramPacket packet = new DatagramPacket(msg, msg.length, client.getIPaddr(), client.getPort());
-
             try {
                 serverSocket.send(packet);
             } catch (IOException e) {

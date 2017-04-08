@@ -21,13 +21,8 @@ public  class MainStageController extends ClientMainStage {
             root = loader.load();
             gameController = loader.getController();
             scene = new Scene(root);
-            System.out.println("26");
             primaryStage.setScene(scene);
-            System.out.println("28");
-
             primaryStage.show();
-            System.out.println("31");
-    
         } catch (IOException e) {
             log.log(Level.SEVERE, e.getMessage(), e);
         }

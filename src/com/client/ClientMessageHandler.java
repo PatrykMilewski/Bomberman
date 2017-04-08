@@ -26,8 +26,7 @@ public class ClientMessageHandler extends Task {
                 if (!messageQueue.isEmpty())
                     message = messageQueue.pop(); //TODO "jezeli gra nadal trwa", pobierane z Game.
             }
-            System.out.println("Z messageq: " + message);
-            System.out.println("Wszedlem do game message handlera");
+            System.out.println("Z ClientMessageq: " + message);
             JSONObject msg = new JSONObject(message);
             String cmd = msg.getString("cmd");
     
@@ -37,7 +36,7 @@ public class ClientMessageHandler extends Task {
                     if (msg.getString("status").equals("OK")) {
                         client.setMyId(msg.getInt("id"));
                         System.out.println("Gramy, ID: " + client.getID()); //TODO Ready
-    
+                    } else if (msg.getString("status").equals("start")) {
                         Platform.runLater(() -> {
                             try {
                                 client.startGame();
@@ -46,10 +45,8 @@ public class ClientMessageHandler extends Task {
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
-                        }); //TODO tylko do testow
+                        });
                         stay = false;
-                    } else if (msg.getString("status").equals("start")) {
-    
                     } else {
                         System.out.println("Nie udalo sie polaczyc z serverem");
                     }

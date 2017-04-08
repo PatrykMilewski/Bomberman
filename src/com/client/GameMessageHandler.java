@@ -1,19 +1,15 @@
 package com.client;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
+import com.client.gui.ClientConsts;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-/**
- * Created by rados on 06.04.2017.
- */
 public class GameMessageHandler extends Task
 {
     private ClientMessageQueue messageQueue;
     private ClientMap map;
-    //private Client client;
     
     public GameMessageHandler(ClientMessageQueue messageQueue, ClientMap map)
     {
@@ -33,15 +29,34 @@ public class GameMessageHandler extends Task
                         message = messageQueue.pop(); //TODO "jezeli gra nadal trwa", pobierane z Game.
                 }
                 System.out.println("Z messageq KLIENTA: " + message);
-            
-                JSONArray msg = new JSONArray(message);
-                //String cmd = msg.getString("cmd");
-               // if (cmd != null) {
-               
+    
+                JSONObject jObject = new JSONObject(message);
+                String cmd = jObject.getString("cmd");
+                if (cmd != null) {
+                    if(cmd.equals("eMap")){
+                        String mapp = jObject.getString("fields");
+                        System.out.println(mapp);
+                        for (int i = 0; i < ClientConsts.DIMENSION; i++)
+                            for (int j = 0; j < ClientConsts.DIMENSION; j++)
+                            {
+                                int field = Integer.parseInt(mapp.substring(0,1));
+                                mapp = mapp.substring(1);
+                                map.setMapField(i,j, field);
+                            }
+                        Platform.runLater(() -> map.printEntireMap());
+                    }
+                    else if(cmd.equals("change"))
+                    {
+                        JSONArray fields = jObject.getJSONArray("fields");
+                        for (int i = 0; i < fields.length(); i++) {
+                            JSONObject temp = fields.getJSONObject(i);
+                            map.setMapField(temp.getInt("x"),temp.getInt("y"),temp.getInt("f"));
+                            map.printOneField(temp.getInt("x"),temp.getInt("y"));
+                        }
+                    }
                 
-             //   }
-          
-               // Platform.runLater(() -> map.printEntireMap());
+                }
+                
             }
     }
 }
