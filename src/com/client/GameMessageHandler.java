@@ -50,9 +50,12 @@ public class GameMessageHandler extends Task
                     for (int i = 0; i < fields.length(); i++) {
                         JSONObject temp = fields.getJSONObject(i);
                         System.out.println(temp);
-                        map.setMapField(temp.getInt("x"),temp.getInt("y"),temp.getInt("field"));
+                        Platform.runLater(() ->map.setMapField(temp.getInt("x"),temp.getInt("y"),temp.getInt("field")));    //TODO
                         Platform.runLater(() -> map.printOneField(temp.getInt("x"),temp.getInt("y")));
                     }
+                } else if (cmd.equals("incspeed")){
+                    System.out.println("Zwiekszam moja predkosc");
+                    //TODO MUL tutaj zrobi zwiekszenie predkosci gracza
                 }
             }
         }

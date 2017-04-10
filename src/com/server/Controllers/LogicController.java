@@ -112,8 +112,13 @@ public class LogicController {
     }
 
     public void createPlayer(int ID, String name) {
-        this.mapFields[0][0] = new Player(0, 0, true, name);        //TODO
-        players.add((Player) this.mapFields[0][0]);
+        if (ID == 0){
+            this.mapFields[0][0] = new Player(0, 0, true, name);        //TODO
+            players.add((Player) this.mapFields[0][0]);
+        } else if (ID == 1){
+            this.mapFields[Consts.DIMENSION-1][Consts.DIMENSION-1] = new Player(Consts.DIMENSION-1, Consts.DIMENSION-1, true, name);        //TODO
+            players.add((Player) this.mapFields[Consts.DIMENSION-1][Consts.DIMENSION-1]);
+        }
     }
 
     public void destroyField(int x, int y, Field newField, JSONArray answer) {
@@ -124,7 +129,6 @@ public class LogicController {
         }
         this.mapFields[y][x] = newField;
         printFieldOfMap(x, y, answer); //TODO
-        System.out.println("Mam to pokazaC:\t" + answer.toString());
     }
 
     public void deletePlayerFromMap(Player player) {
@@ -210,9 +214,7 @@ public class LogicController {
                 setMapField(playerX, playerY, new NormalBlock(playerX, playerY, false, true));
             } else {
                 printNamedBlockOnMap(playerX, playerY, "DefaultBlock", answer);     //gracz schodzi z bomby
-                printNamedBlockOnMap(playerX, playerY, "Bomb", answer);
             }
-
             //Nowe pole
             if (getMapField(newX, newY) instanceof Fire == true) {              //wszedl w ogien
                 printNamedBlockOnMap(playerX, playerY, "DefaultBlock", answer);
@@ -220,18 +222,17 @@ public class LogicController {
                 return true;
             } else if (getMapField(newX, newY) instanceof Bonus == true) {      //wszedl na bonus
                 ((Bonus) getMapField(newX, newY)).takeBonus(players.get(finalID));              //TODO wyslac do gracza info, ze moze szybciej beigac
-                JSONObject msg = new JSONObject();
-                msg.put("bonus", "speed");
-                Broadcaster.msgToOne(clients.get(finalID), msg.toString(), socket);
+                if (getMapField(newX, newY).getName().equals("Bonushaste")){
+                    JSONObject msg = new JSONObject();
+                    msg.put("cmd", "incspeed");
+                    Broadcaster.msgToOne(clients.get(finalID), msg.toString(), socket);
+                }
                 printNamedBlockOnMap(newX, newY, "DefaultBlock", answer);
             }
-
             printFieldOfMap(playerX,playerY, answer);
             players.get(finalID).move(diffX, diffY);
             setMapField(players.get(finalID).getX(), players.get(finalID).getY(), players.get(finalID));
             printFieldOfMap(players.get(finalID).getX(), players.get(finalID).getY(), answer);
-            System.out.println(answer.toString());
-
             return true;
         }
         return false;
@@ -262,7 +263,6 @@ public class LogicController {
         }
         Fire newFire = new Fire(bomb.getX(), bomb.getY(), true);
         destroyField(bomb.getX(), bomb.getY(), newFire, arrayOfFields);
-        printNamedBlockOnMap(bomb.getX(), bomb.getY(), "Fire", arrayOfFields);     //TODO rysuje bonus??????
         addFire(newFire);
 
         boolean firstUp = false;
@@ -286,7 +286,7 @@ public class LogicController {
         bomb.getOwnerOfBomb().incNBombs();
         answerToSend.put("fields", arrayOfFields);
         Broadcaster.broadcastMessage(clients, answerToSend.toString(), socket);
-//        System.out.println("Wybuch:\t\t" + answerToSend.toString());
+        System.out.println("Wybuch:\t\t" + answerToSend.toString());
     }
 
     private boolean checkFieldToBurn(int xToCheck, int yToCheck, JSONArray answer) {
@@ -294,15 +294,15 @@ public class LogicController {
             ((Bomb) getMapField(xToCheck, yToCheck)).decTime();
             return true;
         }
-        if (!getMapField(xToCheck, yToCheck).isDestroyable()        //niezniszczalny kloc
+        if (!getMapField(xToCheck, yToCheck).isDestroyable()                                //niezniszczalny kloc
                 && !getMapField(xToCheck, yToCheck).isEmpty()) {
             return true;
         } else {
             Fire newFire = new Fire(xToCheck, yToCheck, false);
-            if (getMapField(xToCheck, yToCheck).isDestroyable()) {               //do zniszczenia
+            if (getMapField(xToCheck, yToCheck).isDestroyable()) {                          //do zniszczenia
+                newFire.setUnderField(getMapField(xToCheck, yToCheck).getFieldUnderDestryableField());
                 destroyField(xToCheck, yToCheck, newFire, answer);
                 addFire(newFire);
-                printNamedBlockOnMap(xToCheck, yToCheck, "Fire", answer);
                 return true;
             } else {
 /*                if (map.getMapField(xToCheck, yToCheck) instanceof Fire) {            //TODO jesli ogien ma przechodzic przez ogien (nowe watki?)
@@ -324,7 +324,6 @@ public class LogicController {
         } else {
             printNamedBlockOnMap(fire.getX(), fire.getY(), "DefaultBlock", fieldsArray);
             setMapField(fire.getX(), fire.getY(), fire.getFieldUnderFireField());
-            System.out.println("No nieźle... \t" + getMapField(fire.getX(), fire.getY()).getClass());
             printFieldOfMap(fire.getX(), fire.getY(), fieldsArray);
         }
     }
@@ -339,7 +338,7 @@ public class LogicController {
                 while (it.hasNext()){
                     if (breakLoopFires == 1){
                         try {
-                            Thread.sleep(10);
+                            Thread.sleep(10);                           //TODO da sie to rozwiazac inaczej?
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }

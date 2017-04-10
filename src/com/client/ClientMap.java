@@ -45,10 +45,11 @@ public class ClientMap extends Parent {
     }
 
     public void printEntireMap() {
-        for (int i = 0; i < ClientConsts.DIMENSION; i++)
+        for (int i = 0; i < ClientConsts.DIMENSION; i++){
             for (int j = 0; j < ClientConsts.DIMENSION; j++) {
                 printOneField(i, j);
             }
+        }
     }
 
     public void printOneField(int x, int y) {
@@ -64,6 +65,7 @@ public class ClientMap extends Parent {
         this.map[x][y] = field;
     }
 
+
     private final void fillHashMap() {
         fieldImages.put(0, "defaultBlock.png");
         fieldImages.put(1, "destroyableBlock.png");
@@ -71,8 +73,8 @@ public class ClientMap extends Parent {
         fieldImages.put(3, "playerBlock.png");
         fieldImages.put(4, "unDestroyableBlock.png");
         fieldImages.put(5, "bomb/bomb.gif");
-        fieldImages.put(6, "haste.png");
-        fieldImages.put(7, "incrange.png");
-        fieldImages.put(8, "incbombs.png");
+        fieldImages.put(6, "../Bonuses/haste.png");
+        fieldImages.put(7, "../Bonuses/incrange.png");
+        fieldImages.put(8, "../Bonuses/incbombs.png");
     }
 }
