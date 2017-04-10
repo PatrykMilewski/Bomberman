@@ -64,7 +64,7 @@ public class MessageHandler extends Task {
     private void decodeCmd(String cmd, DatagramPacket codedMessage, JSONObject msg) throws InterruptedException {
         if (cmd.equals("join")) {
             cmdJoin(codedMessage);
-        } else if (cmd.equals("key")) {         //TODO "Jesli gra sie rozpoczela"
+        } else if (cmd.equals("key")) {
             cmdKey(msg);
         }
     }
@@ -74,7 +74,7 @@ public class MessageHandler extends Task {
         answerToSend.put("cmd", "join");
         ClientData newClient = new ClientData(codedMessage.getAddress(), codedMessage.getPort(), 0);        //TODO 0?
 
-        /*Jeśli są miejsca to dodaj śmiecia do gry, przydziel ID i wyślij odpowiedz OK*/
+        /*Jeśli są miejsca to dodaj gracza do gry, przydziel ID i wyślij odpowiedz OK*/
         if (clients.size() < ServerConsts.MAX_NUMBER_OF_PLAYERS) {
             int ID = clients.size();
             clients.add(newClient);

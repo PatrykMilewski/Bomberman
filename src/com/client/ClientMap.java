@@ -20,7 +20,6 @@ public class ClientMap extends Parent {
     private Pane spaceForScores;
 
     public ClientMap(ClientMainStage mainStage) throws IOException {
-
         map = new int[ClientConsts.DIMENSION][ClientConsts.DIMENSION];
         fieldImages = new HashMap<>();
         this.mainStage = mainStage;
@@ -61,10 +60,18 @@ public class ClientMap extends Parent {
         this.spaceForMap.getChildren().addAll(imgView);
     }
 
+    public void printOneField(int x, int y, int index){
+        String temp = fieldImages.get(index);
+        Image img = new Image("file:" + "src/com/client/gui/images/Blocks/" + temp);
+        ImageView imgView = new ImageView(img);
+        imgView.setX(x * ClientConsts.PIXEL_SIZE);
+        imgView.setY(y * ClientConsts.PIXEL_SIZE);
+        this.spaceForMap.getChildren().addAll(imgView);
+    }
+
     public void setMapField(int x, int y, int field) {
         this.map[x][y] = field;
     }
-
 
     private final void fillHashMap() {
         fieldImages.put(0, "defaultBlock.png");

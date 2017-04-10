@@ -10,6 +10,7 @@ public class Player extends Field {
     private int nBombs;
     private int rangeOfBomb;
     private boolean isAlive;
+    private int score;
 
     public int getId() {
         return id;
@@ -29,6 +30,7 @@ public class Player extends Field {
         this.speed = 10;
         this.nBombs = 1;
         this.rangeOfBomb = 1;
+        this.score = 0;
     }
 
     public String getName() {
@@ -79,5 +81,18 @@ public class Player extends Field {
 
     public void decNBombs() {
         nBombs--;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public void incScore(int diff){
+        this.score += diff;
+        System.out.println("NOWY SKOR: \t\t\t\t\t\t" + Integer.toString(this.score));
     }
 }

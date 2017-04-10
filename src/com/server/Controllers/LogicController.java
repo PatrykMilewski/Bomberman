@@ -59,11 +59,11 @@ public class LogicController {
         firesLoop();
     }
 
-    public Field getMapField(int x, int y) {
+    private Field getMapField(int x, int y) {
         return this.mapFields[y][x];
     }
 
-    public void setMapField(int x, int y, Field field) {
+    private void setMapField(int x, int y, Field field) {
         this.mapFields[y][x] = field;
     }
 
@@ -71,7 +71,7 @@ public class LogicController {
         return players.get(id);
     }
 
-    public ArrayList<Fire> getFires() {
+    private ArrayList<Fire> getFires() {
         return this.fires;
     }
 
@@ -112,15 +112,15 @@ public class LogicController {
     }
 
     public void createPlayer(int ID, String name) {
-        if (ID == 0){
+        if (ID == 0) {
             this.mapFields[0][0] = new Player(0, 0, true, name);        //TODO
             players.add((Player) this.mapFields[0][0]);
-        } else if (ID == 1){
-            this.mapFields[Consts.DIMENSION-1][Consts.DIMENSION-1] = new Player(Consts.DIMENSION-1, Consts.DIMENSION-1, true, name);
-            players.add((Player) this.mapFields[Consts.DIMENSION-1][Consts.DIMENSION-1]);
-        } else if (ID == 2){
-            this.mapFields[0][Consts.DIMENSION-1] = new Player(Consts.DIMENSION-1, 0, true, name);
-            players.add((Player) this.mapFields[0][Consts.DIMENSION-1]);
+        } else if (ID == 1) {
+            this.mapFields[Consts.DIMENSION - 1][Consts.DIMENSION - 1] = new Player(Consts.DIMENSION - 1, Consts.DIMENSION - 1, true, name);
+            players.add((Player) this.mapFields[Consts.DIMENSION - 1][Consts.DIMENSION - 1]);
+        } else if (ID == 2) {
+            this.mapFields[0][Consts.DIMENSION - 1] = new Player(Consts.DIMENSION - 1, 0, true, name);
+            players.add((Player) this.mapFields[0][Consts.DIMENSION - 1]);
         }
     }
 
@@ -128,20 +128,19 @@ public class LogicController {
         if (this.mapFields[y][x] instanceof Player) {
             int tempId = ((Player) this.mapFields[y][x]).getId();
             deletePlayerFromMap((Player) this.mapFields[y][x]);
-//            ((Player) this.mapFields[y][x]).kill();
             players.set(tempId, null);
         }
         this.mapFields[y][x] = newField;
-        printFieldOfMap(x, y, answer); //TODO
+        sendFieldOfMap(x, y, answer);
     }
 
-    public void deletePlayerFromMap(Player player) {
+    private void deletePlayerFromMap(Player player) {
         int tempId = player.getId();                //TODO?????????? czy ustawic nowe pole?
         getPlayer(player.getId()).kill();
         players.set(tempId, null);
     }
 
-    public boolean canMove(int x, int y) {
+    private boolean canMove(int x, int y) {
         if (x < 0 || y < 0 || x > Consts.DIMENSION - 1 || y > Consts.DIMENSION - 1) {
             return false;
         }
@@ -151,7 +150,7 @@ public class LogicController {
         return false;
     }
 
-    public void addBomb(Bomb bomb) {
+    private void addBomb(Bomb bomb) {
         bombExecutors.submit(() -> {
             while (true) {
                 if ((System.currentTimeMillis() - bomb.getStartTime()) > Consts.MILIS_TO_EXPLODE) {
@@ -163,13 +162,13 @@ public class LogicController {
         });
     }
 
-    public void addFire(Fire fire) {
+    private void addFire(Fire fire) {
         breakLoopFires = 1;
         this.fires.add(fire);
     }
 
     public String printEntireMap() {
-        String mapp="";
+        String mapp = "";
         for (int i = 0; i < Consts.DIMENSION; i++) {       //
             for (int j = 0; j < Consts.DIMENSION; j++) {
                 Integer blockNumber = fieldImages.get(mapFields[j][i].getName());
@@ -179,7 +178,7 @@ public class LogicController {
         return mapp;
     }
 
-    public void printFieldOfMap(int x, int y, JSONArray answer) {
+    private void sendFieldOfMap(int x, int y, JSONArray answer) {
         JSONObject temp = new JSONObject();
         temp.put("field", Integer.toString(fieldImages.get(getMapField(x, y).getName())));
         temp.put("y", Integer.toString(y));
@@ -187,7 +186,7 @@ public class LogicController {
         answer.put(temp);
     }
 
-    public void printNamedBlockOnMap(int x, int y, String Name, JSONArray answer){
+    private void sendNamedFieldOfMap(int x, int y, String Name, JSONArray answer) {
         JSONObject temp = new JSONObject();
         temp.put("field", Integer.toString(fieldImages.get(Name)));
         temp.put("y", Integer.toString(y));
@@ -198,14 +197,19 @@ public class LogicController {
     public boolean incCoords(int finalID, String direction, JSONArray answer) {
         int diffX = 0;
         int diffY = 0;
-        if (direction.equals("UP")) {
-            diffY = -1;
-        } else if (direction.equals("LEFT")) {
-            diffX = -1;
-        } else if (direction.equals("DOWN")) {
-            diffY = 1;
-        } else {                //RIGHT
-            diffX = 1;
+        switch (direction) {
+            case "UP":
+                diffY = -1;
+                break;
+            case "LEFT":
+                diffX = -1;
+                break;
+            case "DOWN":
+                diffY = 1;
+                break;
+            default:                 //RIGHT
+                diffX = 1;
+                break;
         }
 
         int newX = players.get(finalID).getX() + diffX;
@@ -214,29 +218,31 @@ public class LogicController {
         if (canMove(newX, newY)) {
             int playerX = players.get(finalID).getX();
             int playerY = players.get(finalID).getY();
-            if (getMapField(playerX, playerY) instanceof Bomb == false) {         //gracz schodzi ze zwyklego pola
+            if (!(getMapField(playerX, playerY) instanceof Bomb)) {                       //gracz schodzi ze zwyklego pola
                 setMapField(playerX, playerY, new NormalBlock(playerX, playerY, false, true));
             } else {
-                printNamedBlockOnMap(playerX, playerY, "DefaultBlock", answer);     //gracz schodzi z bomby
+                sendNamedFieldOfMap(playerX, playerY, "DefaultBlock", answer);           //gracz schodzi z bomby
             }
             //Nowe pole
-            if (getMapField(newX, newY) instanceof Fire == true) {              //wszedl w ogien
-                printNamedBlockOnMap(playerX, playerY, "DefaultBlock", answer);
+            if (getMapField(newX, newY) instanceof Fire) {                              //wszedl w ogien
+                sendNamedFieldOfMap(playerX, playerY, "DefaultBlock", answer);
+                ((Fire) getMapField(newX, newY)).getOwnerOfFire().incScore(Consts.SCORE_KILL_PLAYER);
                 deletePlayerFromMap(players.get(finalID));
                 return true;
-            } else if (getMapField(newX, newY) instanceof Bonus == true) {      //wszedl na bonus
+            } else if (getMapField(newX, newY) instanceof Bonus) {                      //wszedl na bonus
                 ((Bonus) getMapField(newX, newY)).takeBonus(players.get(finalID));              //TODO wyslac do gracza info, ze moze szybciej beigac
-                if (getMapField(newX, newY).getName().equals("Bonushaste")){
+                players.get(finalID).incScore(Consts.SCORE_TAKE_BONUS);
+                if (getMapField(newX, newY).getName().equals("Bonushaste")) {
                     JSONObject msg = new JSONObject();
                     msg.put("cmd", "incspeed");
                     Broadcaster.msgToOne(clients.get(finalID), msg.toString(), socket);
                 }
-                printNamedBlockOnMap(newX, newY, "DefaultBlock", answer);
+                sendNamedFieldOfMap(newX, newY, "DefaultBlock", answer);
             }
-            printFieldOfMap(playerX,playerY, answer);
+            sendFieldOfMap(playerX, playerY, answer);
             players.get(finalID).move(diffX, diffY);
             setMapField(players.get(finalID).getX(), players.get(finalID).getY(), players.get(finalID));
-            printFieldOfMap(players.get(finalID).getX(), players.get(finalID).getY(), answer);
+            sendFieldOfMap(players.get(finalID).getX(), players.get(finalID).getY(), answer);
             return true;
         }
         return false;
@@ -248,25 +254,24 @@ public class LogicController {
         Player player = players.get(playerIndex);
         int x = player.getX();
         int y = player.getY();
-        if (player.getNBombs() > 0 && (getMapField(x, y) instanceof Bomb == false) && player.isAlive()) {
+        if (player.getNBombs() > 0 && (!(getMapField(x, y) instanceof Bomb)) && player.isAlive()) {
             setMapField(x, y, new Bomb(x, y, true, player));
             addBomb((Bomb) getMapField(x, y));
             player.decNBombs();
-            printNamedBlockOnMap(x, y, "Bomb", answer);
-            printNamedBlockOnMap(x, y, "Player", answer);
+            sendNamedFieldOfMap(x, y, "Bomb", answer);
+            sendNamedFieldOfMap(x, y, "Player", answer);
         }
     }
 
-    public void explode(Bomb bomb) {
+    private void explode(Bomb bomb) {
         JSONObject answerToSend = new JSONObject();
         answerToSend.put("cmd", "move");
 
         JSONArray arrayOfFields = new JSONArray();
-        if (bomb.getX() == bomb.getOwnerOfBomb().getX() && bomb.getY() == bomb.getOwnerOfBomb().getY()){
+        if (bomb.getX() == bomb.getOwnerOfBomb().getX() && bomb.getY() == bomb.getOwnerOfBomb().getY()) {
             deletePlayerFromMap(bomb.getOwnerOfBomb());
-//            bomb.getOwnerOfBomb().kill();
         }
-        Fire newFire = new Fire(bomb.getX(), bomb.getY(), true);
+        Fire newFire = new Fire(bomb.getX(), bomb.getY(), true, bomb.getOwnerOfBomb());
         destroyField(bomb.getX(), bomb.getY(), newFire, arrayOfFields);
         addFire(newFire);
 
@@ -276,16 +281,16 @@ public class LogicController {
         boolean firstLeft = false;
         for (int i = 1; i < bomb.getRange() + 1; i++) {
             if (bomb.getY() - i >= 0 && !firstUp) {                                         //up
-                firstUp = checkFieldToBurn(bomb.getX(), bomb.getY() - i, arrayOfFields);
+                firstUp = checkFieldToBurn(bomb.getX(), bomb.getY() - i, arrayOfFields, bomb);
             }
             if (bomb.getX() + i < Consts.DIMENSION && !firstRight) {                        //right
-                firstRight = checkFieldToBurn(bomb.getX() + i, bomb.getY(), arrayOfFields);
+                firstRight = checkFieldToBurn(bomb.getX() + i, bomb.getY(), arrayOfFields, bomb);
             }
             if (bomb.getY() + i < Consts.DIMENSION && !firstDown) {                         //down
-                firstDown = checkFieldToBurn(bomb.getX(), bomb.getY() + i, arrayOfFields);
+                firstDown = checkFieldToBurn(bomb.getX(), bomb.getY() + i, arrayOfFields, bomb);
             }
             if (bomb.getX() - i >= 0 && !firstLeft) {                                       //left
-                firstLeft = checkFieldToBurn(bomb.getX() - i, bomb.getY(), arrayOfFields);
+                firstLeft = checkFieldToBurn(bomb.getX() - i, bomb.getY(), arrayOfFields, bomb);
             }
         }
         bomb.getOwnerOfBomb().incNBombs();
@@ -294,18 +299,24 @@ public class LogicController {
         System.out.println("Wybuch:\t\t" + answerToSend.toString());
     }
 
-    private boolean checkFieldToBurn(int xToCheck, int yToCheck, JSONArray answer) {
+    private boolean checkFieldToBurn(int xToCheck, int yToCheck, JSONArray answer, Bomb bomb) {
         if (getMapField(xToCheck, yToCheck) instanceof Bomb) {
             ((Bomb) getMapField(xToCheck, yToCheck)).decTime();
+            bomb.getOwnerOfBomb().incScore(Consts.SCORE_DESTROY_BLOCK);
             return true;
         }
         if (!getMapField(xToCheck, yToCheck).isDestroyable()                                //niezniszczalny kloc
                 && !getMapField(xToCheck, yToCheck).isEmpty()) {
             return true;
         } else {
-            Fire newFire = new Fire(xToCheck, yToCheck, false);
+            Fire newFire = new Fire(xToCheck, yToCheck, false, bomb.getOwnerOfBomb());
             if (getMapField(xToCheck, yToCheck).isDestroyable()) {                          //do zniszczenia
                 newFire.setUnderField(getMapField(xToCheck, yToCheck).getFieldUnderDestryableField());
+                if (getMapField(xToCheck, yToCheck) instanceof Player) {
+                    bomb.getOwnerOfBomb().incScore(Consts.SCORE_KILL_PLAYER);
+                } else {
+                    bomb.getOwnerOfBomb().incScore(Consts.SCORE_DESTROY_BLOCK);
+                }
                 destroyField(xToCheck, yToCheck, newFire, answer);
                 addFire(newFire);
                 return true;
@@ -315,7 +326,7 @@ public class LogicController {
                 }*/
                 setMapField(xToCheck, yToCheck, newFire);
                 addFire(newFire);
-                printNamedBlockOnMap(xToCheck, yToCheck, "Fire", answer);
+                sendNamedFieldOfMap(xToCheck, yToCheck, "Fire", answer);
                 return false;
             }
         }
@@ -323,25 +334,25 @@ public class LogicController {
 
     //FIRE
 
-    public void removeFire(Fire fire, JSONArray fieldsArray) {
+    private void removeFire(Fire fire, JSONArray fieldsArray) {
         if (fire.getFieldUnderFireField() == null) {
             destroyField(fire.getX(), fire.getY(), new NormalBlock(fire.getX(), fire.getY(), false, true), fieldsArray);
         } else {
-            printNamedBlockOnMap(fire.getX(), fire.getY(), "DefaultBlock", fieldsArray);
+            sendNamedFieldOfMap(fire.getX(), fire.getY(), "DefaultBlock", fieldsArray);
             setMapField(fire.getX(), fire.getY(), fire.getFieldUnderFireField());
-            printFieldOfMap(fire.getX(), fire.getY(), fieldsArray);
+            sendFieldOfMap(fire.getX(), fire.getY(), fieldsArray);
         }
     }
 
-    public  void firesLoop(){
+    private void firesLoop() {
         firesExecutor.execute(() -> {
-            while (true){
+            while (true) {
                 Iterator it = getFires().iterator();
                 JSONObject answerToSend = new JSONObject();
                 answerToSend.put("cmd", "move");
                 JSONArray fieldsArray = new JSONArray();
-                while (it.hasNext()){
-                    if (breakLoopFires == 1){
+                while (it.hasNext()) {
+                    if (breakLoopFires == 1) {
                         try {
                             Thread.sleep(10);                           //TODO da sie to rozwiazac inaczej?
                         } catch (InterruptedException e) {
@@ -351,12 +362,12 @@ public class LogicController {
                         break;
                     }
                     Fire tempFire = (Fire) it.next();
-                    if (System.currentTimeMillis() - tempFire.getStartTime() > Consts.FIRE_MILIS){
+                    if (System.currentTimeMillis() - tempFire.getStartTime() > Consts.FIRE_MILIS) {
                         removeFire(tempFire, fieldsArray);
                         it.remove();
                     }
                 }
-                if (!fieldsArray.isNull(0)){
+                if (!fieldsArray.isNull(0)) {
                     answerToSend.put("fields", fieldsArray);
                     Broadcaster.broadcastMessage(clients, answerToSend.toString(), socket);
                 }
