@@ -17,7 +17,6 @@ public class MessageHandler extends Task {
     private ArrayList<ClientData> clients;
     private MessageQueue messageQueue;
     private GUIController serverMessageController;
-    private Broadcaster msgSender;
     private LogicController logicController;
     private DatagramSocket socket;
 
@@ -63,63 +62,68 @@ public class MessageHandler extends Task {
     }
 
     private void decodeCmd(String cmd, DatagramPacket codedMessage, JSONObject msg) throws InterruptedException {
-        int ID = 0;
-        JSONArray answer = new JSONArray();
-        JSONObject subAnswer = new JSONObject();
-        JSONObject answerToSend = new JSONObject();
-
         if (cmd.equals("join")) {
-            subAnswer.put("cmd", "join");
-            ClientData newClient = new ClientData(codedMessage.getAddress(), codedMessage.getPort(), ID);
-
-            /*Jeśli są miejsca to dodaj śmiecia do gry, przydziel ID i wyślij odpowiedz OK*/
-            if (clients.size() < ServerConsts.MAX_NUMBER_OF_PLAYERS) {
-                ID = clients.size();
-                clients.add(newClient);
-                logicController.createPlayer(ID, "Test");
-                subAnswer.put("status", "OK");
-                subAnswer.put("id", ID);
-                msgSender.msgToOne(newClient, subAnswer.toString(), socket);
-                Platform.runLater(() -> serverMessageController.sendMessage("Dolacza: " + newClient.getIPaddr()));
-                if (clients.size() == ServerConsts.MAX_NUMBER_OF_PLAYERS){
-                    Thread.sleep(1000);
-                    JSONObject answerToStart = new JSONObject();
-                    answerToStart.put("status", "start");
-                    answerToStart.put("cmd", "join");
-                    msgSender.broadcastMessage(clients, answerToStart.toString(), socket);
-                    JSONObject answerToPrint = new JSONObject();
-                    answerToPrint.put("cmd", "eMap");
-                    answerToPrint.put("fields", logicController.printEntireMap());
-                    msgSender.broadcastMessage(clients, answerToPrint.toString(), socket);
-                }
-            } else {
-                subAnswer.put("status", "FUCK_OFF");
-                msgSender.msgToOne(newClient, subAnswer.toString(), socket);
-            }
+            cmdJoin(codedMessage);
         } else if (cmd.equals("key")) {         //TODO "Jesli gra sie rozpoczela"
-            ID = msg.getInt("id");
-            String key = msg.getString("but");
-            int finalID = ID;
+            cmdKey(msg);
+        }
+    }
 
-            if (logicController.getPlayer(ID).isAlive()){
-                answerToSend.put("cmd", "move");
-                JSONArray arrayJson = new JSONArray();
+    private void cmdJoin( DatagramPacket codedMessage) throws InterruptedException {
+        JSONObject answerToSend = new JSONObject();
+        answerToSend.put("cmd", "join");
+        ClientData newClient = new ClientData(codedMessage.getAddress(), codedMessage.getPort(), 0);        //TODO 0?
 
-                answer.put(subAnswer.put("cmd", "change"));
-                if (key.equals("BOMB")){
-                    logicController.dropBomb(ID, arrayJson);
-                    answerToSend.put("fields", arrayJson);
-                    msgSender.broadcastMessage(clients, answerToSend.toString(), socket);
-                } else if(logicController.incCoords(finalID, key, arrayJson)){
-                    Platform.runLater(() -> serverMessageController.sendMessage(arrayJson.toString()));
-                    answerToSend.put("fields", arrayJson);
-                    msgSender.broadcastMessage(clients, answerToSend.toString(), socket);
-                } else {
-                    Platform.runLater(() -> serverMessageController.sendMessage("Brak możliwości ruchu"));
-                }
-            } else {
-                Platform.runLater(() -> serverMessageController.sendMessage("Gracz nie żyje"));
+        /*Jeśli są miejsca to dodaj śmiecia do gry, przydziel ID i wyślij odpowiedz OK*/
+        if (clients.size() < ServerConsts.MAX_NUMBER_OF_PLAYERS) {
+            int ID = clients.size();
+            clients.add(newClient);
+            logicController.createPlayer(ID, "Test");
+            answerToSend.put("status", "OK");
+            answerToSend.put("id", ID);
+            Broadcaster.msgToOne(newClient, answerToSend.toString(), socket);
+            Platform.runLater(() -> serverMessageController.sendMessage("Dolacza: " + newClient.getIPaddr()));
+            if (clients.size() == ServerConsts.MAX_NUMBER_OF_PLAYERS){
+                Thread.sleep(1000);         //TODO Co to?
+                JSONObject answerToStart = new JSONObject();
+                answerToStart.put("status", "start");
+                answerToStart.put("cmd", "join");
+                Broadcaster.broadcastMessage(clients, answerToStart.toString(), socket);
+                JSONObject answerToPrint = new JSONObject();
+                answerToPrint.put("cmd", "eMap");
+                answerToPrint.put("fields", logicController.printEntireMap());
+                Broadcaster.broadcastMessage(clients, answerToPrint.toString(), socket);
             }
+        } else {
+            answerToSend.put("status", "FUCK_OFF");
+            Broadcaster.msgToOne(newClient, answerToSend.toString(), socket);
+        }
+    }
+
+    private void cmdKey(JSONObject msg) {
+        int ID;
+        JSONObject answerToSend = new JSONObject();
+        JSONArray arrayToSend = new JSONArray();
+
+        ID = msg.getInt("id");
+        String key = msg.getString("but");
+        int finalID = ID;
+
+        if (logicController.getPlayer(ID).isAlive()){
+            answerToSend.put("cmd", "move");
+            if (key.equals("BOMB")){
+                logicController.dropBomb(ID, arrayToSend);
+                answerToSend.put("fields", arrayToSend);
+                Broadcaster.broadcastMessage(clients, answerToSend.toString(), socket);
+            } else if(logicController.incCoords(finalID, key, arrayToSend)){        //key == UP || RIGT || DOWN || LEFT
+                Platform.runLater(() -> serverMessageController.sendMessage(arrayToSend.toString()));
+                answerToSend.put("fields", arrayToSend);
+                Broadcaster.broadcastMessage(clients, answerToSend.toString(), socket);
+            } else {
+                Platform.runLater(() -> serverMessageController.sendMessage("Brak możliwości ruchu"));
+            }
+        } else {
+            Platform.runLater(() -> serverMessageController.sendMessage("Gracz nie żyje"));
         }
     }
 }

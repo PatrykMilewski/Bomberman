@@ -8,7 +8,6 @@ public class Player extends Field {
     private String nick;
     private float speed;
     private int nBombs;
-    private Map<SuperPowers, Boolean> superPowers = new HashMap<SuperPowers, Boolean>();        //TODO Potrzebne nam to?
     private int rangeOfBomb;
     private boolean isAlive;
 
@@ -26,25 +25,14 @@ public class Player extends Field {
         super(x, y, destroyable);
         this.nick = nick;
         this.isAlive = true;
-        superPowers.put(SuperPowers.invisible, false);
-        superPowers.put(SuperPowers.faster, false);
-        superPowers.put(SuperPowers.terminator, false);
         this.name = "Player";
         this.speed = 10;
-        this.nBombs = 4;
-        this.rangeOfBomb = 2;
+        this.nBombs = 1;
+        this.rangeOfBomb = 1;
     }
 
     public String getName() {
         return name;
-    }
-
-    public float getSpeed() {
-        return speed;
-    }
-
-    public boolean getSuperPower(String s) {
-        return superPowers.get(s);
     }
 
     public int getRangeOfBomb() {

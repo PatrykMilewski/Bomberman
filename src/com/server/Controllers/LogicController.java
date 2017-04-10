@@ -116,15 +116,19 @@ public class LogicController {
             this.mapFields[0][0] = new Player(0, 0, true, name);        //TODO
             players.add((Player) this.mapFields[0][0]);
         } else if (ID == 1){
-            this.mapFields[Consts.DIMENSION-1][Consts.DIMENSION-1] = new Player(Consts.DIMENSION-1, Consts.DIMENSION-1, true, name);        //TODO
+            this.mapFields[Consts.DIMENSION-1][Consts.DIMENSION-1] = new Player(Consts.DIMENSION-1, Consts.DIMENSION-1, true, name);
             players.add((Player) this.mapFields[Consts.DIMENSION-1][Consts.DIMENSION-1]);
+        } else if (ID == 2){
+            this.mapFields[0][Consts.DIMENSION-1] = new Player(Consts.DIMENSION-1, 0, true, name);
+            players.add((Player) this.mapFields[0][Consts.DIMENSION-1]);
         }
     }
 
     public void destroyField(int x, int y, Field newField, JSONArray answer) {
         if (this.mapFields[y][x] instanceof Player) {
             int tempId = ((Player) this.mapFields[y][x]).getId();
-            ((Player) this.mapFields[y][x]).kill();
+            deletePlayerFromMap((Player) this.mapFields[y][x]);
+//            ((Player) this.mapFields[y][x]).kill();
             players.set(tempId, null);
         }
         this.mapFields[y][x] = newField;
@@ -259,7 +263,8 @@ public class LogicController {
 
         JSONArray arrayOfFields = new JSONArray();
         if (bomb.getX() == bomb.getOwnerOfBomb().getX() && bomb.getY() == bomb.getOwnerOfBomb().getY()){
-            bomb.getOwnerOfBomb().kill();
+            deletePlayerFromMap(bomb.getOwnerOfBomb());
+//            bomb.getOwnerOfBomb().kill();
         }
         Fire newFire = new Fire(bomb.getX(), bomb.getY(), true);
         destroyField(bomb.getX(), bomb.getY(), newFire, arrayOfFields);

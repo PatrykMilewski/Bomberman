@@ -32,13 +32,13 @@ public class Broadcaster {
 
     public static void msgToOne(ClientData client, String message, DatagramSocket serverSocket) {
 
-            byte[] msg = message.getBytes();
-            DatagramPacket packet = new DatagramPacket(msg, msg.length, client.getIPaddr(), client.getPort());
-            try {
-                serverSocket.send(packet);
-            } catch (IOException e) {
-                e.printStackTrace();
-                return;
-            }
+        byte[] msg = message.getBytes();
+        DatagramPacket packet = new DatagramPacket(msg, msg.length, client.getIPaddr(), client.getPort());
+        try {
+            serverSocket.send(packet);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
     }
 }
