@@ -66,7 +66,8 @@ public class MessageHandler extends Task {
         int ID = 0;
         JSONArray answer = new JSONArray();
         JSONObject subAnswer = new JSONObject();
-        
+        JSONObject answerToSend = new JSONObject();
+
         if (cmd.equals("join")) {
             subAnswer.put("cmd", "join");
             ClientData newClient = new ClientData(codedMessage.getAddress(), codedMessage.getPort(), ID);
@@ -100,14 +101,20 @@ public class MessageHandler extends Task {
             String key = msg.getString("but");
             int finalID = ID;
 
-            if (logicController.getPlayer(ID).isAlive()){
-                answer.put(subAnswer.put("cmd", "move"));
-                if (key.equals("BOMB")){
-                    logicController.dropBomb(ID, answer);
-                } else if(logicController.incCoords(finalID, key, answer)){
-                    Platform.runLater(() -> serverMessageController.sendMessage(answer.toString()));
-                    msgSender.broadcastMessage(clients, answer.toString(), socket);
 
+
+            if (logicController.getPlayer(ID).isAlive()){
+                answerToSend.put("cmd", "move");
+                JSONArray arrayJson = new JSONArray();
+
+                answer.put(subAnswer.put("cmd", "change"));
+                if (key.equals("BOMB")){
+                    logicController.dropBomb(ID, arrayJson);
+                } else if(logicController.incCoords(finalID, key, arrayJson)){
+//                    Platform.runLater(() -> serverMessageController.sendMessage(answer.toString()));
+                    answerToSend.put("fields", arrayJson);
+                    System.out.println(answerToSend.toString());
+                    msgSender.broadcastMessage(clients, answerToSend.toString(), socket);
                 } else {
                     Platform.runLater(() -> serverMessageController.sendMessage("Brak możliwości ruchu"));
                 }

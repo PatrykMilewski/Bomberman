@@ -20,43 +20,41 @@ public class GameMessageHandler extends Task
     @Override
     protected Object call() throws Exception {
        
-            while(true)
-            {
-                
-                String message = null;
-                while (message == null) {
-                    if (!messageQueue.isEmpty())
-                        message = messageQueue.pop(); //TODO "jezeli gra nadal trwa", pobierane z Game.
-                }
-                System.out.println("Z messageq KLIENTA: " + message);
-    
-                JSONObject jObject = new JSONObject(message);
-                String cmd = jObject.getString("cmd");
-                if (cmd != null) {
-                    if(cmd.equals("eMap")){
-                        String mapp = jObject.getString("fields");
-                        System.out.println(mapp);
-                        for (int i = 0; i < ClientConsts.DIMENSION; i++)
-                            for (int j = 0; j < ClientConsts.DIMENSION; j++)
-                            {
-                                int field = Integer.parseInt(mapp.substring(0,1));
-                                mapp = mapp.substring(1);
-                                map.setMapField(i,j, field);
-                            }
-                        Platform.runLater(() -> map.printEntireMap());
-                    }
-                    else if(cmd.equals("change"))
-                    {
-                        JSONArray fields = jObject.getJSONArray("fields");
-                        for (int i = 0; i < fields.length(); i++) {
-                            JSONObject temp = fields.getJSONObject(i);
-                            map.setMapField(temp.getInt("x"),temp.getInt("y"),temp.getInt("f"));
-                            map.printOneField(temp.getInt("x"),temp.getInt("y"));
-                        }
-                    }
-                
-                }
-                
+        while(true)
+        {
+            String message = null;
+            while (message == null) {
+                if (!messageQueue.isEmpty())
+                    message = messageQueue.pop(); //TODO "jezeli gra nadal trwa", pobierane z Game.
             }
+            System.out.println("Z messageq KLIENTA: " + message);
+
+            JSONObject jObject = new JSONObject(message);
+            String cmd = jObject.getString("cmd");
+            if (cmd != null) {
+                if(cmd.equals("eMap")){
+                    String mapp = jObject.getString("fields");
+                    System.out.println(mapp);
+                    for (int i = 0; i < ClientConsts.DIMENSION; i++)
+                        for (int j = 0; j < ClientConsts.DIMENSION; j++)
+                        {
+                            int field = Integer.parseInt(mapp.substring(0,1));
+                            mapp = mapp.substring(1);
+                            map.setMapField(i,j, field);
+                        }
+                    Platform.runLater(() -> map.printEntireMap());
+                }
+                else if(cmd.equals("move"))
+                {
+                    JSONArray fields = jObject.getJSONArray("fields");
+                    for (int i = 0; i < fields.length(); i++) {
+                        JSONObject temp = fields.getJSONObject(i);
+                        System.out.println(temp);
+                        map.setMapField(temp.getInt("x"),temp.getInt("y"),temp.getInt("field"));
+                        Platform.runLater(() -> map.printOneField(temp.getInt("x"),temp.getInt("y")));
+                    }
+                }
+            }
+        }
     }
 }

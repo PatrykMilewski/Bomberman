@@ -53,7 +53,7 @@ public class ClientMap extends Parent {
     
     public void printOneField(int x, int y){
         String temp = fieldImages.get(map[x][y]);
-        Image img = new Image("file:" + "images/Blocks/" + temp);
+        Image img = new Image("file:" + "src/com/client/gui/images/Blocks/" + temp);
         ImageView imgView = new ImageView(img);
         imgView.setX(x * ClientConsts.PIXEL_SIZE);
         imgView.setY(y * ClientConsts.PIXEL_SIZE);

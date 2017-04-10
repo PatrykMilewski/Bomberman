@@ -211,6 +211,7 @@ public class LogicController {
     }
 
     public boolean incCoords(int finalID, String direction, JSONArray answer) {
+
         int diffX;
         int diffY;
         if (direction.equals("UP")) {
@@ -251,7 +252,7 @@ public class LogicController {
                 Broadcaster.msgToOne(clients.get(finalID), msg.toString(), socket);
                 printNormalBlockOnMap(newX, newY, answer);
             }
-            printFieldOfMap(playerX,playerY, "NormalBlock", answer);
+            printFieldOfMap(playerX,playerY, "DefaultBlock", answer);
             players.get(finalID).move(diffX, diffY);
             setMapField(playerX, playerY, players.get(finalID));
             printFieldOfMap(players.get(finalID).getX(), players.get(finalID).getY(), "Player", answer);
