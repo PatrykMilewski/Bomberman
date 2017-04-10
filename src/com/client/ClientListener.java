@@ -81,7 +81,7 @@ public class ClientListener {
                 if (bomb) {
                     if (now / ClientConsts.TIME_CUTTER - lastDropedBomb > ClientConsts.TIME_BETWEEN_BOMBS) {
                         lastDropedBomb = now / ClientConsts.TIME_CUTTER;
-                        //player.dropBomb();
+                        client.sendKey("BOMB");
                     }
                 }
             }

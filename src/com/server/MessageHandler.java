@@ -101,8 +101,6 @@ public class MessageHandler extends Task {
             String key = msg.getString("but");
             int finalID = ID;
 
-
-
             if (logicController.getPlayer(ID).isAlive()){
                 answerToSend.put("cmd", "move");
                 JSONArray arrayJson = new JSONArray();
@@ -110,10 +108,11 @@ public class MessageHandler extends Task {
                 answer.put(subAnswer.put("cmd", "change"));
                 if (key.equals("BOMB")){
                     logicController.dropBomb(ID, arrayJson);
-                } else if(logicController.incCoords(finalID, key, arrayJson)){
-//                    Platform.runLater(() -> serverMessageController.sendMessage(answer.toString()));
                     answerToSend.put("fields", arrayJson);
-                    System.out.println(answerToSend.toString());
+                    msgSender.broadcastMessage(clients, answerToSend.toString(), socket);
+                } else if(logicController.incCoords(finalID, key, arrayJson)){
+                    Platform.runLater(() -> serverMessageController.sendMessage(arrayJson.toString()));
+                    answerToSend.put("fields", arrayJson);
                     msgSender.broadcastMessage(clients, answerToSend.toString(), socket);
                 } else {
                     Platform.runLater(() -> serverMessageController.sendMessage("Brak możliwości ruchu"));

@@ -18,8 +18,9 @@ public class ClientMap extends Parent {
     private ClientMainStage mainStage;
     private Pane spaceForMap;
     private Pane spaceForScores;
-    public ClientMap(ClientMainStage mainStage) throws IOException{
-        
+
+    public ClientMap(ClientMainStage mainStage) throws IOException {
+
         map = new int[ClientConsts.DIMENSION][ClientConsts.DIMENSION];
         fieldImages = new HashMap<>();
         this.mainStage = mainStage;
@@ -36,22 +37,21 @@ public class ClientMap extends Parent {
 //        for (int i = 1; i < ClientConsts.DIMENSION; i += 2)
 //            for (int j = 1; j < ClientConsts.DIMENSION; j += 2)
 //                this.map[i][j] = 4;       //Blok nie do rozbicia
-            this.spaceForMap = mainStage.gameController.getGameMapPane();
-            this.spaceForScores = mainStage.gameController.getGameScoresPane();
-            mapGrids.getChildren().addAll(this.spaceForMap, this.spaceForScores);
-            getChildren().addAll(mapGrids);
-            this.mainStage.getRootElem().getChildren().addAll(this);
+        this.spaceForMap = mainStage.gameController.getGameMapPane();
+        this.spaceForScores = mainStage.gameController.getGameScoresPane();
+        mapGrids.getChildren().addAll(this.spaceForMap, this.spaceForScores);
+        getChildren().addAll(mapGrids);
+        this.mainStage.getRootElem().getChildren().addAll(this);
     }
 
-    public void printEntireMap(){
+    public void printEntireMap() {
         for (int i = 0; i < ClientConsts.DIMENSION; i++)
-            for (int j = 0; j < ClientConsts.DIMENSION; j++)
-            {
-                printOneField(i,j);
+            for (int j = 0; j < ClientConsts.DIMENSION; j++) {
+                printOneField(i, j);
             }
     }
-    
-    public void printOneField(int x, int y){
+
+    public void printOneField(int x, int y) {
         String temp = fieldImages.get(map[x][y]);
         Image img = new Image("file:" + "src/com/client/gui/images/Blocks/" + temp);
         ImageView imgView = new ImageView(img);
@@ -59,16 +59,20 @@ public class ClientMap extends Parent {
         imgView.setY(y * ClientConsts.PIXEL_SIZE);
         this.spaceForMap.getChildren().addAll(imgView);
     }
-    
-    public void setMapField(int x, int y, int field) {this.map[x][y] = field;}
-    
-    private final void fillHashMap()
-    {
+
+    public void setMapField(int x, int y, int field) {
+        this.map[x][y] = field;
+    }
+
+    private final void fillHashMap() {
         fieldImages.put(0, "defaultBlock.png");
         fieldImages.put(1, "destroyableBlock.png");
         fieldImages.put(2, "fireblock1.png");
         fieldImages.put(3, "playerBlock.png");
         fieldImages.put(4, "unDestroyableBlock.png");
         fieldImages.put(5, "bomb/bomb.gif");
+        fieldImages.put(6, "haste.png");
+        fieldImages.put(7, "incrange.png");
+        fieldImages.put(8, "incbombs.png");
     }
 }
