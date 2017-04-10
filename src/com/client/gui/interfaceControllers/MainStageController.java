@@ -6,6 +6,7 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.effect.Glow;
 
@@ -26,7 +27,6 @@ public  class MainStageController extends ClientMainStage {
         } catch (IOException e) {
             log.log(Level.SEVERE, e.getMessage(), e);
         }
-        System.out.println("33");
         root.getChildren();
 
     }
@@ -99,5 +99,12 @@ public  class MainStageController extends ClientMainStage {
 
         Button eventButton = (Button) event.getTarget();
         eventButton.setEffect(new Glow(0.0));
+    }
+    
+    void showAlert(Alert.AlertType alertType, String title, String headerText, String message) {
+        Alert alert = new Alert(alertType, message);
+        alert.setTitle(title);
+        alert.setHeaderText(headerText);
+        alert.showAndWait();
     }
 }

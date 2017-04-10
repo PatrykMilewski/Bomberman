@@ -54,8 +54,8 @@ public class ClientMainStage extends Application {
         scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.show();
-
-        Client client = new Client(InetAddress.getLocalHost(), ClientConsts.PORT, this);
+        
+        Client client = new Client(InetAddress.getByName("192.168.0.101"), ClientConsts.PORT, this);
     }
 
     public Stage getPrimaryStage() {
