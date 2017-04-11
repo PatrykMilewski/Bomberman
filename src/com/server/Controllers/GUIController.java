@@ -15,9 +15,6 @@ import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-/**
- * Created by Uzytkownik on 27.03.2017.
- */
 public class GUIController implements Initializable
 {
     ExecutorService executor = Executors.newSingleThreadExecutor();

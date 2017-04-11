@@ -10,6 +10,7 @@ public class PlayerSlot {
     private Label playerNameLabel;
     private Pane playersColorPane;
     private String playersName;
+    private String playersColorHex;
     private int playersID;
     private boolean isEmpty;
 
@@ -17,14 +18,6 @@ public class PlayerSlot {
         this.playerNameLabel = playerNameLabel;
         this.playersColorPane = playersColorPane;
         this.isEmpty = isEmpty;
-    }
-
-    public int getPlayersID() {
-        return playersID;
-    }
-
-    public void setPlayersID(int playersID) {
-        this.playersID = playersID;
     }
 
     public String getPlayersName() {
@@ -45,6 +38,7 @@ public class PlayerSlot {
     void freeSlot() {
         isEmpty = true;
         playerNameLabel.setText("Free slot");
+        playersColorPane.setStyle("-fx-background-color: red;");
     }
     
     void setPlayersName(String name) {
@@ -59,4 +53,11 @@ public class PlayerSlot {
         return this.playerNameLabel == input;
     }
     
+    public String getPlayersColorHex() {
+        return playersColorHex;
+    }
+    
+    public void setPlayersColorHex(String playersColorHex) {
+        this.playersColorHex = playersColorHex;
+    }
 }

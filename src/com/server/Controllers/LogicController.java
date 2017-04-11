@@ -23,9 +23,6 @@ import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-/**
- * Created by Szczepan on 06.04.2017.
- */
 public class LogicController {
     private ArrayList<ClientData> clients;
     private DatagramSocket socket;

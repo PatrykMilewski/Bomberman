@@ -24,6 +24,7 @@ public class ClientMainStage extends Application {
     protected static Stage primaryStage;
     protected static Pane root;
     protected static Scene scene;
+    protected static Client thisPlayer;
     private static ClientListener playerListener;
     
     private ClientMainStage clientMainStage;
@@ -55,7 +56,7 @@ public class ClientMainStage extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
         
-        Client client = new Client(InetAddress.getByName("192.168.0.101"), ClientConsts.PORT, this);
+        thisPlayer = new Client(this);
     }
 
     public Stage getPrimaryStage() {

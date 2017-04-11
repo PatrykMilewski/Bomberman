@@ -41,15 +41,21 @@ public class ClientMessageHandler extends Task {
                         Platform.runLater(() -> {
                             try {
                                 client.startGame();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            } catch (InterruptedException e) {
+                            } catch (IOException | InterruptedException e) {
                                 e.printStackTrace();
                             }
                         });
                         stay = false;
                     } else {
                         System.out.println("Nie udalo sie polaczyc z serverem");
+                    }
+                }
+                if (cmd.equals("joinLobby")) {
+                    if (msg.getString("status").equals("OK")) {
+                    
+                    }
+                    else {
+                    
                     }
                 }
             }

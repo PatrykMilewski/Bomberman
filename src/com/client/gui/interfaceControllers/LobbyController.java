@@ -1,12 +1,14 @@
 package com.client.gui.interfaceControllers;
 
+import com.client.Client;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 
+import java.net.UnknownHostException;
+import java.util.logging.Level;
 import java.util.regex.Pattern;
 
 public class LobbyController extends MainStageController {
@@ -20,11 +22,9 @@ public class LobbyController extends MainStageController {
     private static String serverPort;
     private static PlayerSlot playersSlots[] = new PlayerSlot[playersAmount];
     
-    private Color playersColors[] = new Color[playersAmount];
     private boolean colorPickerAdded;
-    private boolean slotAlreadySelected;
     private PlayerSlot selectedSlot;
-    private String playersName;
+    private String playersName, playersColor;
     
     @FXML
     private TextField IPAddressField;
@@ -60,7 +60,6 @@ public class LobbyController extends MainStageController {
         colorPickerAdded = false;
         colorPicker = new ColorPicker();
         colorPicker.setStyle("-fx-color-label-visible: false;");
-        colorPicker.setOnAction(this::handleColorChange);
     }
 
     @FXML
@@ -93,6 +92,13 @@ public class LobbyController extends MainStageController {
             if (debug)
                 log.info("Connecting to server!");
             
+            try {
+                thisPlayer.setServerAddress(serverAddress, serverPort);
+                thisPlayer.wannaJoin();
+            }
+            catch (UnknownHostException e) {
+                log.log(Level.SEVERE, e.getMessage(), e);
+            }
             //todo
         } else {
             log.warning("Couldn't connect to server: " + serverAddress);
@@ -110,11 +116,22 @@ public class LobbyController extends MainStageController {
     @FXML
     void changeColor(Event event) {
         Pane eventPane = (Pane) event.getTarget();
-        if (selectedSlot != null && !selectedSlot.equalsColorPane(eventPane)) {
-            showAlert(Alert.AlertType.INFORMATION, "", "Wrong slot selected!", "Please change your colour, not somebody else's!");
+        if (selectedSlot == null) {
+            showAlert(Alert.AlertType.INFORMATION, "","It's not your slot!", "Please select slot first, then change your color!");
+            return;
+        }
+        if (!selectedSlot.equalsColorPane(eventPane)) {
+            showAlert(Alert.AlertType.INFORMATION, "", "It's not your slot!", "Please change your colour, not somebody else's!");
+            return;
         }
         
         colorPicker.relocate(eventPane.getLayoutX(), eventPane.getLayoutY());
+        colorPicker.setOnAction((ActionEvent newEvent) -> {
+            playersColor =  colorPicker.getValue().toString().substring(2,10);
+            eventPane.setStyle("-fx-background-color:" + "#" + playersColor);
+            root.getChildren().remove(colorPicker);
+            colorPickerAdded = false;
+        });
         
         if (!colorPickerAdded) {
             ((Pane) eventPane.getParent() ).getChildren().add(colorPicker);
@@ -144,6 +161,7 @@ public class LobbyController extends MainStageController {
                 else {
                     if (debug)
                         log.info("Selected slot is already taken!");
+                    
                     String alertMessage = "Slot, that you selected, is already taken by other player!";
                     showAlert(Alert.AlertType.ERROR, "", "Slot already taken!", alertMessage);
                 }
@@ -161,7 +179,7 @@ public class LobbyController extends MainStageController {
             return; //todo
         else {
             alertMessage = "Address " + serverAddress + ",that you entered, is invalid! Please enter valid IPv4 address.";
-            showAlert(Alert.AlertType.WARNING, "", "Invalid IP address!", alertMessage);
+            showAlert(Alert.AlertType.ERROR, "", "Invalid IP address!", alertMessage);
         }
     }
     
@@ -172,13 +190,5 @@ public class LobbyController extends MainStageController {
         
         if (debug)
             log.info("Player's name set to: " + playersName);
-    }
-    
-    private void handleColorChange(Event event) {
-        ColorPicker thisColorPicker = (ColorPicker)event.getTarget();
-        Pane parentPane = (Pane) thisColorPicker.getParent();
-        parentPane.setStyle("-fx-background-color:" + "#" + colorPicker.getValue().toString().substring(2,10));
-        parentPane.getChildren().remove(thisColorPicker);
-        colorPickerAdded = false;
     }
 }
