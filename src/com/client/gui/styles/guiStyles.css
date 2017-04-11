@@ -63,10 +63,21 @@
     -fx-border-radius: 10;
 }
 
+.ready-button {
+    /*todo*/
+}
+
+.ready-button:hover {
+    /*todo*/
+}
+
+.ready-button:selected {
+    /*todo*/
+}
+
 .IPAddress-field {
     -fx-text-fill: rgba(20,20,20,0.9);
     -fx-font-size: 24px;
-    -fx-font-weight: bold;
 }
 
 .ping-label {

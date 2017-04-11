@@ -1,5 +1,7 @@
 package com.client;
 
+import com.client.exceptions.PlayersColorNullException;
+import com.client.exceptions.PlayersNameNullException;
 import com.client.gui.ClientMainStage;
 import org.json.JSONObject;
 
@@ -16,7 +18,10 @@ public class Client {
     private int serverPort;
     private int myId;
     private ClientMainStage mainStage;
-
+    
+    private String playersName;
+    private String playersColor;
+    
     public Client(ClientMainStage mainStage) throws IOException, InterruptedException {
         this.socket = new DatagramSocket();
         this.messages = new ClientMessageQueue();
@@ -53,26 +58,32 @@ public class Client {
         send(msg.toString());
     }
 
-    public void wannaJoin() {
+    public void wannaJoin(String serverIP, String serverPort) throws UnknownHostException {
+        this.serverIP = InetAddress.getByName(serverIP);
+        this.serverPort = Integer.parseInt(serverPort);
+        
         JSONObject msg = new JSONObject();
         msg.put("cmd", "join");
         send(msg.toString());
     }
-    
-    public void setServerAddress(String serverIP, String serverPort) throws UnknownHostException {
-        this.serverIP = InetAddress.getByName(serverIP);
-        this.serverPort = Integer.parseInt(serverPort);
-    }
 
-    public void setMyId(int id){ this.myId = id; }
-    public int getID(){ return myId; }
-    
-    public ClientMainStage getMainStage() {
-        return mainStage;
+    public void setMyId(int id) { this.myId = id; }
+    public int getID() { return myId; }
+
+    public void setPlayersColor(String playersColor) {
+        this.playersColor = playersColor;
     }
     
-    public ClientMessageQueue getMessages() {
-        return messages;
+    public void setPlayersName(String playersName) {
+        this.playersName = playersName;
+    }
+    
+    public void isReadyToJoin() throws PlayersNameNullException, PlayersColorNullException{
+        if (playersName == null)
+            throw new PlayersNameNullException(myId);
+        
+        if (playersColor == null)
+            throw new PlayersColorNullException(myId);
     }
 }
 

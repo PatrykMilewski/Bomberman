@@ -1,6 +1,7 @@
 package com.client.gui.interfaceControllers;
 
-import com.client.Client;
+import com.client.exceptions.PlayersColorNullException;
+import com.client.exceptions.PlayersNameNullException;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -23,6 +24,7 @@ public class LobbyController extends MainStageController {
     private static PlayerSlot playersSlots[] = new PlayerSlot[playersAmount];
     
     private boolean colorPickerAdded;
+    private boolean ready;
     private PlayerSlot selectedSlot;
     private String playersName, playersColor;
     
@@ -52,6 +54,8 @@ public class LobbyController extends MainStageController {
     @FXML
     public void initialize() {
         playersName = null;
+        playersColor = null;
+        ready = false;
         
         playersSlots[0] = new PlayerSlot(player1NameLabel, player1Color, true);
         playersSlots[1] = new PlayerSlot(player2NameLabel, player2Color, true);
@@ -93,13 +97,12 @@ public class LobbyController extends MainStageController {
                 log.info("Connecting to server!");
             
             try {
-                thisPlayer.setServerAddress(serverAddress, serverPort);
-                thisPlayer.wannaJoin();
+                thisPlayer.isReadyToJoin();
+                thisPlayer.wannaJoin(serverAddress, serverPort);
             }
-            catch (UnknownHostException e) {
+            catch (UnknownHostException | PlayersNameNullException | PlayersColorNullException e) {
                 log.log(Level.SEVERE, e.getMessage(), e);
             }
-            //todo
         } else {
             log.warning("Couldn't connect to server: " + serverAddress);
             String alertMessage;
@@ -128,6 +131,7 @@ public class LobbyController extends MainStageController {
         colorPicker.relocate(eventPane.getLayoutX(), eventPane.getLayoutY());
         colorPicker.setOnAction((ActionEvent newEvent) -> {
             playersColor =  colorPicker.getValue().toString().substring(2,10);
+            thisPlayer.setPlayersColor(playersColor);
             eventPane.setStyle("-fx-background-color:" + "#" + playersColor);
             root.getChildren().remove(colorPicker);
             colorPickerAdded = false;
@@ -187,8 +191,14 @@ public class LobbyController extends MainStageController {
     void setPlayersName(Event event) {
         TextField textField = (TextField) event.getTarget();
         playersName = textField.getText();
+        thisPlayer.setPlayersName(playersName);
         
         if (debug)
             log.info("Player's name set to: " + playersName);
+    }
+    
+    @FXML
+    void readyClicked() {
+        ready = !ready;
     }
 }
