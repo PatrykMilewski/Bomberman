@@ -52,7 +52,7 @@ public class ClientMainStage extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
         
-        thisPlayer = new Client(this);
+        thisPlayer = new Client(this, lobbyController);
     }
     
     public Stage getPrimaryStage() {

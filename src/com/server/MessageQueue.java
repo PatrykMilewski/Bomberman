@@ -21,7 +21,4 @@ public class MessageQueue {
         }
         return messageQueue.pop();
     }
-    public synchronized boolean isEmpty() {
-        return messageQueue.isEmpty();
-    }
 }

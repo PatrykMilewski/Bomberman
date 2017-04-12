@@ -1,6 +1,7 @@
 package com.server;
 
 import com.server.Controllers.LogicController;
+import com.server.Controllers.ServerLobbyController;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import org.json.JSONArray;
@@ -19,6 +20,7 @@ public class MessageHandler extends Task {
     private GUIController serverMessageController;
     private LogicController logicController;
     private DatagramSocket socket;
+    private ServerLobbyController serverLobbyController;
 
     public MessageHandler(MessageQueue messageQueue, GUIController msgController, DatagramSocket socket) {
         clients = new ArrayList<ClientData>();
@@ -26,7 +28,7 @@ public class MessageHandler extends Task {
         this.serverMessageController = msgController;
         this.socket = socket;
         this.logicController = new LogicController(socket, clients);
-        logicController.fillMap();
+        this.serverLobbyController = new ServerLobbyController(socket, clients);
     }
 
     @Override
@@ -34,7 +36,7 @@ public class MessageHandler extends Task {
         while (true) {
             DatagramPacket codedMessage = null;         //TODO numerowanie pakietow
             while (codedMessage == null) {
-                codedMessage = messageQueue.pop(); //TODO "jezeli gra nadal trwa", pobierane z Game.        mniejszy delay?
+                codedMessage = messageQueue.pop();      //TODO "jezeli gra nadal trwa", pobierane z Game.        mniejszy delay?
             }
 
             String message = new String(codedMessage.getData());
@@ -49,81 +51,127 @@ public class MessageHandler extends Task {
 
             String cmd = null;
             try {
-                if (msg != null) {
-                    cmd = msg.getString("cmd");
-                }
+                cmd = msg.getString("cmd");
             } catch (Exception e) {
                 Platform.runLater(() -> serverMessageController.sendMessage("Potrzeba frazy cmd"));
             }
-            if (cmd != null) {
-                decodeCmd(cmd, codedMessage, msg);
-            }
+
+            decodeCmd(cmd, codedMessage, msg);
         }
     }
 
     private void decodeCmd(String cmd, DatagramPacket codedMessage, JSONObject msg) throws InterruptedException {
         if (cmd.equals("join")) {
             cmdJoin(codedMessage);
+        } else if (cmd.equals("ready")){
+            cmdReady(msg);
+        } else if (cmd.equals("updateSlots")){
+            cmdUpdateSlots(msg);
         } else if (cmd.equals("key")) {
             cmdKey(msg);
         }
     }
 
     private void cmdJoin( DatagramPacket codedMessage) throws InterruptedException {
-        JSONObject answerToSend = new JSONObject();
-        answerToSend.put("cmd", "join");
-        ClientData newClient = new ClientData(codedMessage.getAddress(), codedMessage.getPort(), 0);        //TODO 0?
-
+        ClientData newClient = new ClientData(codedMessage.getAddress(), codedMessage.getPort(), 0);
         /*Jeśli są miejsca to dodaj gracza do gry, przydziel ID i wyślij odpowiedz OK*/
         if (clients.size() < ServerConsts.MAX_NUMBER_OF_PLAYERS) {
-            int ID = clients.size();
-            clients.add(newClient);
-            logicController.createPlayer(ID, "Test");
-            answerToSend.put("status", "OK");
-            answerToSend.put("id", ID);
-            Broadcaster.msgToOne(newClient, answerToSend.toString(), socket);
-            Platform.runLater(() -> serverMessageController.sendMessage("Dolacza: " + newClient.getIPaddr()));
-            if (clients.size() == ServerConsts.MAX_NUMBER_OF_PLAYERS){
-                Thread.sleep(1000);         //TODO Co to?
-                JSONObject answerToStart = new JSONObject();
-                answerToStart.put("status", "start");
-                answerToStart.put("cmd", "join");
-                Broadcaster.broadcastMessage(clients, answerToStart.toString(), socket);
-                JSONObject answerToPrint = new JSONObject();
-                answerToPrint.put("cmd", "eMap");
-                answerToPrint.put("fields", logicController.printEntireMap());
-                Broadcaster.broadcastMessage(clients, answerToPrint.toString(), socket);
-            }
+            handleClient(newClient);
         } else {
-            answerToSend.put("status", "FUCK_OFF");
-            Broadcaster.msgToOne(newClient, answerToSend.toString(), socket);
+            rejectClient(newClient);
         }
     }
 
-    private void cmdKey(JSONObject msg) {
-        int ID;
+    private void handleClient(ClientData newClient){
         JSONObject answerToSend = new JSONObject();
-        JSONArray arrayToSend = new JSONArray();
+        int clientId = clients.size();
+        newClient.setId(clientId);
+        clients.add(newClient);
+        answerToSend.put("status", "OK");
+        answerToSend.put("id", clientId);
+        Broadcaster.msgToOne(newClient, answerToSend.toString(), socket);
+        sendSlots(newClient);
+        Platform.runLater(() -> serverMessageController.sendMessage("Dolacza: " + newClient.getIPaddr()));
+    }
 
-        ID = msg.getInt("id");
-        String key = msg.getString("but");
-        int finalID = ID;
+    private void sendSlots(ClientData newClient) {
+        serverLobbyController.sendSlotsToClient(newClient);
+    }
 
-        if (logicController.getPlayer(ID).isAlive()){
+    private void rejectClient(ClientData newClient){
+        JSONObject answerToSend = new JSONObject();
+        answerToSend.put("status", "ACCESS_DENIED");
+        Broadcaster.msgToOne(newClient, answerToSend.toString(), socket);
+        Platform.runLater(() -> serverMessageController.sendMessage("Odrzucilem klienta: " + newClient.getIPaddr()));
+    }
+
+    private void cmdReady(JSONObject msg) throws InterruptedException {
+        int clientId = msg.getInt("id");
+        clients.get(clientId).changeReadyStatus();
+        for (ClientData client : clients){              //Jest tylu, ilu się połączyło
+            if (!client.isReady()){
+                return;
+            }
+        }
+        //Jesli wszyscy klienci sa gotowi, to zaczynamy gre
+        startGame();
+    }
+
+    private void startGame() throws InterruptedException {
+        JSONObject answerToStart = new JSONObject();
+        answerToStart.put("status", "start");
+        Broadcaster.broadcastMessage(clients, answerToStart.toString(), socket);
+        JSONObject answerToPrint = new JSONObject();
+
+        logicController.fillMap();
+        logicController.createPlayers(clients, "Test");
+
+        answerToPrint.put("cmd", "eMap");
+        answerToPrint.put("fields", logicController.printEntireMap());
+        Broadcaster.broadcastMessage(clients, answerToPrint.toString(), socket);
+        Platform.runLater(() -> serverMessageController.sendMessage("Start gry"));
+    }
+
+    private void cmdUpdateSlots(JSONObject msg) {
+        int newIdSlot = msg.getInt("newSlotId");
+        int oldIdSlot = msg.getInt("oldSlotId");
+        int clientId = msg.getInt("clientId");
+        String textOnSlot = msg.getString("text");
+        serverLobbyController.changeSlot(newIdSlot, oldIdSlot, textOnSlot, clientId);
+    }
+
+    private void cmdKey(JSONObject msg) {
+        int clientId = msg.getInt("id");
+
+        if (logicController.getPlayer(clientId).isAlive()){
+            String key = msg.getString("but");
+            JSONObject answerToSend = new JSONObject();
+            JSONArray arrayToSend = new JSONArray();
             answerToSend.put("cmd", "move");
             if (key.equals("BOMB")){
-                logicController.dropBomb(ID, arrayToSend);
-                answerToSend.put("fields", arrayToSend);
-                Broadcaster.broadcastMessage(clients, answerToSend.toString(), socket);
-            } else if(logicController.incCoords(finalID, key, arrayToSend)){        //key == UP || RIGT || DOWN || LEFT
-                Platform.runLater(() -> serverMessageController.sendMessage(arrayToSend.toString()));
-                answerToSend.put("fields", arrayToSend);
-                Broadcaster.broadcastMessage(clients, answerToSend.toString(), socket);
-            } else {
-                Platform.runLater(() -> serverMessageController.sendMessage("Brak możliwości ruchu"));
+                keyBomb(clientId, answerToSend, arrayToSend);
+            } else {                                                //key == UP || RIGT || DOWN || LEFT
+                keyMakeMove(clientId, key, answerToSend, arrayToSend);
             }
         } else {
             Platform.runLater(() -> serverMessageController.sendMessage("Gracz nie żyje"));
+        }
+    }
+
+    private void keyBomb(int clientId, JSONObject answerToSend, JSONArray arrayToSend){
+        logicController.dropBomb(clientId, arrayToSend);
+        Platform.runLater(() -> serverMessageController.sendMessage(arrayToSend.toString()));
+        answerToSend.put("fields", arrayToSend);
+        Broadcaster.broadcastMessage(clients, answerToSend.toString(), socket);
+    }
+
+    private void keyMakeMove(int clientId, String key, JSONObject answerToSend, JSONArray arrayToSend){
+        if(logicController.incCoords(clientId, key, arrayToSend)){
+            Platform.runLater(() -> serverMessageController.sendMessage(arrayToSend.toString()));
+            answerToSend.put("fields", arrayToSend);
+            Broadcaster.broadcastMessage(clients, answerToSend.toString(), socket);
+        } else {
+            Platform.runLater(() -> serverMessageController.sendMessage("Brak możliwości ruchu"));
         }
     }
 }

@@ -48,8 +48,6 @@ public class GameMessageHandler extends Task {
                     JSONArray fields = jObject.getJSONArray("fields");
                     for (int i = 0; i < fields.length(); i++) {
                         JSONObject temp = fields.getJSONObject(i);
-//                        System.out.println(temp);
-//                        Platform.runLater(() ->map.setMapField(temp.getInt("x"),temp.getInt("y"),temp.getInt("field")));    //TODO
                         Platform.runLater(() -> map.printOneField(temp.getInt("x"), temp.getInt("y"), temp.getInt("field")));
                     }
                 } else if (cmd.equals("incspeed")) {

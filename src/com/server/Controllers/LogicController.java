@@ -13,6 +13,7 @@ import javafx.application.Platform;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.awt.*;
 import java.net.DatagramSocket;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,6 +33,7 @@ public class LogicController {
     private ExecutorService bombExecutors = Executors.newFixedThreadPool(Consts.MAX_N_BOMBS * 3);   //max liczba bomb na mapie * liczba graczy
     private ExecutorService firesExecutor = Executors.newSingleThreadExecutor();
     private final Map<String, Integer> fieldImages = fillHashMap();
+    private final Map<Integer, Point> fieldForPlayers = fillFieldForPlayers();
     private static int breakLoopFires = 0;
 
     private static final Map<String, Integer> fillHashMap() {
@@ -45,6 +47,15 @@ public class LogicController {
         tempMap.put("Bonushaste", 6);
         tempMap.put("Bonusincrange", 7);
         tempMap.put("Bonusincbombs", 8);
+        return tempMap;
+    }
+
+    private static final Map<Integer, Point> fillFieldForPlayers(){
+        Map<Integer, Point> tempMap = new HashMap<>();
+        tempMap.put(0, new Point(0,0));
+        tempMap.put(1, new Point(Consts.DIMENSION - 1,Consts.DIMENSION - 1));
+        tempMap.put(2, new Point(0,Consts.DIMENSION - 1));
+        tempMap.put(3, new Point(Consts.DIMENSION - 1,0));
         return tempMap;
     }
 
@@ -74,12 +85,6 @@ public class LogicController {
 
     public void fillMap() {
         this.mapFields = new Field[Consts.DIMENSION][Consts.DIMENSION];
-        for (int i = 0; i < Consts.DIMENSION; i++) {
-            for (int j = 0; j < Consts.DIMENSION; j++) {
-                this.mapFields[i][j] = new NormalBlock(j, i, false, true);          //Bloki puste
-            }
-        }
-
         for (int i = 1; i < Consts.DIMENSION; i += 2) {
             for (int j = 1; j < Consts.DIMENSION; j += 2) {
                 this.mapFields[i][j] = new NormalBlock(j, i, false, false);       //Blok nie do rozbicia
@@ -91,6 +96,13 @@ public class LogicController {
             for (int j = 0; j < Consts.DIMENSION; j++) {
                 if (!((i % 2 == 1) && (j % 2 == 1)) && (generator.nextDouble() > Consts.NORMAL_BLOCK_PROB))
                     this.mapFields[i][j] = new NormalBlock(j, i, true, false);     //Blok do rozbicia
+            }
+        }
+        for (int i = 0; i < Consts.DIMENSION; i++) {
+            for (int j = 0; j < Consts.DIMENSION; j++) {
+                if (mapFields[i][j] == null){
+                    this.mapFields[i][j] = new NormalBlock(j, i, false, true);          //Bloki puste
+                }
             }
         }
 
@@ -108,17 +120,26 @@ public class LogicController {
         mapFields[Consts.DIMENSION - 1][Consts.DIMENSION - 2] = new NormalBlock(Consts.DIMENSION - 2, Consts.DIMENSION - 1, false, true);
     }
 
-    public void createPlayer(int ID, String name) {
-        if (ID == 0) {
-            this.mapFields[0][0] = new Player(0, 0, true, name);        //TODO
-            players.add((Player) this.mapFields[0][0]);
-        } else if (ID == 1) {
-            this.mapFields[Consts.DIMENSION - 1][Consts.DIMENSION - 1] = new Player(Consts.DIMENSION - 1, Consts.DIMENSION - 1, true, name);
-            players.add((Player) this.mapFields[Consts.DIMENSION - 1][Consts.DIMENSION - 1]);
-        } else if (ID == 2) {
-            this.mapFields[0][Consts.DIMENSION - 1] = new Player(Consts.DIMENSION - 1, 0, true, name);
-            players.add((Player) this.mapFields[0][Consts.DIMENSION - 1]);
+    public void createPlayers(ArrayList<ClientData> clients, String test) {
+        Random generator = new Random();
+        int randomPoint = generator.nextInt(clients.size());
+        int direction;
+        if (generator.nextBoolean()){
+            direction = 1;
+        } else {
+            direction = -1;
         }
+
+        for (ClientData client : clients){
+            Point coords = fieldForPlayers.get(randomPoint);
+            createPlayer(coords.x, coords.y);
+            randomPoint = (randomPoint + direction) % clients.size();
+        }
+    }
+
+    public void createPlayer(int x, int y){
+        this.mapFields[y][x] = new Player(x, y, true, "Test");
+        players.add((Player) this.mapFields[y][x]);
     }
 
     public void destroyField(int x, int y, Field newField, JSONArray answer) {
@@ -166,7 +187,7 @@ public class LogicController {
 
     public String printEntireMap() {
         String mapp = "";
-        for (int i = 0; i < Consts.DIMENSION; i++) {       //
+        for (int i = 0; i < Consts.DIMENSION; i++) {
             for (int j = 0; j < Consts.DIMENSION; j++) {
                 Integer blockNumber = fieldImages.get(mapFields[j][i].getName());
                 mapp += Integer.toString(blockNumber);
@@ -227,7 +248,7 @@ public class LogicController {
                 deletePlayerFromMap(players.get(finalID));
                 return true;
             } else if (getMapField(newX, newY) instanceof Bonus) {                      //wszedl na bonus
-                ((Bonus) getMapField(newX, newY)).takeBonus(players.get(finalID));              //TODO wyslac do gracza info, ze moze szybciej beigac
+                ((Bonus) getMapField(newX, newY)).takeBonus(players.get(finalID));
                 players.get(finalID).incScore(Consts.SCORE_TAKE_BONUS);
                 if (getMapField(newX, newY).getName().equals("Bonushaste")) {
                     JSONObject msg = new JSONObject();
@@ -371,4 +392,6 @@ public class LogicController {
             }
         });
     }
+
+
 }

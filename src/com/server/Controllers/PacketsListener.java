@@ -17,14 +17,12 @@ public class PacketsListener extends Task{
     private GUIController controller;
     private DatagramSocket socket;
     private MessageQueue messages;
-    private Broadcaster broadcaster;
     private byte[] buf;
 
     public PacketsListener(GUIController controller) throws IOException {
         this.controller=controller;
         this.socket = new DatagramSocket(PORT);
         this.messages= new MessageQueue();
-//        this.broadcaster = new Broadcaster(socket);
         buf = new byte[BUFFER];
         executor.submit(new MessageHandler(messages, controller, socket));
     }
@@ -36,49 +34,12 @@ public class PacketsListener extends Task{
         while (true) {
             try {
                 DatagramPacket packet = new DatagramPacket(buf, buf.length);
-//                System.out.println("Czekam na pakiecik");
                 socket.receive(packet);
                 buf = new byte[BUFFER];
                 messages.add(packet);
-
-            /*    executor.submit(() -> {
-                    try {
-                        handleClient(packet);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }); */
-
-               /* String content = new String(buf, buf.length);
-
-                InetAddress clientAddress = packet.getAddress();
-                controller.sendMessage(clientAddress.toString() + " polaczyl sie");
-                int clientPort = packet.getPort();
-
-                String id = clientAddress.toString() + "," + clientPort;
-                if (!existingClients.contains(id)) {
-                    existingClients.add( id );
-                    clientPorts.add( clientPort );
-                    clientAddresses.add(clientAddress);
-                }
-
-                System.out.println(id + " : " + content);
-                byte[] data = (id + " : " +  content).getBytes();
-                for (int i=0; i < clientAddresses.size(); i++) {
-                    // InetAddress cl = clientAddresses.get(i);
-                    // int cp = clientPorts.get(i);
-                    //  packet = new DatagramPacket(data, data.length, cl, cp);
-                    //  socket.send(packet);
-                }*/
-
             } catch(Exception e) {
                 System.err.println(e);
             }
-        }
-    }
-
-    private void handleClient(DatagramPacket packer) throws InterruptedException {
-        while (true){
         }
     }
 }

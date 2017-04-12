@@ -64,15 +64,20 @@
 }
 
 .ready-button {
-    /*todo*/
+    -fx-text-fill: rgb(246, 236, 39);
+    -fx-background-color: rgba(30,90,50,0.8);
+    -fx-font-size: 20px;
+    -fx-border-style: solid;
+    -fx-border-color: rgba(255, 255, 255, 0.72);
 }
 
 .ready-button:hover {
-    /*todo*/
+    -fx-background-color: rgba(130,190,150,0.8);
+    -fx-text-fill: rgb(142, 39, 19);
 }
 
 .ready-button:selected {
-    /*todo*/
+    -fx-background-color: rgba(30,30,30,0.8);
 }
 
 .IPAddress-field {

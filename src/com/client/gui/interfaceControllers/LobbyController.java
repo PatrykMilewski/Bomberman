@@ -1,14 +1,19 @@
 package com.client.gui.interfaceControllers;
 
+import com.client.Client;
+import com.client.ClientMessageHandler;
 import com.client.exceptions.GameSlotOccupiedException;
 import com.client.exceptions.PlayersColorNullException;
 import com.client.exceptions.PlayersNameNullException;
 import com.sun.javafx.scene.control.skin.LabeledText;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
+import jdk.nashorn.api.scripting.JSObject;
+import org.json.JSONObject;
 
 import java.net.UnknownHostException;
 import java.util.logging.Level;
@@ -20,9 +25,9 @@ public class LobbyController extends MainStageController {
     // IPv4 address pattern
     private static final Pattern PATTERN = Pattern.compile("^(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}):(\\d{1,5})$");
     
-    private static boolean isIPAddressValid = false;
-    private static String serverAddress;
-    private static String serverPort;
+    private static boolean isIPAddressValid = true;
+    private static String serverAddress = "127.0.0.1";
+    private static String serverPort = "7115";
     private static PlayerSlot playersSlots[] = new PlayerSlot[playersAmount];
     
     private boolean colorPickerAdded;
@@ -55,14 +60,16 @@ public class LobbyController extends MainStageController {
     
     @FXML
     public void initialize() {
-        playersName = null;
+        playersName = "Elo";
         playersColor = null;
         ready = false;
-        
+        thisPlayer.setPlayersName("Test");
+//        ClientMessageHandler.assignLobbyController(this);
+
         playersSlots[0] = new PlayerSlot(player1NameLabel, player1Color, true);
         playersSlots[1] = new PlayerSlot(player2NameLabel, player2Color, true);
         playersSlots[2] = new PlayerSlot(player3NameLabel, player3Color, true);
-        
+
         colorPickerAdded = false;
         colorPicker = new ColorPicker();
         colorPicker.setStyle("-fx-color-label-visible: false;");
@@ -210,18 +217,24 @@ public class LobbyController extends MainStageController {
     @FXML
     void readyClicked() {
         ready = !ready;
+        JSONObject messageToSend = new JSONObject();
+        messageToSend.put("cmd", "ready");
+        messageToSend.put("id", thisPlayer.getID());
+        Platform.runLater(() -> thisPlayer.send(messageToSend.toString()));
     }
     
     private void selectSingleSlot(int slotNumber) throws GameSlotOccupiedException {
-        if (playersSlots[slotNumber].isEmpty()) {
+        Platform.runLater(() -> thisPlayer.sendSlot(thisPlayer.getSlotId(), slotNumber, playersName));
+
+/*        if (playersSlots[slotNumber].isEmpty()) {
             if (selectedSlot != null)
                 selectedSlot.freeSlot();
             selectedSlot = playersSlots[slotNumber];
             selectedSlot.takeSlot(playersName);
             playersSlots[slotNumber].changeColor(thisPlayer.getPlayersColor());
-            log.info("Selected slot number " + slotNumber);
-            
-        } else if (playersSlots[slotNumber] == selectedSlot) {
+            log.info("Selected slot number " + slotNumber);*/
+
+       /* } else if (playersSlots[slotNumber] == selectedSlot) {
             if (debug)
                 log.info("Unselecting player's slot.");
     
@@ -229,6 +242,10 @@ public class LobbyController extends MainStageController {
             selectedSlot = null;
         } else {
             throw new GameSlotOccupiedException();
-        }
+        }*/
+    }
+
+    public void setPlayersSlot(int idSlot, String nameOfPlayer){
+        playersSlots[idSlot].setPlayersName(nameOfPlayer);
     }
 }
