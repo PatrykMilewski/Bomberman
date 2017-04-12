@@ -101,9 +101,9 @@ public  class MainStageController extends ClientMainStage {
         eventButton.setEffect(new Glow(0.0));
     }
     
-    void showAlert(Alert.AlertType alertType, String title, String headerText, String message) {
+    void showAlert(Alert.AlertType alertType, String headerText, String message) {
         Alert alert = new Alert(alertType, message);
-        alert.setTitle(title);
+        alert.setTitle("");
         alert.setHeaderText(headerText);
         alert.showAndWait();
     }

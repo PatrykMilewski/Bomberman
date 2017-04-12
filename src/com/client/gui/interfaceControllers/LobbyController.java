@@ -1,7 +1,9 @@
 package com.client.gui.interfaceControllers;
 
+import com.client.exceptions.GameSlotOccupiedException;
 import com.client.exceptions.PlayersColorNullException;
 import com.client.exceptions.PlayersNameNullException;
+import com.sun.javafx.scene.control.skin.LabeledText;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -14,10 +16,10 @@ import java.util.regex.Pattern;
 
 public class LobbyController extends MainStageController {
     private static final int playersAmount = 3;
-
+    
     // IPv4 address pattern
     private static final Pattern PATTERN = Pattern.compile("^(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}):(\\d{1,5})$");
-
+    
     private static boolean isIPAddressValid = false;
     private static String serverAddress;
     private static String serverPort;
@@ -46,11 +48,11 @@ public class LobbyController extends MainStageController {
     private Label player3NameLabel;
     @FXML
     private ColorPicker colorPicker;
-
+    
     private static boolean validateIPv4(final String ip) {
         return PATTERN.matcher(ip).matches();
     }
-
+    
     @FXML
     public void initialize() {
         playersName = null;
@@ -60,12 +62,12 @@ public class LobbyController extends MainStageController {
         playersSlots[0] = new PlayerSlot(player1NameLabel, player1Color, true);
         playersSlots[1] = new PlayerSlot(player2NameLabel, player2Color, true);
         playersSlots[2] = new PlayerSlot(player3NameLabel, player3Color, true);
-    
+        
         colorPickerAdded = false;
         colorPicker = new ColorPicker();
         colorPicker.setStyle("-fx-color-label-visible: false;");
     }
-
+    
     @FXML
     void addressEntered() {
         String rawAddress = IPAddressField.getText();
@@ -73,7 +75,7 @@ public class LobbyController extends MainStageController {
         serverPort = (rawAddress.split(":"))[1];
         if (debug)
             log.info("User entered " + rawAddress + " server's address.");
-
+        
         if (validateIPv4(rawAddress)) {
             IPAddressField.setStyle("-fx-text-fill: green;");
             isIPAddressValid = true;
@@ -82,16 +84,16 @@ public class LobbyController extends MainStageController {
             IPAddressField.setStyle("-fx-text-fill: red;");
             isIPAddressValid = false;
             String alertMessage = "Address " + rawAddress + ",that you entered, is invalid! Please enter valid IPv4 address.";
-            showAlert(Alert.AlertType.ERROR, "", "Invalid IP address!", alertMessage);
+            showAlert(Alert.AlertType.ERROR, "Invalid IP address!", alertMessage);
         }
-
+        
     }
-
+    
     @FXML
     void connectToServer() {
         if (debug)
             log.info("Trying to connect to server: " + serverAddress);
-
+        
         if (isIPAddressValid) {
             if (debug)
                 log.info("Connecting to server!");
@@ -99,9 +101,10 @@ public class LobbyController extends MainStageController {
             try {
                 thisPlayer.isReadyToJoin();
                 thisPlayer.wannaJoin(serverAddress, serverPort);
-            }
-            catch (UnknownHostException | PlayersNameNullException | PlayersColorNullException e) {
+            } catch (UnknownHostException | PlayersNameNullException | PlayersColorNullException e) {
                 log.log(Level.SEVERE, e.getMessage(), e);
+                String alertMessage = "There was a problem, with connecting to a server. Exception caught: " + e.getMessage();
+                showAlert(Alert.AlertType.ERROR, "Failed to connect to server.", alertMessage);
             }
         } else {
             log.warning("Couldn't connect to server: " + serverAddress);
@@ -111,26 +114,26 @@ public class LobbyController extends MainStageController {
             else
                 alertMessage = "Please enter server IP address!";
             
-            showAlert(Alert.AlertType.ERROR, "", "Invalid IP address!", alertMessage);
+            showAlert(Alert.AlertType.ERROR, "Invalid IP address!", alertMessage);
         }
-
+        
     }
-
+    
     @FXML
     void changeColor(Event event) {
         Pane eventPane = (Pane) event.getTarget();
         if (selectedSlot == null) {
-            showAlert(Alert.AlertType.INFORMATION, "","It's not your slot!", "Please select slot first, then change your color!");
+            showAlert(Alert.AlertType.INFORMATION, "It's not your slot!", "Please select slot first, then change your color!");
             return;
         }
         if (!selectedSlot.equalsColorPane(eventPane)) {
-            showAlert(Alert.AlertType.INFORMATION, "", "It's not your slot!", "Please change your colour, not somebody else's!");
+            showAlert(Alert.AlertType.INFORMATION, "It's not your slot!", "Please change your colour, not somebody else's!");
             return;
         }
         
         colorPicker.relocate(eventPane.getLayoutX(), eventPane.getLayoutY());
         colorPicker.setOnAction((ActionEvent newEvent) -> {
-            playersColor =  colorPicker.getValue().toString().substring(2,10);
+            playersColor = colorPicker.getValue().toString().substring(2, 10);
             thisPlayer.setPlayersColor(playersColor);
             eventPane.setStyle("-fx-background-color:" + "#" + playersColor);
             root.getChildren().remove(colorPicker);
@@ -138,36 +141,41 @@ public class LobbyController extends MainStageController {
         });
         
         if (!colorPickerAdded) {
-            ((Pane) eventPane.getParent() ).getChildren().add(colorPicker);
+            ((Pane) eventPane.getParent()).getChildren().add(colorPicker);
             colorPickerAdded = true;
         }
     }
-
+    
     @FXML
     void selectGameSlot(Event event) {
-        Label eventLabel = (Label) event.getTarget();
+        if (!thisPlayer.isNameSet()) {
+            showAlert(Alert.AlertType.ERROR, "No name!", "Firstly please enter your name.");
+            return;
+        }
+        Label eventLabel;
+        Object object = event.getTarget();
+        if (object instanceof Label) {
+            eventLabel = (Label) object;
+            
+        } else if (object instanceof LabeledText) {
+            eventLabel = (Label) ((LabeledText) object).getParent();
+            
+        } else {
+            log.warning("Unknown instance of class that caused event!");
+            return;
+        }
+        
         for (int i = 0; i < playersAmount; i++) {
             if (playersSlots[i].equalsNameLabel(eventLabel)) {
-                if (playersSlots[i].isEmpty()) {
-                    if (selectedSlot != null)
-                        selectedSlot.freeSlot();
-                    selectedSlot = playersSlots[i];
-                    selectedSlot.takeSlot(playersName);
-                    log.info("Selected slot number " + i);
+                try {
+                    selectSingleSlot(i);
                 }
-                else if (playersSlots[i] == selectedSlot) {
-                    if (debug)
-                        log.info("Unselecting player's slot.");
-                    
-                    playersSlots[i].freeSlot();
-                    selectedSlot = null;
-                }
-                else {
+                catch (GameSlotOccupiedException e) {
                     if (debug)
                         log.info("Selected slot is already taken!");
-                    
+
                     String alertMessage = "Slot, that you selected, is already taken by other player!";
-                    showAlert(Alert.AlertType.ERROR, "", "Slot already taken!", alertMessage);
+                    showAlert(Alert.AlertType.ERROR, "Slot already taken!", alertMessage);
                 }
                 return;
             }
@@ -178,12 +186,14 @@ public class LobbyController extends MainStageController {
     void testServerConnection() {
         if (debug)
             log.info("Testing connection to server on address: " + serverAddress);
+        
         String alertMessage;
-        if (serverAddress != null)
+        if (serverAddress != null) {
             return; //todo
-        else {
+            
+        } else {
             alertMessage = "Address " + serverAddress + ",that you entered, is invalid! Please enter valid IPv4 address.";
-            showAlert(Alert.AlertType.ERROR, "", "Invalid IP address!", alertMessage);
+            showAlert(Alert.AlertType.ERROR, "Invalid IP address!", alertMessage);
         }
     }
     
@@ -200,5 +210,25 @@ public class LobbyController extends MainStageController {
     @FXML
     void readyClicked() {
         ready = !ready;
+    }
+    
+    private void selectSingleSlot(int slotNumber) throws GameSlotOccupiedException {
+        if (playersSlots[slotNumber].isEmpty()) {
+            if (selectedSlot != null)
+                selectedSlot.freeSlot();
+            selectedSlot = playersSlots[slotNumber];
+            selectedSlot.takeSlot(playersName);
+            playersSlots[slotNumber].changeColor(thisPlayer.getPlayersColor());
+            log.info("Selected slot number " + slotNumber);
+            
+        } else if (playersSlots[slotNumber] == selectedSlot) {
+            if (debug)
+                log.info("Unselecting player's slot.");
+    
+            playersSlots[slotNumber].freeSlot();
+            selectedSlot = null;
+        } else {
+            throw new GameSlotOccupiedException();
+        }
     }
 }

@@ -28,6 +28,10 @@ public class PlayerSlot {
     
     public void setColorPane(Pane input) { this.playersColorPane = input; }
     
+    public void changeColor(String color) {
+        playersColorPane.setStyle("-fx-background-color: #" + color + ";");
+    }
+    
     boolean isEmpty() { return isEmpty; }
     
     void takeSlot(String playersName) {

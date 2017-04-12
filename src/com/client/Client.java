@@ -7,10 +7,13 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.*;
+import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Client {
+    private static Random generator = new Random();
+    
     ExecutorService executor = Executors.newFixedThreadPool(3);
     private DatagramSocket socket;
     private InetAddress serverIP;
@@ -29,6 +32,7 @@ public class Client {
         executor.submit(new Client_receiver(messages,socket));
         executor.submit(new ClientMessageHandler(messages, this));
         myId = 0;
+        playersColor = Integer.toHexString(generator.nextInt(16581375 + 1));
     }
     
     public void startGame() throws IOException, InterruptedException {
@@ -74,6 +78,8 @@ public class Client {
         this.playersColor = playersColor;
     }
     
+    public String getPlayersColor() { return this.playersColor; }
+    
     public void setPlayersName(String playersName) {
         this.playersName = playersName;
     }
@@ -84,6 +90,10 @@ public class Client {
         
         if (playersColor == null)
             throw new PlayersColorNullException(myId);
+    }
+    
+    public boolean isNameSet() {
+        return playersName != null;
     }
 }
 
