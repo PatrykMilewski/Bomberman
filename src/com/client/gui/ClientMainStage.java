@@ -26,13 +26,13 @@ public class ClientMainStage extends Application {
 
     // Child controllers
     @FXML
-    public static MainStageController mainStageController;
+    public static MainStageController mainStageController = new MainStageController();
     @FXML
-    public static GameController gameController;
+    public static GameController gameController = new GameController();
     @FXML
-    public static LobbyController lobbyController;
+    public static LobbyController lobbyController = new LobbyController();
     @FXML
-    public static HighscoresController highscoresController;
+    public static HighscoresController highscoresController = new HighscoresController();
     @FXML
     public static Pane primaryPane;
 
@@ -51,7 +51,6 @@ public class ClientMainStage extends Application {
         scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.show();
-        
         thisPlayer = new Client(this, lobbyController);
     }
     

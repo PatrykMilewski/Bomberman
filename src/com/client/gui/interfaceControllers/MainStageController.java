@@ -13,16 +13,6 @@ import java.io.IOException;
 import java.util.logging.Level;
 
 public  class MainStageController extends ClientMainStage {
-    @FXML
-    public void initialize() {
-        loader = new FXMLLoader(getClass().getResource("fxmlFiles/Game.fxml"));
-        gameController = loader.getController();
-        loader = new FXMLLoader(getClass().getResource("fxmlFiles/Lobby.fxml"));
-        lobbyController = loader.getController();
-        loader = new FXMLLoader(getClass().getResource("fxmlFiles/Highscores.fxml"));
-        highscoresController = loader.getController();
-    }
-    
     
     @FXML
     public void startNewGame() {
