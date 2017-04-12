@@ -1,6 +1,5 @@
 package com.client.gui.interfaceControllers;
 
-import com.client.ClientMap;
 import com.client.gui.ClientMainStage;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -15,32 +14,44 @@ import java.util.logging.Level;
 
 public  class MainStageController extends ClientMainStage {
     @FXML
+    public void initialize() {
+        loader = new FXMLLoader(getClass().getResource("fxmlFiles/Game.fxml"));
+        gameController = loader.getController();
+        loader = new FXMLLoader(getClass().getResource("fxmlFiles/Lobby.fxml"));
+        lobbyController = loader.getController();
+        loader = new FXMLLoader(getClass().getResource("fxmlFiles/Highscores.fxml"));
+        highscoresController = loader.getController();
+    }
+    
+    
+    @FXML
     public void startNewGame() {
-        log.info("Starting a new game.");
+        if (debug)
+            log.info("Starting a new game.");
+    
         try {
             loader = new FXMLLoader(getClass().getResource("fxmlFiles/Game.fxml"));
+            loader.setController(gameController);
             root = loader.load();
-            gameController = loader.getController();
-            scene = new Scene(root);
-            primaryStage.setScene(scene);
-            primaryStage.show();
+            loadStage();
+        
         } catch (IOException e) {
             log.log(Level.SEVERE, e.getMessage(), e);
         }
-        root.getChildren();
 
     }
 
     @FXML
     void openLobby() {
-        log.info("Opening lobby scene.");
+        if (debug)
+            log.info("Opening lobby scene.");
+        
         try {
             loader = new FXMLLoader(getClass().getResource("fxmlFiles/Lobby.fxml"));
+            loader.setController(lobbyController);
             root = loader.load();
-            lobbyController = loader.getController();
-            scene = new Scene(root);
-            primaryStage.setScene(scene);
-            primaryStage.show();
+            loadStage();
+            
         } catch (IOException e) {
             log.log(Level.SEVERE, e.getMessage(), e);
         }
@@ -48,14 +59,15 @@ public  class MainStageController extends ClientMainStage {
 
     @FXML
     void openHighscores() {
-        log.info("Opening highscores scene.");
+        if (debug)
+            log.info("Opening higscores.");
+    
         try {
             loader = new FXMLLoader(getClass().getResource("fxmlFiles/Highscores.fxml"));
+            loader.setController(highscoresController);
             root = loader.load();
-            highscoresController = loader.getController();
-            scene = new Scene(root);
-            primaryStage.setScene(scene);
-            primaryStage.show();
+            loadStage();
+        
         } catch (IOException e) {
             log.log(Level.SEVERE, e.getMessage(), e);
         }
@@ -72,13 +84,14 @@ public  class MainStageController extends ClientMainStage {
     void backToMenu() {
         if (debug)
             log.info("Going back to main menu.");
-
+    
         try {
-            root = FXMLLoader.load(getClass().getResource("fxmlFiles/MainStage.fxml"));
-            scene = new Scene(root);
-            primaryStage.setScene(scene);
-            primaryStage.show();
-        } catch (Exception e) {
+            loader = new FXMLLoader(getClass().getResource("fxmlFiles/MainStage.fxml"));
+            loader.setController(mainStageController);
+            root = loader.load();
+            loadStage();
+        
+        } catch (IOException e) {
             log.log(Level.SEVERE, e.getMessage(), e);
         }
     }
@@ -106,5 +119,11 @@ public  class MainStageController extends ClientMainStage {
         alert.setTitle("");
         alert.setHeaderText(headerText);
         alert.showAndWait();
+    }
+    
+    private void loadStage() {
+        scene = new Scene(root);
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 }

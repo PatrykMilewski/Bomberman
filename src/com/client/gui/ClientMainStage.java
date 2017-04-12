@@ -1,8 +1,6 @@
 package com.client.gui;
 
 import com.client.Client;
-import com.client.ClientListener;
-import com.client.ClientMap;
 import com.client.gui.interfaceControllers.GameController;
 import com.client.gui.interfaceControllers.HighscoresController;
 import com.client.gui.interfaceControllers.LobbyController;
@@ -14,20 +12,17 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-import java.net.InetAddress;
 import java.util.logging.Logger;
 
 public class ClientMainStage extends Application {
-    protected static FXMLLoader loader;
-    protected static boolean debug = false;
+    protected static boolean debug = true;
     protected static Logger log = Logger.getLogger(ClientMainStage.class.getCanonicalName());
     protected static Stage primaryStage;
     protected static Pane root;
     protected static Scene scene;
     protected static Client thisPlayer;
-    private static ClientListener playerListener;
     
-    private ClientMainStage clientMainStage;
+    protected FXMLLoader loader;
 
     // Child controllers
     @FXML
@@ -49,8 +44,9 @@ public class ClientMainStage extends Application {
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
         loader = new FXMLLoader(getClass().getResource("interfaceControllers/fxmlFiles/MainStage.fxml"));
+        mainStageController = new MainStageController();
+        loader.setController(mainStageController);
         root = loader.load();
-        mainStageController = loader.getController();
         primaryStage.setTitle("Bomberman");
         scene = new Scene(root);
         primaryStage.setScene(scene);
@@ -58,7 +54,7 @@ public class ClientMainStage extends Application {
         
         thisPlayer = new Client(this);
     }
-
+    
     public Stage getPrimaryStage() {
         return primaryStage;
     }
