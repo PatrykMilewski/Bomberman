@@ -34,6 +34,7 @@ public class ServerLobbyController {
             }
             slots.get(newIdSlot).setEmpty(false);
             slots.get(newIdSlot).setTextOnSlot(textOnSlot);
+            clients.get(clientId).setNick(textOnSlot);
             sendUpdatedSlotToEveryone(newIdSlot, slots.get(newIdSlot).getTextOnSlot());
             sendUpdatedSlotToOne(clientId, newIdSlot);
         }

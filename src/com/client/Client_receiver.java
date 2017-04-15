@@ -27,7 +27,7 @@ public class Client_receiver extends Task
             data = new DatagramPacket(receivedData, receivedData.length);
             try {
                 serverSocket.receive(data);
-                System.out.println("przyszlo: " + new String(data.getData()));
+                System.out.println("przyszlo (dodaje do kułeułe): " + new String(data.getData()));
 
             } catch (IOException e) {
                 e.printStackTrace();

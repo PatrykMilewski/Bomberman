@@ -132,30 +132,28 @@ public class LogicController {
 
         for (ClientData client : clients){
             Point coords = fieldForPlayers.get(randomPoint);
-            createPlayer(coords.x, coords.y);
+            createPlayer(coords.x, coords.y, client.getId(), client.getNick());
             randomPoint = (randomPoint + direction) % clients.size();
         }
     }
 
-    public void createPlayer(int x, int y){
-        this.mapFields[y][x] = new Player(x, y, true, "Test");
+    public void createPlayer(int x, int y, int id, String nick){
+        this.mapFields[y][x] = new Player(x, y, true, nick, id);
         players.add((Player) this.mapFields[y][x]);
+        System.out.println("id gracza: " + ((Player)this.mapFields[y][x]).getId());
     }
 
     public void destroyField(int x, int y, Field newField, JSONArray answer) {
         if (this.mapFields[y][x] instanceof Player) {
-            int tempId = ((Player) this.mapFields[y][x]).getId();
             deletePlayerFromMap((Player) this.mapFields[y][x]);
-            players.set(tempId, null);
         }
         this.mapFields[y][x] = newField;
         sendFieldOfMap(x, y, answer);
     }
 
     private void deletePlayerFromMap(Player player) {
-        int tempId = player.getId();                //TODO?????????? czy ustawic nowe pole?
+        System.out.println("Zabijam plejera o nicku:\t" + player.getNick());
         getPlayer(player.getId()).kill();
-        players.set(tempId, null);
     }
 
     private boolean canMove(int x, int y) {
@@ -244,7 +242,9 @@ public class LogicController {
             //Nowe pole
             if (getMapField(newX, newY) instanceof Fire) {                              //wszedl w ogien
                 sendNamedFieldOfMap(playerX, playerY, "DefaultBlock", answer);
-                ((Fire) getMapField(newX, newY)).getOwnerOfFire().incScore(Consts.SCORE_KILL_PLAYER);
+                if (((Fire) getMapField(newX, newY)).getOwnerOfFire() != players.get(finalID)){
+                    ((Fire) getMapField(newX, newY)).getOwnerOfFire().incScore(Consts.SCORE_KILL_PLAYER);
+                }
                 deletePlayerFromMap(players.get(finalID));
                 return true;
             } else if (getMapField(newX, newY) instanceof Bonus) {                      //wszedl na bonus
@@ -331,7 +331,9 @@ public class LogicController {
             if (getMapField(xToCheck, yToCheck).isDestroyable()) {                          //do zniszczenia
                 newFire.setUnderField(getMapField(xToCheck, yToCheck).getFieldUnderDestryableField());
                 if (getMapField(xToCheck, yToCheck) instanceof Player) {
-                    bomb.getOwnerOfBomb().incScore(Consts.SCORE_KILL_PLAYER);
+                    if (bomb.getOwnerOfBomb() != getMapField(xToCheck, yToCheck)){
+                        bomb.getOwnerOfBomb().incScore(Consts.SCORE_KILL_PLAYER);
+                    }
                 } else {
                     bomb.getOwnerOfBomb().incScore(Consts.SCORE_DESTROY_BLOCK);
                 }

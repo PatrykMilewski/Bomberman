@@ -1,6 +1,7 @@
 package com.client;
 
 import com.client.gui.ClientConsts;
+import com.server.fields.Player;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import org.json.JSONArray;
@@ -30,31 +31,22 @@ public class GameMessageHandler extends Task {
             String cmd = jObject.getString("cmd");
             if (cmd != null) {
                 if (cmd.equals("eMap")) {
-                    String mapp = jObject.getString("fields");
-                    System.out.println(mapp);
-                    for (int i = 0; i < ClientConsts.DIMENSION; i++)
-                        for (int j = 0; j < ClientConsts.DIMENSION; j++) {
-                            int field = Integer.parseInt(mapp.substring(0, 1));
-                            mapp = mapp.substring(1);
-                            map.setMapField(i, j, field);
-                            if (field == 3){
-                                int y = i;
-                                int x = j;
-                                Platform.runLater(() -> map.printOneField(x, y, 3));
-                            }
-                        }
-                    Platform.runLater(() -> map.printEntireMap());
+                    Platform.runLater(() -> map.printEntireMap(jObject));
                 } else if (cmd.equals("move")) {
-                    JSONArray fields = jObject.getJSONArray("fields");
-                    for (int i = 0; i < fields.length(); i++) {
-                        JSONObject temp = fields.getJSONObject(i);
-                        Platform.runLater(() -> map.printOneField(temp.getInt("x"), temp.getInt("y"), temp.getInt("field")));
-                    }
+                    cmdMove(jObject);
                 } else if (cmd.equals("incspeed")) {
                     System.out.println("Zwiekszam moja predkosc");
                     //TODO MUL tutaj zrobi zwiekszenie predkosci gracza
                 }
             }
+        }
+    }
+
+    private void cmdMove(JSONObject jObject) {
+        JSONArray fields = jObject.getJSONArray("fields");
+        for (int i = 0; i < fields.length(); i++) {
+            JSONObject temp = fields.getJSONObject(i);
+            Platform.runLater(() -> map.printOneField(temp.getInt("x"), temp.getInt("y"), temp.getInt("field")));
         }
     }
 }

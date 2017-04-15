@@ -142,7 +142,6 @@ public class MessageHandler extends Task {
 
     private void cmdKey(JSONObject msg) {
         int clientId = msg.getInt("id");
-
         if (logicController.getPlayer(clientId).isAlive()){
             String key = msg.getString("but");
             JSONObject answerToSend = new JSONObject();

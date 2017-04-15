@@ -61,10 +61,6 @@ public class ClientMessageHandler extends Task {
         return null;
     }
 
-//    public static void assignLobbyController(LobbyController newLobbyController){
-//        lobbyController = newLobbyController;
-//    }
-
     private void statusChangeSlot(JSONObject msg) {
         int newSlot = msg.getInt("slotId");
         Platform.runLater(() -> client.setSlotId(newSlot));

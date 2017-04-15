@@ -22,7 +22,7 @@ public class Player extends Field {
 
     private int id;
 
-    public Player(int x, int y, boolean destroyable, String nick) {
+    public Player(int x, int y, boolean destroyable, String nick, int id) {
         super(x, y, destroyable);
         this.nick = nick;
         this.isAlive = true;
@@ -31,10 +31,15 @@ public class Player extends Field {
         this.nBombs = 1;
         this.rangeOfBomb = 1;
         this.score = 0;
+        this.id = id;
     }
 
     public String getName() {
         return name;
+    }
+
+    public String getNick(){
+        return nick;
     }
 
     public int getRangeOfBomb() {

@@ -13,12 +13,14 @@ public class ClientData {
     private int id;
     private int port;
     private boolean ready;
+    private String nick;
 
     public ClientData(InetAddress IP, int port, int id) {
         this.IPaddr = IP;
         this.id = id;
         this.port = port;
         ready = false;
+        nick = "";
     }
 
     public int getPort() {
@@ -47,5 +49,13 @@ public class ClientData {
 
     public void changeReadyStatus() {
         ready = !ready;
+    }
+
+    public void setNick(String nick) {
+        this.nick = nick;
+    }
+
+    public String getNick() {
+        return nick;
     }
 }
