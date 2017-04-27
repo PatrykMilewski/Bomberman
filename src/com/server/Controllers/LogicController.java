@@ -280,7 +280,7 @@ public class LogicController {
             addBomb((Bomb) getMapField(x, y));
             player.decNBombs();
             sendNamedFieldOfMap(x, y, "Bomb", answer);
-            sendNamedFieldOfMap(x, y, "Player", answer);
+            sendNamedFieldOfMap(x, y, player.getName(), answer);
         }
     }
 
