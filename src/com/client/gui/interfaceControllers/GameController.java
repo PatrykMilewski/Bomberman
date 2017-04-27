@@ -65,6 +65,7 @@ public class GameController extends MainStageController {
         
         scoresMap.put(playersName, playersNumber);
         scoreLabels[playersNumber].setText(playersName + " - " + newScore);
+        log.info(scoreLabels[playersNumber].getText());
     }
     
     public void setScoreLabel(int playersNumber, int newScore) {

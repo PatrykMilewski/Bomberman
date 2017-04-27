@@ -5,6 +5,7 @@ import com.client.exceptions.PlayersNameNullException;
 import com.client.gui.ClientConsts;
 import com.client.gui.ClientMainStage;
 import com.client.gui.interfaceControllers.LobbyController;
+import javafx.application.Platform;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -135,11 +136,11 @@ public class Client {
     }
     
     public void newGameScore(int playersId, String playersName, int newScore) {
-        mainStage.gameController.initializeScoreLabel(playersId, playersName, newScore);
+        Platform.runLater(() -> mainStage.gameController.initializeScoreLabel(playersId, playersName, newScore));
     }
     
     public void setGameScore(int playersId, int newScore) {
-        mainStage.gameController.setScoreLabel(playersId, newScore);
+        Platform.runLater(() -> mainStage.gameController.setScoreLabel(playersId, newScore));
     }
 }
 
