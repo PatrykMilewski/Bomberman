@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 import java.util.logging.Logger;
 
 public class ClientMainStage extends Application {
-    protected static boolean debug = true;
+    protected static boolean debug = false;
     protected static Logger log = Logger.getLogger(ClientMainStage.class.getCanonicalName());
     protected static Stage primaryStage;
     protected static Pane root;

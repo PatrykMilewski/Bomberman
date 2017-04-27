@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 
 public class ClientMessageHandler extends Task {
     private static Logger log = Logger.getLogger(ClientMessageHandler.class.getCanonicalName());
-    private static final boolean debug = true;
+    private static final boolean debug = false;
 
     private ClientMessageQueue messageQueue;
     private Client client;

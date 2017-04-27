@@ -15,7 +15,7 @@ public class PacketsListener extends Task {
     private static Logger log = Logger.getLogger(PacketsListener.class.getCanonicalName());
     private static final int PORT = 7115;
     private static final int BUFFER = 2048;
-    private static final boolean debug = true;
+    private static final boolean debug = false;
     private ExecutorService executor = Executors.newFixedThreadPool(4);
     private GUIController controller;
     private DatagramSocket socket;

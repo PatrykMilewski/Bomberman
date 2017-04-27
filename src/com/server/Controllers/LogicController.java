@@ -27,7 +27,7 @@ import java.util.logging.Logger;
 
 public class LogicController {
     private static Logger log = Logger.getLogger(LogicController.class.getCanonicalName());
-    private static final boolean debug = true;
+    private static final boolean debug = false;
     
     private ArrayList<ClientData> clients;
     private DatagramSocket socket;

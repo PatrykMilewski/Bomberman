@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 
 public class GameMessageHandler extends Task {
     private static Logger log = Logger.getLogger(GameMessageHandler.class.getCanonicalName());
-    private static final boolean debug = true;
+    private static final boolean debug = false;
 
     private ClientMessageQueue messageQueue;
     private ClientMap map;

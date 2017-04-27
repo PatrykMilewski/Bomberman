@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 
 public class ClientReceiver extends Task {
     private static Logger log = Logger.getLogger(ClientReceiver.class.getCanonicalName());
-    private static final boolean debug = true;
+    private static final boolean debug = false;
     
     private ClientMessageQueue messages;
     private DatagramSocket serverSocket;
