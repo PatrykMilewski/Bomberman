@@ -415,4 +415,8 @@ public class LogicController {
         
         Broadcaster.broadcastMessage(clients, answerToSend.toString(), socket);
     }
+
+    public void killPlayer(int clientId) {
+        getPlayer(clientId).kill();
+    }
 }

@@ -1,11 +1,11 @@
-package com.client.gui.interfaceControllers;
+package com.server;
 
 import java.io.Serializable;
 
 class SingleScore implements Serializable {
     private String playersName;
     private int score;
-    
+
     public SingleScore() {
         this.playersName = "Not set yet!";
         this.score = 0;
@@ -16,12 +16,16 @@ class SingleScore implements Serializable {
         this.score = score;
     }
     
-    String get() {
-        return (playersName + " - " + score);
+    public String getName() {
+        return playersName;
     }
-    
+
+    public int getScore(){
+        return score;
+    }
     boolean compareTo(SingleScore input) {
         return this.score < input.score;
     }
+    
     
 }

@@ -6,6 +6,7 @@ import com.client.gui.ClientConsts;
 import com.client.gui.ClientMainStage;
 import com.client.gui.interfaceControllers.LobbyController;
 import javafx.application.Platform;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -49,7 +50,7 @@ public class Client {
         ClientListener playerListener = new ClientListener(mainStage, this);
         playerListener.listen();    //TODO Listen w nowym watku?
     }
-    
+
     public void send(String message) {
         System.out.println(message);
         DatagramPacket data = new DatagramPacket(message.getBytes(), message.length(), serverIP, serverPort);
@@ -60,7 +61,7 @@ public class Client {
             e.printStackTrace();
         }
     }
-    
+
     public void sendSlot(int oldSlotId, int newSlotId, String textOnLabel) {
         JSONObject msg = new JSONObject();
         msg.put("cmd", "updateSlots");
@@ -71,15 +72,16 @@ public class Client {
         System.out.println("Wysylam nowy slot");
         send(msg.toString());
     }
-    
-    public void sendQuitGameMessage() {
-        JSONObject msg = new JSONObject();
+
+    public void sendQuitGameMessage()
+    {
+/*        JSONObject msg = new JSONObject();
         msg.put("cmd", "quit");
-        msg.put("id", Integer.toString(myId));
-        send(msg.toString());
+        msg.put("id",Integer.toString(myId));
+        send(msg.toString());*/
     }
-    
-    
+
+
     void sendKey(String which) {
         JSONObject msg = new JSONObject();
         msg.put("cmd", "key");
@@ -87,7 +89,7 @@ public class Client {
         msg.put("id", myId);
         send(msg.toString());
     }
-    
+
     public void wannaJoin(String serverIP, String serverPort) throws UnknownHostException {
         this.serverIP = InetAddress.getByName(serverIP);
         this.serverPort = Integer.parseInt(serverPort);
@@ -95,23 +97,23 @@ public class Client {
         msg.put("cmd", "join");
         send(msg.toString());
     }
-    
+
     void setMyId(int id) {
         this.myId = id;
     }
-    
+
     public int getID() {
         return myId;
     }
-    
+
     void setSlotId(int slotId) {
         this.slotId = slotId;
     }
-    
+
     public int getSlotId() {
         return slotId;
     }
-    
+
     public void setPlayersColor(String playersColor) {
         this.playersColor = playersColor;
     }
@@ -119,11 +121,11 @@ public class Client {
     public String getPlayersColor() {
         return this.playersColor;
     }
-    
+
     int getPlayersTimeBetweenMoves() {
         return playersTimeBetweenMoves;
     }
-    
+
     void setPlayersTimeBetweenMoves(int playersTimeBetweenMoves) {
         this.playersTimeBetweenMoves = playersTimeBetweenMoves;
     }
@@ -150,6 +152,10 @@ public class Client {
     
     void setGameScore(int playersId, int newScore) {
         Platform.runLater(() -> ClientMainStage.gameController.setScoreLabel(playersId, newScore));
+    }
+
+    public void updateHighScores(JSONArray highScores) {
+        Platform.runLater(() -> mainStage.highscoresController.setScores(highScores));
     }
 }
 

@@ -22,8 +22,8 @@ public class PacketsListener extends Task {
     private MessageQueue messages;
     private byte[] buf;
 
-    PacketsListener(GUIController controller) throws IOException {
-        this.controller = controller;
+    public PacketsListener(GUIController controller) throws IOException, ClassNotFoundException {
+        this.controller=controller;
         this.socket = new DatagramSocket(PORT);
         this.messages= new MessageQueue();
         buf = new byte[BUFFER];

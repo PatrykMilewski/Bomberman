@@ -11,54 +11,51 @@ import java.util.logging.Logger;
 public class GameMessageHandler extends Task {
     private static Logger log = Logger.getLogger(GameMessageHandler.class.getCanonicalName());
     private static final boolean debug = true;
-    
+
     private ClientMessageQueue messageQueue;
     private ClientMap map;
     private Client client;
-    
+
     GameMessageHandler(ClientMessageQueue messageQueue, ClientMap map, Client client) {
         this.messageQueue = messageQueue;
         this.map = map;
         this.client = client;
     }
-    
+
     @Override
     protected Object call() throws Exception {
-        
+
         while (true) {
             String message = null;
             while (message == null) {
                 if (!messageQueue.isEmpty())
                     message = messageQueue.pop(); //TODO "jezeli gra nadal trwa", pobierane z Game.
             }
-            
+
             if (debug)
                 log.info("Received message from server: " + message);
-            
+
             JSONObject jObject = new JSONObject(message);
             String cmd = jObject.getString("cmd");
             if (cmd != null) {
-                switch (cmd) {
-                    case "eMap":
-                        Platform.runLater(() -> map.printEntireMap(jObject));
-                        break;
-                    case "move":
-                        cmdMove(jObject);
-                        break;
-                    case "incspeed":
-                        cmdIncspeed();
-                        break;
-                    case "scores":
-                        cmdScores(jObject);
-                        break;
-                    case "escores":
-                        cmdEScores(jObject);
-                        break;
+                if (cmd.equals("eMap")) {
+                    Platform.runLater(() -> map.printEntireMap(jObject));
+                } else if (cmd.equals("move")) {
+                    cmdMove(jObject);
+                } else if (cmd.equals("incspeed")) {
+                    cmdIncspeed();
+                } else if (cmd.equals("scores")){
+                    cmdScores(jObject);
+                } else if (cmd.equals("escores")){
+                    cmdEScores(jObject);
+                } else if (cmd.equals("hs")){
+                    System.out.println("CO JEST NIE TAK?!");
+                    cmdHs(jObject);
                 }
             }
         }
     }
-    
+
     private void cmdMove(JSONObject jObject) {
         JSONArray fields = jObject.getJSONArray("fields");
         for (int i = 0; i < fields.length(); i++) {
@@ -66,18 +63,18 @@ public class GameMessageHandler extends Task {
             Platform.runLater(() -> map.printOneField(temp.getInt("x"), temp.getInt("y"), temp.getInt("field")));
         }
     }
-    
+
     private void cmdIncspeed() {
         if (client.getPlayersTimeBetweenMoves() > ClientConsts.MAX_SPEED) {
             client.setPlayersTimeBetweenMoves(client.getPlayersTimeBetweenMoves()
                     - ClientConsts.SPEED_INCREMENT);
         }
     }
-    
+
     private void cmdScores(JSONObject jObject) {
         client.setGameScore(jObject.getInt("player"), jObject.getInt("score"));
     }
-    
+
     private void cmdEScores(JSONObject jObject) {       //inicjalizacja tabeli wyników
         JSONArray players = jObject.getJSONArray("plrs");
         for (int i = 0; i < players.length(); i++) {
@@ -88,5 +85,10 @@ public class GameMessageHandler extends Task {
             
             client.newGameScore(playerId, playerNick);
         }
+    }
+
+    private void cmdHs(JSONObject jObject) {
+        JSONArray highScores = jObject.getJSONArray("hscores");
+        client.updateHighScores(highScores);
     }
 }

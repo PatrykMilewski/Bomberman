@@ -17,15 +17,15 @@ import java.util.concurrent.Executors;
 
 public class GUIController implements Initializable {
     private ExecutorService executor = Executors.newSingleThreadExecutor();
-    
+
     @FXML
     private ListView serverListView;
     @FXML
     private Label serverIP;
-    
+
     private final ObservableList<String> data =
             FXCollections.observableArrayList();
-    
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
@@ -35,13 +35,13 @@ public class GUIController implements Initializable {
             e.printStackTrace();
         }
     }
-    
+
     public void sendMessage(String msg) {
         data.add(msg);
         serverListView.setItems(data);
     }
-    
-    public void go() throws IOException {
+
+    public void go() throws IOException, ClassNotFoundException {
         Task startServer = new PacketsListener(this);
         executor.submit(startServer);
     }
