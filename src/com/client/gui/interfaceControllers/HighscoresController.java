@@ -5,15 +5,15 @@ import javafx.scene.control.Label;
 
 import java.io.*;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class HighscoresController extends MainStageController {
+    private static Logger log = Logger.getLogger(HighscoresController.class.getCanonicalName());
     private final int topScoresAmount = 6;
     private final String highscoresDataName = "highscores.dat";
     
     private Label topScoresLabels[] = new Label[topScoresAmount];
     private SingleScore[] bestScores = new SingleScore[topScoresAmount];
-    
-    
     
     @FXML
     private Label top1LabelScore;
@@ -27,7 +27,6 @@ public class HighscoresController extends MainStageController {
     private Label top5LabelScore;
     @FXML
     private Label top6LabelScore;
-    
     
     @FXML
     public void initialize() {

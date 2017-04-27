@@ -20,7 +20,7 @@
     -fx-text-fill: rgba(240,240,240,0.95);
 }
 
-/*..\images\Nowy dokument tekstowy.css Game classes */
+/* Game classes */
 
 #game-primary-pane {
     -fx-background-image: url("@/../../images/backgroundmap.jpg");
@@ -31,7 +31,31 @@
 }
 
 .scores-pane {
-    -fx-background-color: brown;
+    -fx-background-color: transparent;
+    -fx-background-image: url("@/../../images/frame.png");
+}
+
+.score-label {
+    -fx-font-size: 28px;
+    -fx-font-weight: bolder;
+    -fx-text-fill: white;
+
+}
+
+.players1-image-pane {
+     -fx-background-image: url("@/../../images/Blocks/playerBlock1.png");
+ }
+
+.players2-image-pane {
+    -fx-background-image: url("@/../../images/Blocks/playerBlock2.png");
+}
+
+.players3-image-pane {
+    -fx-background-image: url("@/../../images/Blocks/playerBlock3.png");
+}
+
+.players4-image-pane {
+    -fx-background-image: url("@/../../images/Blocks/playerBlock4.png");
 }
 
 /* Lobby classes */

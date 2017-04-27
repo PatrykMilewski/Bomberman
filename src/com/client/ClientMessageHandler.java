@@ -47,7 +47,7 @@ public class ClientMessageHandler extends Task {
                         } catch (IOException | InterruptedException e) {
                             e.printStackTrace();
                         }
-                    });
+                     });
                     stay = false;
                 } else if (status.equals("changeSlot")){
                     statusChangeSlot(msg);

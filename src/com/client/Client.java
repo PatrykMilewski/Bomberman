@@ -133,8 +133,13 @@ public class Client {
     public boolean isNameSet() {
         return playersName != null;
     }
-
-    public void setLobbyControllerToPlayer(LobbyController lobbyController){
+    
+    public void newGameScore(int playersId, String playersName, int newScore) {
+        mainStage.gameController.initializeScoreLabel(playersId, playersName, newScore);
+    }
+    
+    public void setGameScore(int playersId, int newScore) {
+        mainStage.gameController.setScoreLabel(playersId, newScore);
     }
 }
 

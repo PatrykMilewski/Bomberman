@@ -63,10 +63,7 @@ public class GameMessageHandler extends Task {
     }
 
     private void cmdScores(JSONObject jObject) {
-        int player = jObject.getInt("player");
-        String score = jObject.getString("score");
-
-        //TODO edycja wyników do wyświetlenia
+        client.setGameScore(jObject.getInt("player"), jObject.getInt("score"));
     }
 
     private void cmdEScores(JSONObject jObject) {       //inicjalizacja tabeli wyników
@@ -76,7 +73,8 @@ public class GameMessageHandler extends Task {
             int playerId = temp.getInt("id");
             String playerNick = temp.getString("nick");
             System.out.println("Dopisze do tabeli gracza o ID i nicku:  " + playerId + "\t\t" + playerNick);
-
+            
+            client.newGameScore(playerId, playerNick, 0);
         }
     }
 }

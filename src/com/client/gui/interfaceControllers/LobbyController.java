@@ -17,9 +17,11 @@ import org.json.JSONObject;
 
 import java.net.UnknownHostException;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 public class LobbyController extends MainStageController {
+    private static Logger log = Logger.getLogger(LobbyController.class.getCanonicalName());
     private static final int playersAmount = 3;
     
     // IPv4 address pattern
@@ -40,8 +42,6 @@ public class LobbyController extends MainStageController {
     private TextField IPAddressField;
     @FXML
     private TextField PortField;
-    @FXML
-    private Label pingLabel;
     @FXML
     private Pane player1Color;
     @FXML
