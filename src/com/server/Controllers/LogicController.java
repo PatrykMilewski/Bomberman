@@ -131,9 +131,9 @@ public class LogicController {
         }
 
         for (ClientData client : clients){
-            Point coords = fieldForPlayers.get(randomPoint);
+            Point coords = fieldForPlayers.get(client.getId());
             createPlayer(coords.x, coords.y, client.getId(), client.getNick());
-            randomPoint = (randomPoint + direction) % clients.size();
+            //randomPoint = (randomPoint + direction) % clients.size();
         }
     }
 
