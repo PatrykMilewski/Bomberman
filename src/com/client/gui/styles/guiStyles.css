@@ -85,6 +85,11 @@
     -fx-font-size: 24px;
 }
 
+.Port-field {
+    -fx-text-fill: rgba(20,20,20,0.9);
+    -fx-font-size: 24px;
+}
+
 .ping-label {
     -fx-text-fill: rgba(0,0,100,0.7);
     -fx-font-size: 14px;

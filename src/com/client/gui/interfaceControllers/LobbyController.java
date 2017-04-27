@@ -23,9 +23,10 @@ public class LobbyController extends MainStageController {
     private static final int playersAmount = 3;
     
     // IPv4 address pattern
-    private static final Pattern PATTERN = Pattern.compile("^(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}):(\\d{1,5})$");
+    private static final Pattern ADDRESPATTERN = Pattern.compile("^(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})$");
+    private static final Pattern PORTPATTERN = Pattern.compile("^(\\d{1,5})$");
     
-    private static boolean isIPAddressValid = true;
+    private static boolean isIPAddressValid = false, isPortValid = false;
     private static String serverAddress = "127.0.0.1";
     private static String serverPort = "7115";
     private static PlayerSlot playersSlots[] = new PlayerSlot[playersAmount];
@@ -37,6 +38,8 @@ public class LobbyController extends MainStageController {
     
     @FXML
     private TextField IPAddressField;
+    @FXML
+    private TextField PortField;
     @FXML
     private Label pingLabel;
     @FXML
@@ -55,8 +58,9 @@ public class LobbyController extends MainStageController {
     private ColorPicker colorPicker;
     
     private static boolean validateIPv4(final String ip) {
-        return PATTERN.matcher(ip).matches();
+        return ADDRESPATTERN.matcher(ip).matches();
     }
+    private static boolean validatePort(final String port) { return PORTPATTERN.matcher(port).matches(); }
     
     @FXML
     public void initialize() {
@@ -65,11 +69,11 @@ public class LobbyController extends MainStageController {
         ready = false;
         thisPlayer.setPlayersName("Test");
 //        ClientMessageHandler.assignLobbyController(this);
-
+        
         playersSlots[0] = new PlayerSlot(player1NameLabel, player1Color, true);
         playersSlots[1] = new PlayerSlot(player2NameLabel, player2Color, true);
         playersSlots[2] = new PlayerSlot(player3NameLabel, player3Color, true);
-
+        
         colorPickerAdded = false;
         colorPicker = new ColorPicker();
         colorPicker.setStyle("-fx-color-label-visible: false;");
@@ -77,23 +81,32 @@ public class LobbyController extends MainStageController {
     
     @FXML
     void addressEntered() {
-        String rawAddress = IPAddressField.getText();
-        serverAddress = (rawAddress.split(":"))[0];
-        serverPort = (rawAddress.split(":"))[1];
+        serverAddress = IPAddressField.getText();
         if (debug)
-            log.info("User entered " + rawAddress + " server's address.");
+            log.info("User entered " + serverAddress + " server's address.");
         
-        if (validateIPv4(rawAddress)) {
+        if (validateIPv4(serverAddress)) {
             IPAddressField.setStyle("-fx-text-fill: green;");
             isIPAddressValid = true;
         } else {
-            log.warning("Invalid IPv4 address format!");
             IPAddressField.setStyle("-fx-text-fill: red;");
             isIPAddressValid = false;
-            String alertMessage = "Address " + rawAddress + ",that you entered, is invalid! Please enter valid IPv4 address.";
-            showAlert(Alert.AlertType.ERROR, "Invalid IP address!", alertMessage);
         }
+    }
+    
+    @FXML
+    void portEntered() {
+        serverPort = PortField.getText();
+        if (debug)
+            log.info("User entered " + serverPort + " server's port.");
         
+        if (validatePort(serverPort)) {
+            PortField.setStyle("-fx-text-fill: green;");
+            isPortValid = true;
+        } else {
+            PortField.setStyle("-fx-text-fill: red;");
+            isPortValid = false;
+        }
     }
     
     @FXML
@@ -101,7 +114,7 @@ public class LobbyController extends MainStageController {
         if (debug)
             log.info("Trying to connect to server: " + serverAddress);
         
-        if (isIPAddressValid) {
+        if (isIPAddressValid && isPortValid) {
             if (debug)
                 log.info("Connecting to server!");
             
@@ -180,7 +193,7 @@ public class LobbyController extends MainStageController {
                 catch (GameSlotOccupiedException e) {
                     if (debug)
                         log.info("Selected slot is already taken!");
-
+                    
                     String alertMessage = "Slot, that you selected, is already taken by other player!";
                     showAlert(Alert.AlertType.ERROR, "Slot already taken!", alertMessage);
                 }
@@ -244,7 +257,7 @@ public class LobbyController extends MainStageController {
             throw new GameSlotOccupiedException();
         }*/
     }
-
+    
     public void setPlayersSlot(int idSlot, String nameOfPlayer){
         playersSlots[idSlot].setPlayersName(nameOfPlayer);
     }
