@@ -38,10 +38,13 @@ public class LogicController {
 
     private static final Map<String, Integer> fillHashMap() {
         Map<String, Integer> tempMap = new HashMap<>();
+        tempMap.put("Player1", 31);
+        tempMap.put("Player2", 32);
+        tempMap.put("Player3", 33);
+        tempMap.put("Player4", 34);
         tempMap.put("DefaultBlock", 0);
         tempMap.put("DestroyableBlock", 1);
         tempMap.put("Fire", 2);
-        tempMap.put("Player", 3);
         tempMap.put("UnDestroyableBlock", 4);
         tempMap.put("Bomb", 5);
         tempMap.put("Bonushaste", 6);

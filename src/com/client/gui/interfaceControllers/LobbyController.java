@@ -26,7 +26,7 @@ public class LobbyController extends MainStageController {
     private static final Pattern ADDRESPATTERN = Pattern.compile("^(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})$");
     private static final Pattern PORTPATTERN = Pattern.compile("^(\\d{1,5})$");
     
-    private static boolean isIPAddressValid = false, isPortValid = false;
+    private static boolean isIPAddressValid = true, isPortValid = true;
     private static String serverAddress = "127.0.0.1";
     private static String serverPort = "7115";
     private static PlayerSlot playersSlots[] = new PlayerSlot[playersAmount];

@@ -11,6 +11,7 @@ public class Player extends Field {
     private int rangeOfBomb;
     private boolean isAlive;
     private int score;
+    private int idColor;
 
     public int getId() {
         return id;
@@ -26,7 +27,8 @@ public class Player extends Field {
         super(x, y, destroyable);
         this.nick = nick;
         this.isAlive = true;
-        this.name = "Player";
+        this.name = "Player" + Integer.toString(id+1);
+        System.out.println("Stworzylem gracza: " + this.name);
         this.speed = 10;
         this.nBombs = 1;
         this.rangeOfBomb = 1;

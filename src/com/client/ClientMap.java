@@ -48,6 +48,13 @@ public class ClientMap extends Parent {
                 mapp = mapp.substring(1);
                 if (field == 3){                    //rysuj pod graczem ziemie
                     printOneField(i, j, 0);
+                    System.out.println("trojeczka:" + field);
+                    field = Integer.parseInt(mapp.substring(0, 1));
+                    mapp = mapp.substring(1);
+                    System.out.println("i cos tam:" + field);
+                    System.out.println("Kod:" );
+                    printOneField(i, j, 30 + field);
+                    continue;
                 }
                 printOneField(i, j, field);
             }
@@ -67,7 +74,10 @@ public class ClientMap extends Parent {
         fieldImages.put(0, "defaultBlock.png");
         fieldImages.put(1, "destroyableBlock.png");
         fieldImages.put(2, "fireblock1.png");
-        fieldImages.put(3, "playerBlock.png");
+        fieldImages.put(31, "playerBlock1.png");
+        fieldImages.put(32, "playerBlock2.png");
+        fieldImages.put(33, "playerBlock3.png");
+        fieldImages.put(34, "playerBlock4.png");
         fieldImages.put(4, "unDestroyableBlock.png");
         fieldImages.put(5, "bomb/bomb.gif");
         fieldImages.put(6, "../Bonuses/haste.png");
