@@ -1,5 +1,6 @@
 package com.server;
 
+import com.client.Client;
 import com.server.Controllers.LogicController;
 import com.server.Controllers.ServerLobbyController;
 import javafx.application.Platform;
@@ -22,6 +23,7 @@ public class MessageHandler extends Task {
     private GUIController serverMessageController;
     private LogicController logicController;
     private ServerLobbyController serverLobbyController;
+    private static int idToAssign = 0;
     private DatagramSocket socket;
     private ExecutorService executor = Executors.newFixedThreadPool(3);
 
