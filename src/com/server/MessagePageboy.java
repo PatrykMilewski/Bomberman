@@ -109,7 +109,7 @@ public class MessagePageboy extends Task{
         JSONObject answerToPrint = new JSONObject();
 
         logicController.fillMap();
-        logicController.createPlayers(clients, "Test");
+        logicController.createPlayers(clients);
 
         answerToPrint.put("cmd", "eMap");
         answerToPrint.put("fields", logicController.printEntireMap());
