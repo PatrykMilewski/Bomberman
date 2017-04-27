@@ -123,7 +123,7 @@ public class LogicController {
         mapFields[Consts.DIMENSION - 1][Consts.DIMENSION - 2] = new NormalBlock(Consts.DIMENSION - 2, Consts.DIMENSION - 1, false, true);
     }
 
-    public void createPlayers(ArrayList<ClientData> clients, String test) {
+    public void createPlayers(ArrayList<ClientData> clients) {
         Random generator = new Random();
         int randomPoint = generator.nextInt(clients.size());
         int direction;
@@ -323,7 +323,7 @@ public class LogicController {
     private boolean checkFieldToBurn(int xToCheck, int yToCheck, JSONArray answer, Bomb bomb) {
         if (getMapField(xToCheck, yToCheck) instanceof Bomb) {
             ((Bomb) getMapField(xToCheck, yToCheck)).decTime();
-            bomb.getOwnerOfBomb().incScore(Consts.SCORE_DESTROY_BLOCK);
+            editScores(bomb.getOwnerOfBomb(), Consts.SCORE_DESTROY_BLOCK);
             return true;
         }
         if (!getMapField(xToCheck, yToCheck).isDestroyable()                                //niezniszczalny kloc
@@ -335,16 +335,16 @@ public class LogicController {
                 newFire.setUnderField(getMapField(xToCheck, yToCheck).getFieldUnderDestryableField());
                 if (getMapField(xToCheck, yToCheck) instanceof Player) {
                     if (bomb.getOwnerOfBomb() != getMapField(xToCheck, yToCheck)){
-                        bomb.getOwnerOfBomb().incScore(Consts.SCORE_KILL_PLAYER);
+                        editScores(bomb.getOwnerOfBomb(), Consts.SCORE_KILL_PLAYER);
                     }
                 } else {
-                    bomb.getOwnerOfBomb().incScore(Consts.SCORE_DESTROY_BLOCK);
+                    editScores(bomb.getOwnerOfBomb(), Consts.SCORE_DESTROY_BLOCK);
                 }
                 destroyField(xToCheck, yToCheck, newFire, answer);
                 addFire(newFire);
                 return true;
             } else {
-/*                if (map.getMapField(xToCheck, yToCheck) instanceof Fire) {            //TODO jesli ogien ma przechodzic przez ogien (nowe watki?)
+/*                if (map.getMapField(xToCheck, yToCheck) instanceof Fire) {            //TODO jesli ogien ma przechodzic przez ogien (nowsce watki?)
                     ((Fire) map.getMapField(xToCheck, yToCheck)).removeFire();
                 }*/
                 setMapField(xToCheck, yToCheck, newFire);
@@ -398,5 +398,14 @@ public class LogicController {
         });
     }
 
+    //Scores
+    private void editScores(Player player, int score){
+        player.incScore(score);
+        JSONObject answerToSend = new JSONObject();
+        answerToSend.put("cmd", "scores");
+        answerToSend.put("player", player.getId());
+        answerToSend.put("score", Integer.toString(player.getScore()));
 
+        Broadcaster.broadcastMessage(clients, answerToSend.toString(), socket);
+    }
 }

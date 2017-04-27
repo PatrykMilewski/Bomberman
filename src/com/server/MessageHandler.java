@@ -1,5 +1,6 @@
 package com.server;
 
+import com.client.Client;
 import com.server.Controllers.LogicController;
 import com.server.Controllers.ServerLobbyController;
 import javafx.application.Platform;
@@ -21,6 +22,7 @@ public class MessageHandler extends Task {
     private LogicController logicController;
     private DatagramSocket socket;
     private ServerLobbyController serverLobbyController;
+    private static int idToAssign = 0;
 
     public MessageHandler(MessageQueue messageQueue, GUIController msgController, DatagramSocket socket) {
         clients = new ArrayList<ClientData>();
@@ -69,6 +71,8 @@ public class MessageHandler extends Task {
             cmdUpdateSlots(msg);
         } else if (cmd.equals("key")) {
             cmdKey(msg);
+        } else if (cmd.equals("quit")){
+            cmdQuit(msg);
         }
     }
 
@@ -84,7 +88,7 @@ public class MessageHandler extends Task {
 
     private void handleClient(ClientData newClient){
         JSONObject answerToSend = new JSONObject();
-        int clientId = clients.size();
+        int clientId = idToAssign++;
         newClient.setId(clientId);
         clients.add(newClient);
         answerToSend.put("status", "OK");
@@ -121,13 +125,29 @@ public class MessageHandler extends Task {
         JSONObject answerToStart = new JSONObject();
         answerToStart.put("status", "start");
         Broadcaster.broadcastMessage(clients, answerToStart.toString(), socket);
-        JSONObject answerToPrint = new JSONObject();
 
         logicController.fillMap();
-        logicController.createPlayers(clients, "Test");
+        logicController.createPlayers(clients);
 
+        JSONObject answerToPrint = new JSONObject();
         answerToPrint.put("cmd", "eMap");
         answerToPrint.put("fields", logicController.printEntireMap());
+
+        JSONObject answerToScores = new JSONObject();
+        answerToScores.put("cmd", "escores");
+        JSONArray clientsArray = new JSONArray();
+
+        for (ClientData client : clients){
+            JSONObject temp = new JSONObject();
+            temp.put("id", Integer.toString(client.getId()));
+            temp.put("nick", client.getNick());
+            clientsArray.put(temp);
+        }
+        answerToScores.put("plrs", clientsArray);
+        System.out.println("WAZNA WIADOMOSC\t\t" + answerToScores.toString());
+
+        Broadcaster.broadcastMessage(clients, answerToScores.toString(), socket);
+
         Broadcaster.broadcastMessage(clients, answerToPrint.toString(), socket);
         Platform.runLater(() -> serverMessageController.sendMessage("Start gry"));
     }
@@ -156,6 +176,12 @@ public class MessageHandler extends Task {
             Platform.runLater(() -> serverMessageController.sendMessage("Gracz nie żyje"));
         }
     }
+
+    private void cmdQuit(JSONObject msg) {
+        int clientId = msg.getInt("id");
+        clients.remove(clientId);
+    }
+
 
     private void keyBomb(int clientId, JSONObject answerToSend, JSONArray arrayToSend){
         logicController.dropBomb(clientId, arrayToSend);
