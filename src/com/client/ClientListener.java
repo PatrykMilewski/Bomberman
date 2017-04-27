@@ -46,7 +46,7 @@ public class ClientListener {
             @Override
             public void handle(long now) {
                 if (up) {
-                    if (now / ClientConsts.TIME_CUTTER - lastMove > (ClientConsts.TIME_BETWEEN_MOVES )) { //TODO playergetspid tu jakis byl
+                    if (now / ClientConsts.TIME_CUTTER - lastMove > (client.getPlayersTimeBetweenMoves())) {
                         lastMove = now / ClientConsts.TIME_CUTTER;
                         System.out.print("Gora");
                         client.sendKey("UP");
@@ -55,7 +55,7 @@ public class ClientListener {
                 }
 
                 if (down) {
-                    if (now / ClientConsts.TIME_CUTTER - lastMove > ClientConsts.TIME_BETWEEN_MOVES ) {
+                    if (now / ClientConsts.TIME_CUTTER - lastMove > client.getPlayersTimeBetweenMoves() ) {
                         lastMove = now / ClientConsts.TIME_CUTTER;
                         client.sendKey("DOWN");
                         //player.incCoords(0, 1);
@@ -63,7 +63,7 @@ public class ClientListener {
                 }
 
                 if (left) {
-                    if (now / ClientConsts.TIME_CUTTER - lastMove >(ClientConsts.TIME_BETWEEN_MOVES)) {
+                    if (now / ClientConsts.TIME_CUTTER - lastMove >(client.getPlayersTimeBetweenMoves())) {
                         lastMove = now / ClientConsts.TIME_CUTTER;
                         client.sendKey("LEFT");
                         //player.incCoords(-1, 0);
@@ -71,7 +71,7 @@ public class ClientListener {
                 }
 
                 if (right) {
-                    if (now / ClientConsts.TIME_CUTTER - lastMove > (ClientConsts.TIME_BETWEEN_MOVES)) {
+                    if (now / ClientConsts.TIME_CUTTER - lastMove > (client.getPlayersTimeBetweenMoves())) {
                         lastMove = now / ClientConsts.TIME_CUTTER;
                         client.sendKey("RIGHT");
                         //player.incCoords(1, 0);

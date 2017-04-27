@@ -10,10 +10,12 @@ import org.json.JSONObject;
 public class GameMessageHandler extends Task {
     private ClientMessageQueue messageQueue;
     private ClientMap map;
+    private Client client;
 
-    public GameMessageHandler(ClientMessageQueue messageQueue, ClientMap map) {
+    public GameMessageHandler(ClientMessageQueue messageQueue, ClientMap map, Client client) {
         this.messageQueue = messageQueue;
         this.map = map;
+        this.client = client;
     }
 
     @Override
@@ -34,9 +36,11 @@ public class GameMessageHandler extends Task {
                     Platform.runLater(() -> map.printEntireMap(jObject));
                 } else if (cmd.equals("move")) {
                     cmdMove(jObject);
-                } else if (cmd.equals("incspeed")) {
-                    System.out.println("Zwiekszam moja predkosc");
-                    //TODO MUL tutaj zrobi zwiekszenie predkosci gracza
+                } else if (cmd.equals("incspeed") &&
+                        client.getPlayersTimeBetweenMoves() > ClientConsts.MAX_SPEED) {
+
+                    client.setPlayersTimeBetweenMoves(client.getPlayersTimeBetweenMoves()
+                                                        - ClientConsts.SPEED_INCREMENT);
                 }
             }
         }

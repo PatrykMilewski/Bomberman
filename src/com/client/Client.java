@@ -2,6 +2,7 @@ package com.client;
 
 import com.client.exceptions.PlayersColorNullException;
 import com.client.exceptions.PlayersNameNullException;
+import com.client.gui.ClientConsts;
 import com.client.gui.ClientMainStage;
 import com.client.gui.interfaceControllers.LobbyController;
 import org.json.JSONObject;
@@ -26,6 +27,7 @@ public class Client {
     
     private String playersName;
     private String playersColor;
+    private int playersTimeBetweenMoves;
     
     public Client(ClientMainStage mainStage, LobbyController lobbyController) throws IOException, InterruptedException {
         this.socket = new DatagramSocket();
@@ -36,12 +38,13 @@ public class Client {
         slotId = -1;
         myId = 0;
         playersColor = Integer.toHexString(generator.nextInt(16581375 + 1));
+        playersTimeBetweenMoves = ClientConsts.TIME_BETWEEN_MOVES;
     }
     
     public void startGame() throws IOException, InterruptedException {
         mainStage.mainStageController.startNewGame();
         ClientMap map = new ClientMap(mainStage);
-        executor.submit(new GameMessageHandler(messages, map));
+        executor.submit(new GameMessageHandler(messages, map, this));
         ClientListener playerListener = new ClientListener(mainStage, this);
         playerListener.listen();    //TODO Listen w nowym watku?
     }
@@ -102,6 +105,10 @@ public class Client {
     }
     
     public String getPlayersColor() { return this.playersColor; }
+
+    public int getPlayersTimeBetweenMoves() {return playersTimeBetweenMoves;}
+
+    public void setPlayersTimeBetweenMoves(int playersTimeBetweenMoves) {this.playersTimeBetweenMoves = playersTimeBetweenMoves;}
     
     public void setPlayersName(String playersName) {
         this.playersName = playersName;
