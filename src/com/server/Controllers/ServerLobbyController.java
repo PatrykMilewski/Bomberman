@@ -8,10 +8,9 @@ import org.json.JSONObject;
 import java.net.DatagramSocket;
 import java.util.ArrayList;
 
-/**
- * Created by Szczepan on 12.04.2017.
- */
 public class ServerLobbyController {
+    private static final int playersAmount = 3;
+    
     private ArrayList<ClientData> clients;
     private DatagramSocket socket;
     private ArrayList<Slot> slots;
@@ -20,9 +19,9 @@ public class ServerLobbyController {
         this.socket = socket;
         this.clients = clients;
         slots = new ArrayList<>();
-        slots.add(new Slot("Free slot"));
-        slots.add(new Slot("Free slot"));
-        slots.add(new Slot("Free slot"));
+        
+        for (int i = 0; i < playersAmount; i++)
+            slots.add(new Slot("Free slot"));
     }
 
     public synchronized void changeSlot(int newIdSlot, int oldIdSlot, String textOnSlot, int clientId) {
@@ -56,7 +55,7 @@ public class ServerLobbyController {
     }
 
     public void sendSlotsToClient(ClientData newClient) {
-        for (int i = 0; i < 3; i++){
+        for (int i = 0; i < playersAmount; i++){
             JSONObject messageToSend = new JSONObject();
             messageToSend.put("status", "updateSlots");
             messageToSend.put("slotId", Integer.toString(i));

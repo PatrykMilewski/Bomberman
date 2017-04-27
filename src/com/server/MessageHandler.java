@@ -1,13 +1,10 @@
 package com.server;
 
-import com.client.Client;
 import com.server.Controllers.LogicController;
 import com.server.Controllers.ServerLobbyController;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
-import org.json.JSONArray;
 import org.json.JSONObject;
-import com.server.Controllers.ServerConsts;
 import com.server.Controllers.GUIController;
 
 import java.net.DatagramPacket;
@@ -23,7 +20,6 @@ public class MessageHandler extends Task {
     private GUIController serverMessageController;
     private LogicController logicController;
     private ServerLobbyController serverLobbyController;
-    private static int idToAssign = 0;
     private DatagramSocket socket;
     private ExecutorService executor = Executors.newFixedThreadPool(3);
 

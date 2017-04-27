@@ -15,30 +15,32 @@ import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class GUIController implements Initializable
-{
-    ExecutorService executor = Executors.newSingleThreadExecutor();
-    @FXML ListView serverListView;
-    @FXML Label serverIP;
-
-    private final ObservableList<String> data=
+public class GUIController implements Initializable {
+    private ExecutorService executor = Executors.newSingleThreadExecutor();
+    
+    @FXML
+    private ListView serverListView;
+    @FXML
+    private Label serverIP;
+    
+    private final ObservableList<String> data =
             FXCollections.observableArrayList();
-
+    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            String ajpi = InetAddress.getLocalHost().getHostAddress();
-            serverIP.setText("Server IP: "+ ajpi);
+            String IPAddress = InetAddress.getLocalHost().getHostAddress();
+            serverIP.setText("Server IP: " + IPAddress);
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
     }
-
-    public void sendMessage(String msg){
+    
+    public void sendMessage(String msg) {
         data.add(msg);
         serverListView.setItems(data);
     }
-
+    
     public void go() throws IOException {
         Task startServer = new PacketsListener(this);
         executor.submit(startServer);

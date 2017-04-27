@@ -17,7 +17,7 @@ import java.util.concurrent.Executors;
 public class Client {
     private static Random generator = new Random();
     
-    ExecutorService executor = Executors.newFixedThreadPool(3);
+    private ExecutorService executor = Executors.newFixedThreadPool(3);
     private DatagramSocket socket;
     private InetAddress serverIP;
     private ClientMessageQueue messages;
@@ -34,7 +34,7 @@ public class Client {
         this.socket = new DatagramSocket();
         this.messages = new ClientMessageQueue();
         this.mainStage = mainStage;
-        executor.submit(new Client_receiver(messages,socket));
+        executor.submit(new ClientReceiver(messages, socket));
         executor.submit(new ClientMessageHandler(messages, this, lobbyController));
         slotId = -1;
         myId = 0;
@@ -42,14 +42,14 @@ public class Client {
         playersTimeBetweenMoves = ClientConsts.TIME_BETWEEN_MOVES;
     }
     
-    public void startGame() throws IOException, InterruptedException {
-        mainStage.mainStageController.startNewGame();
+    void startGame() throws IOException, InterruptedException {
+        ClientMainStage.mainStageController.startNewGame();
         ClientMap map = new ClientMap(mainStage);
         executor.submit(new GameMessageHandler(messages, map, this));
         ClientListener playerListener = new ClientListener(mainStage, this);
         playerListener.listen();    //TODO Listen w nowym watku?
     }
-
+    
     public void send(String message) {
         System.out.println(message);
         DatagramPacket data = new DatagramPacket(message.getBytes(), message.length(), serverIP, serverPort);
@@ -60,8 +60,8 @@ public class Client {
             e.printStackTrace();
         }
     }
-
-    public void sendSlot(int oldSlotId, int newSlotId, String textOnLabel){
+    
+    public void sendSlot(int oldSlotId, int newSlotId, String textOnLabel) {
         JSONObject msg = new JSONObject();
         msg.put("cmd", "updateSlots");
         msg.put("text", textOnLabel);
@@ -71,24 +71,23 @@ public class Client {
         System.out.println("Wysylam nowy slot");
         send(msg.toString());
     }
-
-    public void sendQuitGameMessage()
-    {
+    
+    public void sendQuitGameMessage() {
         JSONObject msg = new JSONObject();
         msg.put("cmd", "quit");
-        msg.put("id",Integer.toString(myId));
+        msg.put("id", Integer.toString(myId));
         send(msg.toString());
     }
-
-
-    public void sendKey(String which) {
+    
+    
+    void sendKey(String which) {
         JSONObject msg = new JSONObject();
         msg.put("cmd", "key");
         msg.put("but", which);
         msg.put("id", myId);
         send(msg.toString());
     }
-
+    
     public void wannaJoin(String serverIP, String serverPort) throws UnknownHostException {
         this.serverIP = InetAddress.getByName(serverIP);
         this.serverPort = Integer.parseInt(serverPort);
@@ -96,34 +95,44 @@ public class Client {
         msg.put("cmd", "join");
         send(msg.toString());
     }
-
-    public void setMyId(int id) { this.myId = id; }
-
-    public int getID() { return myId; }
-
-    public void setSlotId(int slotId){
+    
+    void setMyId(int id) {
+        this.myId = id;
+    }
+    
+    public int getID() {
+        return myId;
+    }
+    
+    void setSlotId(int slotId) {
         this.slotId = slotId;
     }
-
-    public int getSlotId(){
+    
+    public int getSlotId() {
         return slotId;
     }
-
+    
     public void setPlayersColor(String playersColor) {
         this.playersColor = playersColor;
     }
     
-    public String getPlayersColor() { return this.playersColor; }
-
-    public int getPlayersTimeBetweenMoves() {return playersTimeBetweenMoves;}
-
-    public void setPlayersTimeBetweenMoves(int playersTimeBetweenMoves) {this.playersTimeBetweenMoves = playersTimeBetweenMoves;}
+    public String getPlayersColor() {
+        return this.playersColor;
+    }
+    
+    int getPlayersTimeBetweenMoves() {
+        return playersTimeBetweenMoves;
+    }
+    
+    void setPlayersTimeBetweenMoves(int playersTimeBetweenMoves) {
+        this.playersTimeBetweenMoves = playersTimeBetweenMoves;
+    }
     
     public void setPlayersName(String playersName) {
         this.playersName = playersName;
     }
     
-    public void isReadyToJoin() throws PlayersNameNullException, PlayersColorNullException{
+    public void isReadyToJoin() throws PlayersNameNullException, PlayersColorNullException {
         if (playersName == null)
             throw new PlayersNameNullException(myId);
         
@@ -135,12 +144,12 @@ public class Client {
         return playersName != null;
     }
     
-    public void newGameScore(int playersId, String playersName, int newScore) {
-        Platform.runLater(() -> mainStage.gameController.initializeScoreLabel(playersId, playersName, newScore));
+    void newGameScore(int playersId, String playersName) {
+        Platform.runLater(() -> ClientMainStage.gameController.initializeScoreLabel(playersId, playersName));
     }
     
-    public void setGameScore(int playersId, int newScore) {
-        Platform.runLater(() -> mainStage.gameController.setScoreLabel(playersId, newScore));
+    void setGameScore(int playersId, int newScore) {
+        Platform.runLater(() -> ClientMainStage.gameController.setScoreLabel(playersId, newScore));
     }
 }
 

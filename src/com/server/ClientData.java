@@ -3,58 +3,58 @@ package com.server;
 import java.net.InetAddress;
 
 public class ClientData {
-
+    
     @Override
     public String toString() {
-        return "ClientData [IPaddr=" + IPaddr + ", id=" + id + "]";
+        return "ClientData [IPaddr=" + IPaddress + ", id=" + id + "]";
     }
-
-    private InetAddress IPaddr;
+    
+    private InetAddress IPaddress;
     private int id;
     private int port;
     private boolean ready;
     private String nick;
-
-    public ClientData(InetAddress IP, int port, int id) {
-        this.IPaddr = IP;
+    
+    ClientData(InetAddress IP, int port, int id) {
+        this.IPaddress = IP;
         this.id = id;
         this.port = port;
         ready = false;
         nick = "";
     }
-
-    public int getPort() {
+    
+    int getPort() {
         return port;
     }
-
-    public InetAddress getIPaddr() {
-        return IPaddr;
+    
+    InetAddress getIPaddress() {
+        return IPaddress;
     }
-
-    public void setIPaddr(InetAddress iPaddr) {
-        IPaddr = iPaddr;
+    
+    public void setIPaddress(InetAddress IPaddress) {
+        IPaddress = IPaddress;
     }
-
+    
     public int getId() {
         return id;
     }
-
+    
     public void setId(int id) {
         this.id = id;
     }
-
-    public boolean isReady() {
+    
+    boolean isReady() {
         return ready;
     }
-
-    public void changeReadyStatus() {
+    
+    void changeReadyStatus() {
         ready = !ready;
     }
-
+    
     public void setNick(String nick) {
         this.nick = nick;
     }
-
+    
     public String getNick() {
         return nick;
     }

@@ -2,7 +2,6 @@ package com.client;
 
 import com.client.gui.ClientConsts;
 import com.client.gui.ClientMainStage;
-import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -13,46 +12,43 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class ClientMap extends Parent {
-
-    HashMap<Integer, String> fieldImages;
+class ClientMap extends Parent {
+    
+    private HashMap<Integer, String> fieldImages;
     private ClientMainStage mainStage;
     private Pane spaceForMap;
     private Pane spaceForScores;
-
-    public ClientMap(ClientMainStage mainStage) throws IOException {
+    
+    ClientMap(ClientMainStage mainStage) throws IOException {
         fieldImages = new HashMap<>();
         this.mainStage = mainStage;
         fillHashMap();
         makeMap();
     }
-
+    
     private void makeMap() throws IOException {
         HBox mapGrids = new HBox(10);
         mapGrids.setTranslateX(27);
         mapGrids.setTranslateY(27);
-
-        this.spaceForMap = mainStage.gameController.getGameMapPane();
-        this.spaceForScores = mainStage.gameController.getGameScoresPane();
+        
+        this.spaceForMap = ClientMainStage.gameController.getGameMapPane();
+        this.spaceForScores = ClientMainStage.gameController.getGameScoresPane();
         mapGrids.getChildren().addAll(this.spaceForMap, this.spaceForScores);
         getChildren().addAll(mapGrids);
         this.mainStage.getRootElem().getChildren().addAll(this);
     }
-
-    public void printEntireMap(JSONObject jObject) {
+    
+    void printEntireMap(JSONObject jObject) {
         String mapp = jObject.getString("fields");
 //        System.out.println(mapp);
-        for (int i = 0; i < ClientConsts.DIMENSION; i++){
+        for (int i = 0; i < ClientConsts.DIMENSION; i++) {
             for (int j = 0; j < ClientConsts.DIMENSION; j++) {
                 int field = Integer.parseInt(mapp.substring(0, 1));
                 mapp = mapp.substring(1);
-                if (field == 3){                    //rysuj pod graczem ziemie
+                if (field == 3) {                    //rysuj pod graczem ziemie
                     printOneField(i, j, 0);
-                    System.out.println("trojeczka:" + field);
                     field = Integer.parseInt(mapp.substring(0, 1));
                     mapp = mapp.substring(1);
-                    System.out.println("i cos tam:" + field);
-                    System.out.println("Kod:" );
                     printOneField(i, j, 30 + field);
                     continue;
                 }
@@ -60,8 +56,8 @@ public class ClientMap extends Parent {
             }
         }
     }
-
-    public void printOneField(int x, int y, int index){
+    
+    void printOneField(int x, int y, int index) {
         String temp = fieldImages.get(index);
         Image img = new Image("file:" + "src/com/client/gui/images/Blocks/" + temp);
         ImageView imgView = new ImageView(img);
@@ -69,8 +65,8 @@ public class ClientMap extends Parent {
         imgView.setY(y * ClientConsts.PIXEL_SIZE);
         this.spaceForMap.getChildren().addAll(imgView);
     }
-
-    private final void fillHashMap() {
+    
+    private void fillHashMap() {
         fieldImages.put(0, "defaultBlock.png");
         fieldImages.put(1, "destroyableBlock.png");
         fieldImages.put(2, "fireblock1.png");

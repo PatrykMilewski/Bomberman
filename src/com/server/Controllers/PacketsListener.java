@@ -1,7 +1,6 @@
 package com.server.Controllers;
 
 import javafx.concurrent.Task;
-import com.server.Broadcaster;
 import com.server.MessageHandler;
 import com.server.MessageQueue;
 
@@ -9,18 +8,22 @@ import java.io.*;
 import java.net.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class PacketsListener extends Task{
-    public final static int PORT = 7115;
-    private final static int BUFFER = 2048;
+public class PacketsListener extends Task {
+    private static Logger log = Logger.getLogger(PacketsListener.class.getCanonicalName());
+    private static final int PORT = 7115;
+    private static final int BUFFER = 2048;
+    private static final boolean debug = true;
     private ExecutorService executor = Executors.newFixedThreadPool(4);
     private GUIController controller;
     private DatagramSocket socket;
     private MessageQueue messages;
     private byte[] buf;
 
-    public PacketsListener(GUIController controller) throws IOException {
-        this.controller=controller;
+    PacketsListener(GUIController controller) throws IOException {
+        this.controller = controller;
         this.socket = new DatagramSocket(PORT);
         this.messages= new MessageQueue();
         buf = new byte[BUFFER];
@@ -29,7 +32,8 @@ public class PacketsListener extends Task{
 
     @Override
     protected Object call() throws Exception {
-        controller.sendMessage("Serwer rozpoczal dzialanie");
+        if (debug)
+            log.info("Serwer rozpoczal dzialanie");
 
         while (true) {
             try {
@@ -38,7 +42,7 @@ public class PacketsListener extends Task{
                 buf = new byte[BUFFER];
                 messages.add(packet);
             } catch(Exception e) {
-                System.err.println(e);
+                log.log(Level.SEVERE, e.getMessage(), e);
             }
         }
     }

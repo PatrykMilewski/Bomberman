@@ -5,14 +5,14 @@ import com.client.gui.ClientMainStage;
 import javafx.animation.AnimationTimer;
 
 
-public class ClientListener {
-    boolean up, down, left, right, bomb;
+class ClientListener {
+    private boolean up, down, left, right, bomb;
     private long lastDropedBomb;
     private long lastMove;
     private ClientMainStage mainStage;
     private Client client;
-
-    public ClientListener(ClientMainStage mainSt, Client client) {
+    
+    ClientListener(ClientMainStage mainSt, Client client) {
         this.mainStage = mainSt;
         this.client = client;
         lastMove = 0;
@@ -20,7 +20,7 @@ public class ClientListener {
         up = down = left = right = bomb = false;
     }
 
-    public void listen() {
+    void listen() {
         mainStage.getPrimaryStage().getScene().setOnKeyPressed(event -> {
                     switch (event.getCode()) {
                         case UP:    up =    true;   break;

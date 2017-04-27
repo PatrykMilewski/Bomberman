@@ -46,14 +46,7 @@ public class HighscoresController extends MainStageController {
         }
         catch (IOException e) {
             log.warning("Highscores file not found!");
-            try (ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(highscoresDataName))) {
-                output.writeObject(bestScores);
-                log.info("Highscores file saved to file!");
-                readHighscores();
-            }
-            catch (IOException e1) {
-                log.log(Level.SEVERE, e1.getMessage(), e1);
-            }
+            saveHighscores();
         }
         catch (ClassNotFoundException e) {
             log.log(Level.SEVERE, e.getMessage(), e);
@@ -107,5 +100,16 @@ public class HighscoresController extends MainStageController {
     private void readHighscores() {
         for (int i = 0; i < topScoresAmount; i++)
             topScoresLabels[i].setText(bestScores[i].get());
+    }
+    
+    private void saveHighscores() {
+        try (ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(highscoresDataName))) {
+            output.writeObject(bestScores);
+            log.info("Highscores file saved to file!");
+            readHighscores();
+        }
+        catch (IOException e1) {
+            log.log(Level.SEVERE, e1.getMessage(), e1);
+        }
     }
 }

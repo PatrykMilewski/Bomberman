@@ -1,10 +1,6 @@
 package com.server;
 
-/**
- * Created by Szczepan on 12.04.2017.
- */
 public class Slot {
-    private int idSlot;
     private String textOnSlot;
     private boolean empty;
 

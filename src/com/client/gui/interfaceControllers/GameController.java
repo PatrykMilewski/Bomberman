@@ -13,7 +13,7 @@ public class GameController extends MainStageController {
     private final static int playersAmount = 4;
     private static boolean debug = true;
     
-    private final Map<String, Integer> scoresMap = new HashMap<>();
+    private final Map<Integer, String> scoresMap = new HashMap<>();
     
     private Label scoreLabels[] = new Label[4];
     
@@ -29,14 +29,6 @@ public class GameController extends MainStageController {
     private Label score3Label;
     @FXML
     private Label score4Label;
-    @FXML
-    private Pane playersImagePane1;
-    @FXML
-    private Pane playersImagePane2;
-    @FXML
-    private Pane playersImagePane3;
-    @FXML
-    private Pane playersImagePane4;
     
     @FXML
     public void initialize() {
@@ -45,33 +37,31 @@ public class GameController extends MainStageController {
         scoreLabels[2] = score3Label;
         scoreLabels[3] = score4Label;
         
-        for (int i = 0 ; i < playersAmount ; i++)
+        for (int i = 0; i < playersAmount; i++)
             scoreLabels[i].setText("Empty :(");
-        
-        score1Label.setText("dupa");
     }
     
     public Pane getGameMapPane() {
         return gameMapPane;
     }
-
+    
     public Pane getGameScoresPane() {
         return gameScoresPane;
     }
     
-    public void initializeScoreLabel(int playersNumber, String playersName, int newScore) {
+    public void initializeScoreLabel(int playersNumber, String playersName) {
         if (debug)
-            log.info("New player's score. Player: " + playersNumber + " " + playersName + " score: " + newScore);
+            log.info("Initialization of player's score. Player: " + playersNumber + " " + playersName);
         
-        scoresMap.put(playersName, playersNumber);
-        scoreLabels[playersNumber].setText(playersName + " - " + newScore);
+        scoresMap.put(playersNumber, playersName);
+        scoreLabels[playersNumber].setText(playersName + " - 0");
         log.info(scoreLabels[playersNumber].getText());
     }
     
     public void setScoreLabel(int playersNumber, int newScore) {
         if (debug)
             log.info("Player number " + playersNumber + " has new score: " + newScore);
-    
+        
         scoreLabels[playersNumber].setText(scoresMap.get(playersNumber) + " - " + newScore);
     }
 }
