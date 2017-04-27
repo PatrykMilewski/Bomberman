@@ -36,7 +36,7 @@ public class MessageHandler extends Task {
         while (true) {
             DatagramPacket codedMessage = null;         //TODO numerowanie pakietow
             while (codedMessage == null) {
-                codedMessage = messageQueue.pop();      //TODO "jezeli gra nadal trwa", pobierane z Game.        mniejszy delay?
+                codedMessage = messageQueue.pop(); //TODO "jezeli gra nadal trwa", pobierane z Game.        mniejszy delay?
             }
 
             String message = new String(codedMessage.getData());

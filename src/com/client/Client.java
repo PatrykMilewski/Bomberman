@@ -68,9 +68,17 @@ public class Client {
         msg.put("oldSlotId", Integer.toString(oldSlotId));
         msg.put("clientId", Integer.toString(myId));
         System.out.println("Wysylam nowy slot");
-//        System.out.println(msg.toString());
         send(msg.toString());
     }
+
+    public void sendQuitGameMessage()
+    {
+        JSONObject msg = new JSONObject();
+        msg.put("cmd", "quit");
+        msg.put("id",Integer.toString(myId));
+        send(msg.toString());
+    }
+
 
     public void sendKey(String which) {
         JSONObject msg = new JSONObject();

@@ -74,13 +74,14 @@ public  class MainStageController extends ClientMainStage {
     void backToMenu() {
         if (debug)
             log.info("Going back to main menu.");
-    
+
         try {
+            thisPlayer.sendQuitGameMessage();
             loader = new FXMLLoader(getClass().getResource("fxmlFiles/MainStage.fxml"));
             loader.setController(mainStageController);
             root = loader.load();
             loadStage();
-        
+
         } catch (IOException e) {
             log.log(Level.SEVERE, e.getMessage(), e);
         }
