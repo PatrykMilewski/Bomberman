@@ -6,12 +6,14 @@ import javafx.concurrent.Task;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
 public class GameMessageHandler extends Task {
     private static Logger log = Logger.getLogger(GameMessageHandler.class.getCanonicalName());
     private static final boolean debug = false;
-
+    private ExecutorService executor = Executors.newFixedThreadPool(3);
     private ClientMessageQueue messageQueue;
     private ClientMap map;
     private Client client;
@@ -38,57 +40,10 @@ public class GameMessageHandler extends Task {
             JSONObject jObject = new JSONObject(message);
             String cmd = jObject.getString("cmd");
             if (cmd != null) {
-                if (cmd.equals("eMap")) {
-                    Platform.runLater(() -> map.printEntireMap(jObject));
-                } else if (cmd.equals("move")) {
-                    cmdMove(jObject);
-                } else if (cmd.equals("incspeed")) {
-                    cmdIncspeed();
-                } else if (cmd.equals("scores")){
-                    cmdScores(jObject);
-                } else if (cmd.equals("escores")){
-                    cmdEScores(jObject);
-                } else if (cmd.equals("hs")){
-                    System.out.println("CO JEST NIE TAK?!");
-                    cmdHs(jObject);
-                }
+                executor.submit(new ClientRodeoPageboyOnMolestedCowWithPurpleSpots(cmd,jObject,client, map));
             }
         }
     }
 
-    private void cmdMove(JSONObject jObject) {
-        JSONArray fields = jObject.getJSONArray("fields");
-        for (int i = 0; i < fields.length(); i++) {
-            JSONObject temp = fields.getJSONObject(i);
-            Platform.runLater(() -> map.printOneField(temp.getInt("x"), temp.getInt("y"), temp.getInt("field")));
-        }
-    }
 
-    private void cmdIncspeed() {
-        if (client.getPlayersTimeBetweenMoves() > ClientConsts.MAX_SPEED) {
-            client.setPlayersTimeBetweenMoves(client.getPlayersTimeBetweenMoves()
-                    - ClientConsts.SPEED_INCREMENT);
-        }
-    }
-
-    private void cmdScores(JSONObject jObject) {
-        client.setGameScore(jObject.getInt("player"), jObject.getInt("score"));
-    }
-
-    private void cmdEScores(JSONObject jObject) {       //inicjalizacja tabeli wyników
-        JSONArray players = jObject.getJSONArray("plrs");
-        for (int i = 0; i < players.length(); i++) {
-            JSONObject temp = players.getJSONObject(i);
-            int playerId = temp.getInt("id");
-            String playerNick = temp.getString("nick");
-            System.out.println("Dopisze do tabeli gracza o ID i nicku:  " + playerId + "\t\t" + playerNick);
-            
-            client.newGameScore(playerId, playerNick);
-        }
-    }
-
-    private void cmdHs(JSONObject jObject) {
-        JSONArray highScores = jObject.getJSONArray("hscores");
-        client.updateHighScores(highScores);
-    }
 }

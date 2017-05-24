@@ -38,9 +38,9 @@ public class MessageHandler extends Task {
     @Override
     protected Object call() throws Exception {
         while (true) {
-            DatagramPacket codedMessage = null;         //TODO numerowanie pakietow
+            DatagramPacket codedMessage = null;
             while (codedMessage == null) {
-                codedMessage = messageQueue.pop(); //TODO "jezeli gra nadal trwa", pobierane z Game.        mniejszy delay?
+                codedMessage = messageQueue.pop();
             }
 
             String message = new String(codedMessage.getData());

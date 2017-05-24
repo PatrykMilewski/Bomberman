@@ -18,7 +18,7 @@ public class MessageQueue {
     synchronized DatagramPacket pop() throws InterruptedException {
         
         while (messageQueue.isEmpty()) {
-            wait(1000);                     //TODO ???? cóż tutaj Radku się dzieje
+            wait(1000);
             if (messageQueue.isEmpty()) {
                 return (null);
             }
