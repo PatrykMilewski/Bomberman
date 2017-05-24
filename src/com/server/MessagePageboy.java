@@ -72,7 +72,7 @@ public class MessagePageboy extends Task {
         }
     }
 
-    private void handleClient(ClientData newClient) {
+    private synchronized void handleClient(ClientData newClient) {
         JSONObject answerToSend = new JSONObject();
         int clientId = clients.size();
         newClient.setId(clientId);
