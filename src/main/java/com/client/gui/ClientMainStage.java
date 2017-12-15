@@ -43,7 +43,7 @@ public class ClientMainStage extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         ClientMainStage.primaryStage = primaryStage;
-        loader = new FXMLLoader(getClass().getResource("interfaceControllers/fxmlFiles/MainStage.fxml"));
+        loader = new FXMLLoader(getClass().getClassLoader().getResource("fxmlFiles/MainStage.fxml"));
         mainStageController = new MainStageController();
         loader.setController(mainStageController);
         root = loader.load();

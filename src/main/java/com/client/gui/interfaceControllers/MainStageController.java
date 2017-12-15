@@ -20,7 +20,7 @@ public class MainStageController extends ClientMainStage {
             log.info("Starting a new game.");
         
         try {
-            loader = new FXMLLoader(getClass().getResource("fxmlFiles/Game.fxml"));
+            loader = new FXMLLoader(getClass().getClassLoader().getResource("fxmlFiles/Game.fxml"));
             loader.setController(gameController);
             root = loader.load();
             loadStage();
@@ -37,7 +37,7 @@ public class MainStageController extends ClientMainStage {
             log.info("Opening lobby scene.");
         
         try {
-            loader = new FXMLLoader(getClass().getResource("fxmlFiles/Lobby.fxml"));
+            loader = new FXMLLoader(getClass().getClassLoader().getResource("fxmlFiles/Lobby.fxml"));
             loader.setController(lobbyController);
             root = loader.load();
             loadStage();
@@ -53,7 +53,7 @@ public class MainStageController extends ClientMainStage {
             log.info("Opening higscores.");
         
         try {
-            loader = new FXMLLoader(getClass().getResource("fxmlFiles/Highscores.fxml"));
+            loader = new FXMLLoader(getClass().getClassLoader().getResource("fxmlFiles/Highscores.fxml"));
             loader.setController(highscoresController);
             root = loader.load();
             loadStage();
@@ -77,7 +77,7 @@ public class MainStageController extends ClientMainStage {
         
         try {
             thisPlayer.sendQuitGameMessage();
-            loader = new FXMLLoader(getClass().getResource("fxmlFiles/MainStage.fxml"));
+            loader = new FXMLLoader(getClass().getClassLoader().getResource("fxmlFiles/MainStage.fxml"));
             loader.setController(mainStageController);
             root = loader.load();
             loadStage();
