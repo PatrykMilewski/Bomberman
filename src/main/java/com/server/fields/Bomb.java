@@ -1,7 +1,7 @@
 package com.server.fields;
 
 import com.server.Consts;
-import com.server.Controllers.LogicController;
+import com.server.controllers.LogicController;
 
 public class Bomb extends Field {
     private int range;

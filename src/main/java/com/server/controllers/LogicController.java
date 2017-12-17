@@ -1,4 +1,4 @@
-package com.server.Controllers;
+package com.server.controllers;
 
 import com.elements.loggers.LoggerFactory;
 import com.server.Broadcaster;
@@ -186,9 +186,10 @@ public class LogicController {
         });
     }
     
-    private void addFire(Fire fire) {
+    synchronized private void addFire(Fire fire) {
         breakLoopFires = 1;
         this.fires.add(fire);
+        notifyAll();
     }
     
     public String printEntireMap() {
@@ -373,34 +374,41 @@ public class LogicController {
     }
     
     private void firesLoop() {
-        firesExecutor.execute(() -> {
-            while (true) {
-                Iterator it = getFires().iterator();
-                JSONObject answerToSend = new JSONObject();
-                answerToSend.put("cmd", "move");
-                JSONArray fieldsArray = new JSONArray();
-                while (it.hasNext()) {
-                    if (breakLoopFires == 1) {
-                        try {
-                            Thread.sleep(10);                           //TODO da sie to rozwiazac inaczej?
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        breakLoopFires = 0;
-                        break;
+        firesExecutor.execute(this::fireLoop);
+    }
+    
+    synchronized private void fireLoop() {
+        while (true) {
+            Iterator it = getFires().iterator();
+            JSONObject answerToSend = new JSONObject();
+            answerToSend.put("cmd", "move");
+            JSONArray fieldsArray = new JSONArray();
+            if (!it.hasNext()) {
+                try {
+                    wait();
+                } catch (InterruptedException ignored) {}
+            }
+            while (it.hasNext()) {
+                if (breakLoopFires == 1) {
+                    try {
+                        Thread.sleep(10);                           //TODO da sie to rozwiazac inaczej?
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
-                    Fire tempFire = (Fire) it.next();
-                    if (System.currentTimeMillis() - tempFire.getStartTime() > Consts.FIRE_MILIS) {
-                        removeFire(tempFire, fieldsArray);
-                        it.remove();
-                    }
+                    breakLoopFires = 0;
+                    break;
                 }
-                if (!fieldsArray.isNull(0)) {
-                    answerToSend.put("fields", fieldsArray);
-                    Broadcaster.broadcastMessage(clients, answerToSend.toString(), socket);
+                Fire tempFire = (Fire) it.next();
+                if (System.currentTimeMillis() - tempFire.getStartTime() > Consts.FIRE_MILIS) {
+                    removeFire(tempFire, fieldsArray);
+                    it.remove();
                 }
             }
-        });
+            if (!fieldsArray.isNull(0)) {
+                answerToSend.put("fields", fieldsArray);
+                Broadcaster.broadcastMessage(clients, answerToSend.toString(), socket);
+            }
+        }
     }
     
     //Scores

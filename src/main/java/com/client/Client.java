@@ -27,14 +27,10 @@ public class Client {
     private DatagramSocket socket;
     private InetAddress serverIP;
     private ClientMessageQueue messagesQueue;
-    private int serverPort;
-    private int myId;
     private ClientMainStage mainStage;
-    private int slotId;
+    private int serverPort, myId, slotId, playersTimeBetweenMoves;
     
-    private String playersName;
-    private String playersColor;
-    private int playersTimeBetweenMoves;
+    private String playersName, playersColor;
     
     public Client(ClientMainStage mainStage, LobbyController lobbyController) throws IOException, InterruptedException {
         this.socket = new DatagramSocket();

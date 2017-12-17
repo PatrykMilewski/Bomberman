@@ -2,10 +2,7 @@ package com.server.fields;
 
 import com.elements.loggers.LoggerFactory;
 import com.server.Consts;
-import com.server.Controllers.LogicController;
 
-import java.util.Map;
-import java.util.HashMap;
 import java.util.logging.Logger;
 
 public class Player extends Field {

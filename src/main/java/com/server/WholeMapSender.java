@@ -1,13 +1,12 @@
 package com.server;
 
 import com.elements.loggers.LoggerFactory;
-import com.server.Controllers.LogicController;
+import com.server.controllers.LogicController;
 import javafx.concurrent.Task;
 import org.json.JSONObject;
 
 import java.net.DatagramSocket;
 import java.util.ArrayList;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class WholeMapSender extends Task {

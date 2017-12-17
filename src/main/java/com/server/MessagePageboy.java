@@ -1,10 +1,10 @@
 package com.server;
 
 import com.elements.loggers.LoggerFactory;
-import com.server.Controllers.GUIController;
-import com.server.Controllers.LogicController;
-import com.server.Controllers.ServerConsts;
-import com.server.Controllers.ServerLobbyController;
+import com.server.controllers.GUIController;
+import com.server.controllers.LogicController;
+import com.server.controllers.ServerConsts;
+import com.server.controllers.ServerLobbyController;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import org.json.JSONArray;

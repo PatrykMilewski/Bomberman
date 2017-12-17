@@ -1,7 +1,6 @@
 package com.client.gui.interfaceControllers;
 
 import com.elements.loggers.LoggerFactory;
-import com.server.Controllers.LogicController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import org.json.JSONArray;

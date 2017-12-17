@@ -1,4 +1,4 @@
-package com.server.Controllers;
+package com.server.controllers;
 
 import com.server.Broadcaster;
 import com.server.ClientData;

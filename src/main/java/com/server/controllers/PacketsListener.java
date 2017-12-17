@@ -1,4 +1,4 @@
-package com.server.Controllers;
+package com.server.controllers;
 
 import com.elements.loggers.LoggerFactory;
 import javafx.concurrent.Task;
