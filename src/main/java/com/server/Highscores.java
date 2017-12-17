@@ -1,25 +1,27 @@
 package com.server;
 
 import com.client.gui.interfaceControllers.HighscoresController;
+import com.elements.loggers.LoggerFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.*;
+import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- * Created by Szczepan on 27.04.2017.
- */
+
 public class Highscores {
-    private static Logger log = Logger.getLogger(HighscoresController.class.getCanonicalName());
-    private final String highscoresDataName = "highscores.dat";
-    private final int topScoresAmount = 6;
+    private static Logger log = LoggerFactory.getLogger(Highscores.class.getCanonicalName());
+    
+    private static final String HIGHSCORES_DATA_NAME = "highscores.dat";
+    private static final int TOP_SCORES_AMOUNT = 6;
+    
     private SingleScore[] bestScores;
 
     public Highscores() throws IOException, ClassNotFoundException {
-        bestScores = new SingleScore[topScoresAmount];
-        for (int i =0; i < topScoresAmount; i++){
+        bestScores = new SingleScore[TOP_SCORES_AMOUNT];
+        for (int i =0; i < TOP_SCORES_AMOUNT; i++){
             bestScores[i] = new SingleScore();
         }
         readScores();
@@ -27,7 +29,7 @@ public class Highscores {
     }
 
     private void readScores(){
-        try (ObjectInputStream input = new ObjectInputStream(new FileInputStream(highscoresDataName))) {
+        try (ObjectInputStream input = new ObjectInputStream(new FileInputStream(HIGHSCORES_DATA_NAME))) {
             bestScores = (SingleScore[]) input.readObject();
         }
         catch (IOException e) {
@@ -40,7 +42,7 @@ public class Highscores {
     }
 
     private void saveScores(){
-        try (ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(highscoresDataName))) {
+        try (ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(HIGHSCORES_DATA_NAME))) {
             output.writeObject(bestScores);
             log.info("Highscores file saved to file!");
         }
@@ -65,11 +67,10 @@ public class Highscores {
     }
 
     public void addNewHighscore(SingleScore newScore) {
-        SingleScore copy;
-        for (int i = 0; i < topScoresAmount; i++) {
+        for (int i = 0; i < TOP_SCORES_AMOUNT; i++) {
             if (bestScores[i].compareTo(newScore)) {                // newScore bigger
-                if (i != topScoresAmount - 1) {
-                    for (int j = topScoresAmount - 2; j >= i; j--)
+                if (i != TOP_SCORES_AMOUNT - 1) {
+                    for (int j = TOP_SCORES_AMOUNT - 2; j >= i; j--)
                         bestScores[j + 1] = bestScores[j];
                 }
                 bestScores[i] = newScore;

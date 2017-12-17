@@ -1,5 +1,6 @@
 package com.server;
 
+import com.elements.loggers.LoggerFactory;
 import com.server.Controllers.LogicController;
 import com.server.Controllers.ServerLobbyController;
 import javafx.application.Platform;
@@ -13,9 +14,12 @@ import java.net.DatagramSocket;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Logger;
 
 public class MessageHandler extends Task {
-
+    
+    private static Logger log = LoggerFactory.getLogger(MessageHandler.class.getCanonicalName());
+    
     private ArrayList<ClientData> clients;
     private MessageQueue messageQueue;
     private GUIController serverMessageController;
@@ -26,7 +30,7 @@ public class MessageHandler extends Task {
     private Highscores highscores;
 
     public MessageHandler(MessageQueue messageQueue, GUIController msgController, DatagramSocket socket) throws IOException, ClassNotFoundException {
-        clients = new ArrayList<ClientData>();
+        clients = new ArrayList<>();
         this.messageQueue = messageQueue;
         this.serverMessageController = msgController;
         this.socket = socket;
@@ -44,7 +48,7 @@ public class MessageHandler extends Task {
             }
 
             String message = new String(codedMessage.getData());
-            System.out.println(message);
+            log.info(message);
 
             JSONObject msg = null;
             try {

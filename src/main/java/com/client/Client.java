@@ -5,23 +5,28 @@ import com.client.exceptions.PlayersNameNullException;
 import com.client.gui.ClientConsts;
 import com.client.gui.ClientMainStage;
 import com.client.gui.interfaceControllers.LobbyController;
+import com.elements.loggers.LoggerFactory;
 import javafx.application.Platform;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.*;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Logger;
 
 public class Client {
+    private static Logger log = LoggerFactory.getLogger(Client.class.getCanonicalName());
+    
     private static Random generator = new Random();
     
     private ExecutorService executor = Executors.newFixedThreadPool(3);
     private DatagramSocket socket;
     private InetAddress serverIP;
-    private ClientMessageQueue messages;
+    private ClientMessageQueue messagesQueue;
     private int serverPort;
     private int myId;
     private ClientMainStage mainStage;
@@ -33,10 +38,13 @@ public class Client {
     
     public Client(ClientMainStage mainStage, LobbyController lobbyController) throws IOException, InterruptedException {
         this.socket = new DatagramSocket();
-        this.messages = new ClientMessageQueue();
+        this.messagesQueue = new ClientMessageQueue();
         this.mainStage = mainStage;
-        executor.submit(new ClientReceiver(messages, socket));
-        executor.submit(new ClientMessageHandler(messages, this, lobbyController));
+        ClientReceiver clientReceiver = new ClientReceiver(messagesQueue, socket);
+        ClientMessageHandler clientMessageHandler = new ClientMessageHandler(messagesQueue, this, lobbyController);
+        messagesQueue.addCallback(clientMessageHandler);
+        executor.submit(clientReceiver);
+        executor.submit(clientMessageHandler);
         slotId = -1;
         myId = 0;
         playersColor = Integer.toHexString(generator.nextInt(16581375 + 1));
@@ -46,16 +54,16 @@ public class Client {
     void startGame() throws IOException, InterruptedException {
         ClientMainStage.mainStageController.startNewGame();
         ClientMap map = new ClientMap(mainStage);
-        executor.submit(new GameMessageHandler(messages, map, this));
+        executor.submit(new GameMessageHandler(messagesQueue, map, this));
         ClientListener playerListener = new ClientListener(mainStage, this);
         playerListener.listen();    //TODO Listen w nowym watku?
     }
 
     public void send(String message) {
-        System.out.println(message);
+        log.info(message);
         DatagramPacket data = new DatagramPacket(message.getBytes(), message.length(), serverIP, serverPort);
         try {
-            System.out.println(data.getData());
+            log.info(Arrays.toString(data.getData()));
             socket.send(data);
         } catch (IOException e) {
             e.printStackTrace();
@@ -69,11 +77,11 @@ public class Client {
         msg.put("newSlotId", Integer.toString(newSlotId));
         msg.put("oldSlotId", Integer.toString(oldSlotId));
         msg.put("clientId", Integer.toString(myId));
-        System.out.println("Wysylam nowy slot");
+        log.info("Sending a new game slot.");
         send(msg.toString());
     }
 
-    public void sendQuitGameMessage()
+    public void sendQuitGameMessage() //todo
     {
 /*        JSONObject msg = new JSONObject();
         msg.put("cmd", "quit");
@@ -155,7 +163,7 @@ public class Client {
     }
 
     public void updateHighScores(JSONArray highScores) {
-        Platform.runLater(() -> mainStage.highscoresController.setScores(highScores));
+        Platform.runLater(() -> ClientMainStage.highscoresController.setScores(highScores));
     }
 }
 

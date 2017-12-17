@@ -1,16 +1,19 @@
 package com.client;
 
 import com.client.gui.ClientConsts;
+import com.elements.loggers.LoggerFactory;
+import com.server.MessageHandler;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-/**
- * Created by Uzytkownik on 24.05.2017.
- */
-public class ClientRodeoPageboyOnMolestedCowWithPurpleSpots extends Task {
+import java.util.logging.Logger;
 
+public class ClientRodeoPageboyOnMolestedCowWithPurpleSpots extends Task {
+    
+    private static Logger log = LoggerFactory.getLogger(ClientRodeoPageboyOnMolestedCowWithPurpleSpots.class.getCanonicalName());
+    
     private String cmd;
     private JSONObject jObject;
     private Client client;
@@ -68,8 +71,7 @@ public class ClientRodeoPageboyOnMolestedCowWithPurpleSpots extends Task {
             JSONObject temp = players.getJSONObject(i);
             int playerId = temp.getInt("id");
             String playerNick = temp.getString("nick");
-            System.out.println("Dopisze do tabeli gracza o ID i nicku:  " + playerId + "\t\t" + playerNick);
-
+            log.info("Adding player " + playerId + ": " + playerNick + "to hiscores table.");
             client.newGameScore(playerId, playerNick);
         }
     }

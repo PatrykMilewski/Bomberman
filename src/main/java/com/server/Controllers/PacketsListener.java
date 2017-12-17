@@ -1,5 +1,6 @@
 package com.server.Controllers;
 
+import com.elements.loggers.LoggerFactory;
 import javafx.concurrent.Task;
 import com.server.MessageHandler;
 import com.server.MessageQueue;
@@ -12,10 +13,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class PacketsListener extends Task {
-    private static Logger log = Logger.getLogger(PacketsListener.class.getCanonicalName());
+    private static Logger log = LoggerFactory.getLogger(PacketsListener.class.getCanonicalName());
+    
     private static final int PORT = 7115;
     private static final int BUFFER = 2048;
-    private static final boolean debug = false;
+    
     private ExecutorService executor = Executors.newFixedThreadPool(4);
     private GUIController controller;
     private DatagramSocket socket;
@@ -32,8 +34,7 @@ public class PacketsListener extends Task {
 
     @Override
     protected Object call() throws Exception {
-        if (debug)
-            log.info("Serwer rozpoczal dzialanie");
+        log.info("Serwer rozpoczal dzialanie");
 
         while (true) {
             try {

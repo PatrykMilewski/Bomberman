@@ -1,10 +1,16 @@
 package com.server.fields;
 
+import com.elements.loggers.LoggerFactory;
 import com.server.Consts;
+import com.server.Controllers.LogicController;
+
 import java.util.Map;
 import java.util.HashMap;
+import java.util.logging.Logger;
 
 public class Player extends Field {
+    private static Logger log = LoggerFactory.getLogger(Player.class.getCanonicalName());
+    
     private String nick;
     private float speed;
     private int nBombs;
@@ -28,7 +34,7 @@ public class Player extends Field {
         this.nick = nick;
         this.isAlive = true;
         this.name = "Player" + Integer.toString(id+1);
-        System.out.println("Stworzylem gracza: " + this.name);
+        log.info("Created player: " + this.name);
         this.speed = 10;
         this.nBombs = 1;
         this.rangeOfBomb = 1;
@@ -63,7 +69,7 @@ public class Player extends Field {
 
     public void kill() {
         if (isAlive()){
-            System.out.print("ZGON!");
+            log.info(this.name + " just died.");
             isAlive = false;
         }
     }
@@ -100,6 +106,6 @@ public class Player extends Field {
 
     public void incScore(int diff){
         this.score += diff;
-        System.out.println("NOWY SKOR: \t\t\t\t\t\t" + Integer.toString(this.score));
+        log.info("New highscore: " + Integer.toString(this.score));
     }
 }

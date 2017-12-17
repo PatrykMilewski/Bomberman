@@ -1,12 +1,18 @@
 package com.client.gui.interfaceControllers;
 
+import com.elements.loggers.LoggerFactory;
+import com.server.Controllers.LogicController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class HighscoresController extends MainStageController {
+import java.util.logging.Logger;
 
+public class HighscoresController extends MainStageController {
+    
+    private static Logger log = LoggerFactory.getLogger(HighscoresController.class.getCanonicalName());
+    
     private final int topScoresAmount = 6;
     public  String[] texts;
 
@@ -64,8 +70,7 @@ public class HighscoresController extends MainStageController {
             JSONObject temp = scores.getJSONObject(i);
             String playerNick = temp.getString("name");
             int score = temp.getInt("score");
-
-//            System.out.println("W hajskors bedzie:  " + score + "\t\t" + playerNick);
+            
             texts[i]=playerNick + "   " + score;
         }
     }

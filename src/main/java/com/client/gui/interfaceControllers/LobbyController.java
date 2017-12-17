@@ -3,6 +3,7 @@ package com.client.gui.interfaceControllers;
 import com.client.exceptions.GameSlotOccupiedException;
 import com.client.exceptions.PlayersColorNullException;
 import com.client.exceptions.PlayersNameNullException;
+import com.elements.loggers.LoggerFactory;
 import com.sun.javafx.scene.control.skin.LabeledText;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -18,7 +19,7 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 public class LobbyController extends MainStageController {
-    private static Logger log = Logger.getLogger(LobbyController.class.getCanonicalName());
+    private static Logger log = LoggerFactory.getLogger(LobbyController.class.getCanonicalName());
     private static final int playersAmount = 3;
     
     // IPv4 address pattern
@@ -81,8 +82,7 @@ public class LobbyController extends MainStageController {
     @FXML
     void addressEntered() {
         serverAddress = IPAddressField.getText();
-        if (debug)
-            log.info("User entered " + serverAddress + " server's address.");
+        log.info("User entered " + serverAddress + " server's address.");
         
         if (validateIPv4(serverAddress)) {
             IPAddressField.setStyle("-fx-text-fill: green;");
@@ -96,8 +96,7 @@ public class LobbyController extends MainStageController {
     @FXML
     void portEntered() {
         serverPort = PortField.getText();
-        if (debug)
-            log.info("User entered " + serverPort + " server's port.");
+        log.info("User entered " + serverPort + " server's port.");
         
         if (validatePort(serverPort)) {
             PortField.setStyle("-fx-text-fill: green;");
@@ -110,12 +109,10 @@ public class LobbyController extends MainStageController {
     
     @FXML
     void connectToServer() {
-        if (debug)
-            log.info("Trying to connect to server: " + serverAddress);
+        log.info("Trying to connect to server: " + serverAddress);
         
         if (isIPAddressValid && isPortValid) {
-            if (debug)
-                log.info("Connecting to server!");
+            log.info("Connecting to server!");
             
             try {
                 thisPlayer.isReadyToJoin();
@@ -189,8 +186,7 @@ public class LobbyController extends MainStageController {
                 try {
                     selectSingleSlot(i);
                 } catch (GameSlotOccupiedException e) {
-                    if (debug)
-                        log.info("Selected slot is already taken!");
+                    log.info("Selected slot is already taken!");
                     
                     String alertMessage = "Slot, that you selected, is already taken by other player!";
                     showAlert(Alert.AlertType.ERROR, "Slot already taken!", alertMessage);
@@ -206,8 +202,7 @@ public class LobbyController extends MainStageController {
         playersName = textField.getText();
         thisPlayer.setPlayersName(playersName);
         
-        if (debug)
-            log.info("Player's name set to: " + playersName);
+        log.info("Player's name set to: " + playersName);
     }
     
     @FXML
@@ -231,8 +226,7 @@ public class LobbyController extends MainStageController {
             log.info("Selected slot number " + slotNumber);*/
 
        /* } else if (playersSlots[slotNumber] == selectedSlot) {
-            if (debug)
-                log.info("Unselecting player's slot.");
+            log.info("Unselecting player's slot.");
     
             playersSlots[slotNumber].freeSlot();
             selectedSlot = null;

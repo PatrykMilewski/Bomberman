@@ -5,6 +5,7 @@ import com.client.gui.interfaceControllers.GameController;
 import com.client.gui.interfaceControllers.HighscoresController;
 import com.client.gui.interfaceControllers.LobbyController;
 import com.client.gui.interfaceControllers.MainStageController;
+import com.elements.loggers.LoggerFactory;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,8 +16,7 @@ import javafx.stage.Stage;
 import java.util.logging.Logger;
 
 public class ClientMainStage extends Application {
-    protected static boolean debug = false;
-    protected static Logger log = Logger.getLogger(ClientMainStage.class.getCanonicalName());
+    protected static Logger log = LoggerFactory.getLogger(ClientMainStage.class.getCanonicalName());
     protected static Stage primaryStage;
     protected static Pane root;
     protected static Scene scene;

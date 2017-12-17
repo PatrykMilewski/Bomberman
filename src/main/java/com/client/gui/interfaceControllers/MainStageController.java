@@ -1,6 +1,7 @@
 package com.client.gui.interfaceControllers;
 
 import com.client.gui.ClientMainStage;
+import com.elements.loggers.LoggerFactory;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,13 +12,14 @@ import javafx.scene.effect.Glow;
 
 import java.io.IOException;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MainStageController extends ClientMainStage {
+    protected static Logger log = LoggerFactory.getLogger(MainStageController.class.getCanonicalName());
     
     @FXML
     public void startNewGame() {
-        if (debug)
-            log.info("Starting a new game.");
+        log.info("Starting a new game.");
         
         try {
             loader = new FXMLLoader(getClass().getClassLoader().getResource("fxmlFiles/Game.fxml"));
@@ -33,8 +35,7 @@ public class MainStageController extends ClientMainStage {
     
     @FXML
     void openLobby() {
-        if (debug)
-            log.info("Opening lobby scene.");
+        log.info("Opening lobby scene.");
         
         try {
             loader = new FXMLLoader(getClass().getClassLoader().getResource("fxmlFiles/Lobby.fxml"));
@@ -49,8 +50,7 @@ public class MainStageController extends ClientMainStage {
     
     @FXML
     void openHighscores() {
-        if (debug)
-            log.info("Opening higscores.");
+        log.info("Opening higscores.");
         
         try {
             loader = new FXMLLoader(getClass().getClassLoader().getResource("fxmlFiles/Highscores.fxml"));
@@ -72,8 +72,7 @@ public class MainStageController extends ClientMainStage {
     
     @FXML
     void backToMenu() {
-        if (debug)
-            log.info("Going back to main menu.");
+        log.info("Going back to main menu.");
         
         try {
             thisPlayer.sendQuitGameMessage();
@@ -89,8 +88,7 @@ public class MainStageController extends ClientMainStage {
     
     @FXML
     void mouseEnteredButton(Event event) {
-        if (debug)
-            log.info("Mouse enetered a button.");
+        log.info("Mouse enetered a button.");
         
         Button eventButton = (Button) event.getTarget();
         eventButton.setEffect(new Glow(0.5));
@@ -98,8 +96,7 @@ public class MainStageController extends ClientMainStage {
     
     @FXML
     void mouseExitedButton(Event event) {
-        if (debug)
-            log.info("Mouse exited a button.");
+        log.info("Mouse exited a button.");
         
         Button eventButton = (Button) event.getTarget();
         eventButton.setEffect(new Glow(0.0));

@@ -1,5 +1,6 @@
 package com.server.Controllers;
 
+import com.elements.loggers.LoggerFactory;
 import com.server.Broadcaster;
 import com.server.ClientData;
 import com.server.Consts;
@@ -26,8 +27,7 @@ import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
 public class LogicController {
-    private static Logger log = Logger.getLogger(LogicController.class.getCanonicalName());
-    private static final boolean debug = false;
+    private static Logger log = LoggerFactory.getLogger(LogicController.class.getCanonicalName());
     
     private ArrayList<ClientData> clients;
     private DatagramSocket socket;
@@ -148,8 +148,7 @@ public class LogicController {
         this.mapFields[y][x] = new Player(x, y, true, nick, id);
         players.add((Player) this.mapFields[y][x]);
         
-        if (debug)
-            log.info("Player's ID: " + ((Player) this.mapFields[y][x]).getId());
+        log.info("Player's ID: " + ((Player) this.mapFields[y][x]).getId());
     }
     
     private void destroyField(int x, int y, Field newField, JSONArray answer) {
@@ -161,8 +160,7 @@ public class LogicController {
     }
     
     private void deletePlayerFromMap(Player player) {
-        if (debug)
-            log.info("Killing player: " + player.getNick());
+        log.info("Killing player: " + player.getNick());
         
         getPlayer(player.getId()).kill();
     }
@@ -324,7 +322,7 @@ public class LogicController {
         bomb.getOwnerOfBomb().incNBombs();
         answerToSend.put("fields", arrayOfFields);
         Broadcaster.broadcastMessage(clients, answerToSend.toString(), socket);
-        System.out.println("Wybuch:\t\t" + answerToSend.toString());
+        log.info("Explosion:\t\t" + answerToSend.toString());
     }
     
     private boolean checkFieldToBurn(int xToCheck, int yToCheck, JSONArray answer, Bomb bomb) {

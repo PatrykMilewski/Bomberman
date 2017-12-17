@@ -2,12 +2,17 @@ package com.client;
 
 import com.client.gui.ClientConsts;
 import com.client.gui.ClientMainStage;
+import com.elements.loggers.LoggerFactory;
 import javafx.animation.AnimationTimer;
+
+import java.util.logging.Logger;
 
 
 class ClientListener {
+    private static Logger log = LoggerFactory.getLogger(ClientListener.class.getCanonicalName());
+    
     private boolean up, down, left, right, bomb;
-    private long lastDropedBomb;
+    private long lastDroppedBomb;
     private long lastMove;
     private ClientMainStage mainStage;
     private Client client;
@@ -16,7 +21,7 @@ class ClientListener {
         this.mainStage = mainSt;
         this.client = client;
         lastMove = 0;
-        lastDropedBomb = 0;
+        lastDroppedBomb = 0;
         up = down = left = right = bomb = false;
     }
 
@@ -48,7 +53,7 @@ class ClientListener {
                 if (up) {
                     if (now / ClientConsts.TIME_CUTTER - lastMove > (client.getPlayersTimeBetweenMoves())) {
                         lastMove = now / ClientConsts.TIME_CUTTER;
-                        System.out.print("Gora");
+                        log.info("Player moved up.");
                         client.sendKey("UP");
                         //player.incCoords(0, -1);
                     }
@@ -57,6 +62,7 @@ class ClientListener {
                 if (down) {
                     if (now / ClientConsts.TIME_CUTTER - lastMove > client.getPlayersTimeBetweenMoves() ) {
                         lastMove = now / ClientConsts.TIME_CUTTER;
+                        log.info("Player moved down.");
                         client.sendKey("DOWN");
                         //player.incCoords(0, 1);
                     }
@@ -65,6 +71,7 @@ class ClientListener {
                 if (left) {
                     if (now / ClientConsts.TIME_CUTTER - lastMove >(client.getPlayersTimeBetweenMoves())) {
                         lastMove = now / ClientConsts.TIME_CUTTER;
+                        log.info("Player moved left.");
                         client.sendKey("LEFT");
                         //player.incCoords(-1, 0);
                     }
@@ -73,14 +80,15 @@ class ClientListener {
                 if (right) {
                     if (now / ClientConsts.TIME_CUTTER - lastMove > (client.getPlayersTimeBetweenMoves())) {
                         lastMove = now / ClientConsts.TIME_CUTTER;
+                        log.info("Player moved right.");
                         client.sendKey("RIGHT");
                         //player.incCoords(1, 0);
                     }
                 }
 
                 if (bomb) {
-                    if (now / ClientConsts.TIME_CUTTER - lastDropedBomb > ClientConsts.TIME_BETWEEN_BOMBS) {
-                        lastDropedBomb = now / ClientConsts.TIME_CUTTER;
+                    if (now / ClientConsts.TIME_CUTTER - lastDroppedBomb > ClientConsts.TIME_BETWEEN_BOMBS) {
+                        lastDroppedBomb = now / ClientConsts.TIME_CUTTER;
                         client.sendKey("BOMB");
                     }
                 }

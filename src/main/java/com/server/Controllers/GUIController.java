@@ -19,12 +19,11 @@ public class GUIController implements Initializable {
     private ExecutorService executor = Executors.newSingleThreadExecutor();
 
     @FXML
-    private ListView serverListView;
+    private ListView<String> serverListView;
     @FXML
     private Label serverIP;
 
-    private final ObservableList<String> data =
-            FXCollections.observableArrayList();
+    private final ObservableList<String> data = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

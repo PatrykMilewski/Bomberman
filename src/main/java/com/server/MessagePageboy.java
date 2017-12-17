@@ -1,5 +1,6 @@
 package com.server;
 
+import com.elements.loggers.LoggerFactory;
 import com.server.Controllers.GUIController;
 import com.server.Controllers.LogicController;
 import com.server.Controllers.ServerConsts;
@@ -17,8 +18,7 @@ import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
 public class MessagePageboy extends Task {
-    private static Logger log = Logger.getLogger(MessagePageboy.class.getCanonicalName());
-    private static final boolean debug = false;
+    private static Logger log = LoggerFactory.getLogger(MessagePageboy.class.getCanonicalName());
 
     private DatagramPacket codedMessage;
     private JSONObject message;
@@ -143,7 +143,7 @@ public class MessagePageboy extends Task {
             clientsArray.put(temp);
         }
         answerToScores.put("plrs", clientsArray);
-        System.out.println("WAZNA WIADOMOSC\t\t" + answerToScores.toString());
+        log.info("Answer to scores: " + answerToScores.toString());
 
         Broadcaster.broadcastMessage(clients, answerToScores.toString(), socket);
 
@@ -158,9 +158,8 @@ public class MessagePageboy extends Task {
         int oldIdSlot = msg.getInt("oldSlotId");
         int clientId = msg.getInt("clientId");
         String textOnSlot = msg.getString("text");
-
-        if (debug)
-            log.info("Setting up slots.");
+        
+        log.info("Setting up slots.");
 
         Platform.runLater(() -> serverLobbyController.changeSlot(newIdSlot, oldIdSlot, textOnSlot, clientId));
     }

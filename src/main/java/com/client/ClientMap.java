@@ -2,6 +2,8 @@ package com.client;
 
 import com.client.gui.ClientConsts;
 import com.client.gui.ClientMainStage;
+import com.elements.loggers.LoggerFactory;
+import com.server.MessageHandler;
 import javafx.scene.Parent;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -11,13 +13,15 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.logging.Logger;
 
 class ClientMap extends Parent {
+    
+    private static Logger log = LoggerFactory.getLogger(ClientMap.class.getCanonicalName());
     
     private HashMap<Integer, String> fieldImages;
     private ClientMainStage mainStage;
     private Pane spaceForMap;
-    private Pane spaceForScores;
     
     ClientMap(ClientMainStage mainStage) throws IOException {
         fieldImages = new HashMap<>();
@@ -32,23 +36,22 @@ class ClientMap extends Parent {
         mapGrids.setTranslateY(27);
         
         this.spaceForMap = ClientMainStage.gameController.getGameMapPane();
-        this.spaceForScores = ClientMainStage.gameController.getGameScoresPane();
-        mapGrids.getChildren().addAll(this.spaceForMap, this.spaceForScores);
+        Pane spaceForScores = ClientMainStage.gameController.getGameScoresPane();
+        mapGrids.getChildren().addAll(this.spaceForMap, spaceForScores);
         getChildren().addAll(mapGrids);
         this.mainStage.getRootElem().getChildren().addAll(this);
     }
     
     void printEntireMap(JSONObject jObject) {
-        String mapp = jObject.getString("fields");
-//        System.out.println(mapp);
+        String map = jObject.getString("fields");
         for (int i = 0; i < ClientConsts.DIMENSION; i++) {
             for (int j = 0; j < ClientConsts.DIMENSION; j++) {
-                int field = Integer.parseInt(mapp.substring(0, 1));
-                mapp = mapp.substring(1);
+                int field = Integer.parseInt(map.substring(0, 1));
+                map = map.substring(1);
                 if (field == 3) {                    //rysuj pod graczem ziemie
                     printOneField(i, j, 0);
-                    field = Integer.parseInt(mapp.substring(0, 1));
-                    mapp = mapp.substring(1);
+                    field = Integer.parseInt(map.substring(0, 1));
+                    map = map.substring(1);
                     printOneField(i, j, 30 + field);
                     continue;
                 }

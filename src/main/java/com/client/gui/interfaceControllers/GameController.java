@@ -1,5 +1,6 @@
 package com.client.gui.interfaceControllers;
 
+import com.elements.loggers.LoggerFactory;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
@@ -9,9 +10,8 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 public class GameController extends MainStageController {
-    private static Logger log = Logger.getLogger(GameController.class.getCanonicalName());
+    private static Logger log = LoggerFactory.getLogger(GameController.class.getCanonicalName());
     private final static int playersAmount = 4;
-    private static boolean debug = true;
     
     private final Map<Integer, String> scoresMap = new HashMap<>();
     
@@ -50,8 +50,7 @@ public class GameController extends MainStageController {
     }
     
     public void initializeScoreLabel(int playersNumber, String playersName) {
-        if (debug)
-            log.info("Initialization of player's score. Player: " + playersNumber + " " + playersName);
+        log.info("Initialization of player's score. Player: " + playersNumber + " " + playersName);
         
         scoresMap.put(playersNumber, playersName);
         scoreLabels[playersNumber].setText(playersName + " - 0");
@@ -59,8 +58,7 @@ public class GameController extends MainStageController {
     }
     
     public void setScoreLabel(int playersNumber, int newScore) {
-        if (debug)
-            log.info("Player number " + playersNumber + " has new score: " + newScore);
+        log.info("Player number " + playersNumber + " has new score: " + newScore);
         
         scoreLabels[playersNumber].setText(scoresMap.get(playersNumber) + " - " + newScore);
     }
